@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Inherit-theme-mods
+ * Plugin Name: Inherit Theme Mods
  * Version: 0.1-alpha
- * Description: This plugin simply copy theme mods from parental theme.
+ * Description: This plugin simply copies theme mods from parental theme.
  * Author: KamataRyo
  * Author URI: http://biwako.io/
  * Plugin URI: http://biwako.io/
@@ -11,30 +11,26 @@
  * @package Inherit-theme-mods
  */
 
+require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'inherit-theme-mods-ui.php';
+define( 'INHERIT_THEME_MODS_TEXT_DOMAIN', 'inherit-theme-mods' );
+define( 'INHERIT_THEME_MODS_STORING_OPTION_NAME', 'inherit_theme_mods_stored_option' );
 
-function inherit_theme_mods_get_theme_mods_of( $slug1 )
+
+function inherit_theme_mods_get_theme_mods_of( $slug )
 {
-    var_dump($wpdb);
-    $results = $wpdb->get_results("SELECT * FROM {$wpdb->options} LIMIT 10");
-    var_dump($result);
-
-    $slug0 = wp_get_theme()->stylesheet;
-    switch_theme( $slug1 );
-    $result = get_theme_mods();
-    switch_theme( $slug0 );
+    $result = get_option( "theme_mods_$slug", false );
+    if ( $result ) {
+        $result = maybe_unserialize( $result );
+    }
     return $result;
 }
 
-function inherit_theme_mods_set_theme_mods_of( $slug1, $mods )
+function inherit_theme_mods_set_theme_mods_of( $slug, $option_value )
 {
-    $slug0 = wp_get_theme()->stylesheet;
-    switch_theme( $slug1 );
-    remove_theme_mods();
-    foreach ($mods as $name => $value) {
-        set_theme_mod( $name, $value );
+    if ( ! array_key_exists( $slug, wp_get_themes() ) ) {
+        return false;
     }
-    switch_theme( $slug0 );
-    return true;
+    return update_option( "theme_mods_$slug", $option_value );
 }
 
 function inherit_theme_mods_inherit()
@@ -42,19 +38,53 @@ function inherit_theme_mods_inherit()
     $parent = wp_get_theme()->template;
     $child = wp_get_theme()->stylesheet;
     $is_child = $child !== $parent;
-    $result = false;
 
-    if ($is_child) {
-        try {
-            $result = inherit_theme_mods_set_theme_mods_of(
-                $child,
-                inherit_theme_mods_get_theme_mods_of(
-                    $parnt
-                )
-            );
-        } catch (Exception $e) {
-            $result = $e;
+    if ( $is_child ) {
+        // store values at first
+        $store = inherit_theme_mods_get_theme_mods_of( $child );
+        if ( get_option( INHERIT_THEME_MODS_STORING_OPTION_NAME ) ) {
+            update_option( INHERIT_THEME_MODS_STORING_OPTION_NAME, $store ,'no' );
+        } else {
+            add_option( INHERIT_THEME_MODS_STORING_OPTION_NAME, $store, '' ,'no' );
         }
+
+        // inherit
+        $parent_mod = inherit_theme_mods_get_theme_mods_of( $parent );
+        $result = inherit_theme_mods_set_theme_mods_of( $child, $parent_mod );
+    } else {
+        $result = false;
     }
     return $result;
+}
+
+function inherit_theme_mods_get_stored_mods()
+{
+    $child = wp_get_theme()->stylesheet;
+    $result = get_option( $child );
+    if ($result) {
+        $result = maybe_unserialize( $result );
+    }
+    return $result;
+}
+
+function inherit_theme_mods_restore()
+{
+    $child = wp_get_theme()->stylesheet;
+    $stored_mod = inherit_theme_mods_get_stored_mods();
+    $result = inherit_theme_mods_set_theme_mods_of( $child, $stored_mod );
+    if ($result) {
+        delete_option( INHERIT_THEME_MODS_STORING_OPTION_NAME );
+    }
+    return $result;
+}
+
+
+// helper_functions
+function inherit_theme_mods_build_styleAttr( $styles )
+{
+    $result = '';
+    foreach ($styles as $directive => $value) {
+        $result .= "$directive:$value;";
+    }
+    return "style=\"$result\"";
 }

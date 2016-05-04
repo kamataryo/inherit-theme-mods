@@ -2,12 +2,12 @@
 /**
  * Class SampleTest
  *
- * @package
+ * @package inherit-theme-mods
  */
 
 
 /**
- * they are test-helpers.
+ * moc themes
  */
 $themes = array(
     array(
@@ -38,6 +38,9 @@ $themes = array(
     ),
 );
 
+/**
+ * this function generates themes attributes provided by arguments above.
+ */
 function __generate_themes ( $themes )
 {
     foreach ( $themes as $theme ) {
@@ -59,6 +62,9 @@ function __generate_themes ( $themes )
     }
 }
 
+/**
+ * this function removes themes by ceratain arguments above.
+ */
 function __remove_themes ( $themes )
 {
     foreach ( $themes as $theme ) {
@@ -80,74 +86,195 @@ function __remove_themes ( $themes )
 
 /**
  * Test cases.
+ * *Problems*
+ * - It seems to be better to generate theme at the start of test and
+ *   to remove them at the end of test, but the destructor seems not to
+ *   be available for phpunit.
+ * - Thats's why each function test_* has provisioning and cleaning up sections.
+ * - In this way, wp_get_themes() still remains old. Something like
+ *   'reload()' may be necessary for WordPress to refresh wp_get_themes(),
+ *   but I've not found it so far.
  */
 class InheritThemeModsTest extends WP_UnitTestCase
 {
-    //test of test-helper functions
+    /**
+     * Test for test helper functions above.
+     */
     function test_theme_generation()
     {
-        //provisioning
+        // provisioning
         global $themes;
         __generate_themes( $themes );
-
+        // assertions
         foreach ( $themes as $theme ) {
             $this->assertArrayHasKey( $theme['Text Domain'], wp_get_themes() );
         }
-
-        // clean up, but wp_get_themes still remains old.
+        // clean up
         __remove_themes( $themes );
 
     }
 
-    function test_get_theme_mods_of()
+    function test_get_theme_mods_of_fails()
     {
-        //provisioning
+        // provisioning
         global $themes;
         __generate_themes( $themes );
 
-        //obtain expected and actual
-        $slug0 = $themes[0]['Text Domain'];
-        $slug1 = $themes[1]['Text Domain'];
-        $name = 'theKey';
-        $value = 'theValue';
-        switch_theme( $slug0 );
-        set_theme_mod( $name, $value );
-        $expected = array( $name => $value );
-        switch_theme( $slug1 );
-        $actual = inherit_theme_mods_get_theme_mods_of( $slug0 );
-
-        $this->assertEquals( $expected[$name], $actual[$name] );
+        // assertions
+		$result = inherit_theme_mods_get_theme_mods_of( 'undefined-theme-slug' );
+		$this->assertFalse( $result );
 
         //clean up.
-        switch_theme( $slug0 );
-        remove_theme_mod( $name );
         __remove_themes( $themes );
     }
 
+	function test_get_theme_mods_of_success()
+    {
+        // provisioning
+        global $themes;
+        __generate_themes( $themes );
 
+        // select certain theme
+		$slug = $themes[0]['Text Domain'];
+		switch_theme( $slug );
 
-    function test_set_theme_mods_of()
+        // update theme_mod with wordpress native function
+		$name = 'new-theme-mod-to-test';
+		$value = 'aaa';
+		set_theme_mod( $name, $value );
+
+        // test new plugin's function if the update above can be detected.
+		$result = inherit_theme_mods_get_theme_mods_of( $slug );
+		$this->assertEquals( $value, $result[$name] );
+
+        //clean up
+		remove_theme_mod( $name );
+        __remove_themes( $themes );
+    }
+
+	function test_set_theme_mods_of_fails()
     {
         //provisioning
         global $themes;
         __generate_themes( $themes );
 
-        //obtain expected and actual
-        $slug0 = $themes[0]['Text Domain'];
-        $slug1 = $themes[1]['Text Domain'];
-        $name = 'theKey';
-        $value = 'theValue';
-        switch_theme( $slug0 );
-        $expected = array( $name => $value );
-        inherit_theme_mods_set_theme_mods_of($slug1, $expected );
-        switch_theme( $slug1 );
+        // create value for updating
+		$name = 'undefined-new-theme-mod-to-test';
+		$value = 'aaa';
+		$option_value = array( $name => $value );
+
+        // do update with new plugin's function
+        $slug = 'undefined-unknown-theme-name';
+		$result = inherit_theme_mods_set_theme_mods_of( $slug, $option_value );
+
+        // however test fails with nonsense theme name not existing.
+		$this->assertFalse( $result );
+
+        //clean up.
+        __remove_themes( $themes );
+    }
+
+    function test_set_theme_mods_of_success()
+    {
+        //provisioning
+        global $themes;
+        __generate_themes( $themes );
+
+        // create value for updating
+		$slug = $themes[0]['Text Domain'];
+		$name = 'undefined-new-theme-mod-to-test';
+		$value = 'aaa';
+		$option_value = array( $name => $value );
+
+        // do update with new plugin's function
+		inherit_theme_mods_set_theme_mods_of( $slug, $option_value );
+
+        // obtain actual updated values.
+		switch_theme( $slug );
+		$actual = get_theme_mods();
+
+        // test if mods updated actually
+		$this->assertEquals($option_value[$name] ,$actual[$name] );
+
+        //clean up.
+		remove_theme_mod( $name );
+        __remove_themes( $themes );
+    }
+
+
+    function test_inherit_fails()
+    {
+        // provisioning
+        global $themes;
+        __generate_themes( $themes );
+
+        // change to Template, nothing to be inherited
+        $slug_parent = $themes[0]['Text Domain'];
+        switch_theme( $slug_parent );
+
+        // test if inheritance fails.
+        $result = inherit_theme_mods_inherit();
+        $this->assertFalse( $result );
+
+        //clean up.
+        __remove_themes( $themes );
+    }
+
+
+    function test_inherit_and_retore_success()
+    {
+        //provisioning
+        global $themes;
+        __generate_themes( $themes );
+
+        //Set up values to inherit from Template
+        $slug_parent = $themes[0]['Text Domain'];
+        $slug_child = $themes[1]['Text Domain'];
+        switch_theme( $slug_parent );
+        $name_parent = 'undefined-new-theme-mod-to-test';
+        $value_parent = 'aaa';
+        set_theme_mod( $name_parent, $value_parent );
+
+        // prepare for inheritance and store previous value
+        switch_theme( $slug_child );
+        $name_child = 'undefined-new-theme-mod-to-testsdssss';
+        $value_child = 'bbb';
+        set_theme_mod( $name_child, $value_child );
+        $store = get_theme_mods();
+
+        //inherit
+        $result = inherit_theme_mods_inherit();
         $actual = get_theme_mods();
 
-        $this->assertEquals( $expected[$name], $actual[$name] );
+        //test inherit
+        $this->assertTrue( $result );
+        $this->assertEquals( $value_parent, $actual[$name_parent] );
+
+        // restore
+        $result = inherit_theme_mods_restore();
+
+        //test restore
+        $this->assertTrue( $result );
+        $this->assertEquals( $value_child, $store[$name_child] );
 
         //clean up.
-        switch_theme( $slug0 );
-        remove_theme_mod( $name );
+        remove_theme_mod( $name_child );
+        switch_theme( $slug_parent );
+        remove_theme_mod( $name_parent );
         __remove_themes( $themes );
+    }
+
+
+    // test for helper functions
+    function test_build_styleAttr()
+    {
+        $styles = array(
+            'background-color' => '#12345',
+            'color' => 'red',
+            'padding' => 0
+        );
+        $styleAttrExpected = 'style="background-color:#12345;color:red;padding:0;"';
+        $styleAttrActual = inherit_theme_mods_build_styleAttr( $styles );
+        $this->assertEquals( $styleAttrExpected, $styleAttrActual );
     }
 }
