@@ -5,13 +5,6 @@
 
  // set up UI
 
-// function inherit_theme_mods_admin_init()
-// {
-//       wp_register_script( 'inheritThemeModsScript', plugins_url( 'assets/inherit-theme-mods-ui.js', __FILE__ ), array( 'jquery' ) );
-// }
-// add_action( 'admin_init', 'inherit_theme_mods_admin_init' );
-
-
 function inherit_theme_mods_admin_menu()
 {
     $page = add_options_page(
@@ -21,10 +14,31 @@ function inherit_theme_mods_admin_menu()
         INHERIT_THEME_MODS_TEXT_DOMAIN,
         'describe_inherit_theme_mods_options_ui'
     );
-    //  add_action( 'admin_print_styles-' . $page, 'inherit_theme_mods_admin_styles' );
-    //  add_action( 'admin_print_scripts-' . $page , 'inherit_theme_mods_admin_scripts' );
 }
 add_action( 'admin_menu', 'inherit_theme_mods_admin_menu' );
+
+function inherit_theme_mods_enqueue_script()
+{
+     wp_enqueue_script( 'jquery' );
+     wp_enqueue_script(
+        'inherit_theme_mods_scripts',
+        plugins_url( '/assets/index.js', _FILE_ ),
+        array( 'jquery' )
+    );
+     wp_localize_script(
+        'inherit_theme_mods_scripts',
+        'ajax',
+        array(
+            'endpoint' => admin_url( 'admin-ajax.php' ),
+            'actions' => array(
+                'inherit' => 'inherit_theme_mods_ajax_inherit',
+                'restore' => 'inherit_theme_mods_ajax_restore',
+                'describe' => 'inherit_theme_mods_ajax_describe',
+            ),
+        )
+    );
+}
+add_action( 'admin_enqueue_scripts', 'inherit_theme_mods_enqueue_script' );
 
 function describe_inherit_theme_mods_options_ui()
 {
@@ -123,20 +137,6 @@ function describe_inherit_theme_mods_options_ui()
     <?php
 }
 
-
-//  function category_synonyms_admin_styles()
-//  {
-//      wp_enqueue_style( 'categorySynonymsStylesheet' );
-//  }
-//
-//  function category_synonyms_admin_scripts()
-//  {
-//      wp_enqueue_script( 'jquery' );
-//      wp_enqueue_script( 'categorySynonymsScript' );
-//      wp_localize_script( 'categorySynonymsScript','ajax' , array(
-//          'Endpoints' => admin_url( 'admin-ajax.php' ),
-//      ) );
-//  }
 
 //define ajax actions
 function inherit_theme_mods_ajax_inherit()
