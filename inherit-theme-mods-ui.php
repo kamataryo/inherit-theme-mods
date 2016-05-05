@@ -46,6 +46,10 @@ function inherit_theme_mods_enqueue_script()
                 'restore' => 'ITM_restore',
             ),
             'nonce' => wp_create_nonce( INHERIT_THEME_MODS_NONCE_ACTION ),
+            'status' => array(
+                'updating..' => __( 'updating..', INHERIT_THEME_MODS_NONCE_ACTION ),
+                'finished!' => __( 'finished!', INHERIT_THEME_MODS_NONCE_ACTION ),
+            ),
         )
     );
 }
@@ -54,8 +58,103 @@ add_action( 'admin_enqueue_scripts', 'inherit_theme_mods_enqueue_script' );
 
 function describe_inherit_theme_mods_options_ui()
 {
-	if ( !current_user_can( 'manage_options' ) )  {
-		wp_die( __( 'You do not have sufficient permissions to access this page.', INHERIT_THEME_MODS_TEXT_DOMAIN ) );
+    ?>
+    <div class="wrap">
+        <h1 id="ITM-title"><?php echo __( 'Inherit Theme Mods', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></h1>
+        <form class="ITM-form">
+            <div class="ITM-action-table">
+                <div class="ITM-action-block">
+                    <div class="ITM-action-element ITM-button-col">
+                        <a id="ITM-inherit" class="button button-primary button-large"><?php echo __( 'inherit', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></a>
+                    </div>
+                    <div class="ITM-action-element ITM-picture-col">
+                        <i class="fa fa-file-o fa-fw fa-3x"></i>
+                        <i class="fa fa-arrow-right fa-2x"></i>
+                        <i class="fa fa-copy fa-fw fa-3x"></i>
+                        <i class="fa fa-arrow-right fa-2x"></i>
+                        <i class="fa fa-trash-o fa-fw fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+
+            <p><?php echo __( "Copy parent theme's properties to child. The last child properties are stored at trash once for backup.", INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></p>
+
+            <div class="ITM-action-table">
+                <div class="ITM-action-block">
+                    <div class="ITM-action-element ITM-button-col">
+                        <a id="ITM-restore" class="button button-primary button-large"><?php echo __( 'restore', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></a>
+                    </div>
+                    <div class="ITM-action-element ITM-picture-col">
+                        <i class="fa fa-copy fa-fw fa-3x"></i>
+                        <i class="fa fa-arrow-left fa-2x"></i>
+                        <i class="fa fa-trash fa-fw fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+
+            <p><?php echo __( "Restore child properties from trash box.", INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></p>
+
+        </form>
+    </div>
+
+    <?php
+    inherit_theme_mods_ui_update_view();
+}
+
+
+if(!class_exists('WP_List_Table')) :
+    require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+endif;
+
+class Mods_List_Table extends WP_List_Table
+{
+    function __construct()
+    {
+        parent::__construct( array(
+            'singular' => __( 'key', INHERIT_THEME_MODS_TEXT_DOMAIN ),
+            'plural'   => __( 'keys', INHERIT_THEME_MODS_TEXT_DOMAIN ),
+            'ajax'     => false,
+        ) );
+    }
+    function column_default( $item, $column_name )
+    {
+        return maybe_serialize( $item[$column_name] );
+    }
+    function get_columns()
+    {
+        return array(
+            'key'          => 'Key',
+            'parent theme' => 'Parent Theme',
+            'child theme'  => 'Child Theme',
+            'trashed'      => 'Trashed',
+        );
+    }
+    function get_sortable_columns()
+    {
+        return array(
+            'key'          => array( 'Key', false),
+            'parent theme' => array( 'Parent Theme', false),
+            'child theme'  => array( 'Child Theme', false),
+            'trashed'      => array( 'Trashed', false),
+        );
+    }
+    function prepare_items()
+    {
+        $per_page = 10;
+        $columns = $this->get_columns();
+        $hidden = array();
+        $sortable = $this->get_sortable_columns();
+        $this->_column_headers = array($columns, $hidden, $sortable);
+
+
+    }
+
+}
+
+
+function inherit_theme_mods_ui_update_view() {
+    if ( !current_user_can( 'manage_options' ) )  {
+        wp_die( __( 'You do not have sufficient permissions to access this page.', INHERIT_THEME_MODS_TEXT_DOMAIN ) );
     }
 
     $child_slug = wp_get_theme()->stylesheet;
@@ -100,52 +199,29 @@ function describe_inherit_theme_mods_options_ui()
             }
             $value = maybe_serialize( $holders[$index][$key] );
 
-            # display color if color string
-            $match = preg_match( '/^#?([0-9,a-f,A-F]{3}|[0-9,a-f,A-F]{6})$/', $value );
-            if( $match === 1 ) {
+            $match_color = preg_match( '/^#?([0-9,a-f,A-F]{3}|[0-9,a-f,A-F]{6})$/', $value );
+            $match_inmageURL = preg_match( '/\.(jpg|jpeg|png|gif)$/i', $value );
+            if( $match_color === 1 ) {
+                # display color if color string
                 $colorStr = substr($value, 0, 1) === '#' ? $value : "#$value";
                 $styleAttr = inherit_theme_mods_build_styleAttr( array(
                     'background-color' => $colorStr,
-                    'padding' => '.5em 1em',
+                    'display' => 'inline-block',
+                    'width' => '25px',
+                    'height' => '25px',
+                    'margin-right' => '.5em'
                 ) );
-                $value = "<span $styleAttr>$value</span>";
-            }
-
-            #display image if image url
-            $match = preg_match( '/\.(jpg|jpeg|png|gif)$/i', $value );
-            if( $match === 1 ) {
+                $value = "<span $styleAttr></span><span>$value</span>";
+            } else if ( $match_inmageURL === 1 ) {
+                #display image if image url
                 $value = "<img src=\"$value\" style=\"max-width:200px\" alt=\"\" /><br /><span>$value</span>";
             }
+
             $holders[$index][$key] = $value;
         }
     }
-
     ?>
     <div id="ITMContent" class="wrap">
-        <h1><?php echo __( 'Inherit Theme Mods', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></h1>
-        <form>
-            <div id="action_inherit">
-                <a id="inherit">inherit
-                    <span>
-                        <i class="fa fa-file-o fa-3x"></i>
-                        <i class="fa fa-rotate-right fa-3x"></i>
-                        <i class="fa fa-copy fa-3x"></i>
-                        <i class="fa fa-rotate-right fa-3x"></i>
-                        <i class="fa fa-trash fa-3x"></i>
-                    </span>
-                </a>
-            </div>
-            <div id="action_restore">
-                <a id="restore">restore
-                    <span>
-                        <i class="fa fa-copy fa-3x"></i>
-                        <i class="fa fa-rotate-left fa-3x"></i>
-                        <i class="fa fa-trash fa-3x"></i>
-                    </span>
-                </a>
-            </div>
-
-        </form>
 
         <table class="wp-list-table widefat fixed striped posts">
             <thead>
@@ -154,15 +230,15 @@ function describe_inherit_theme_mods_options_ui()
                         <?php echo __( 'keys', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?>
                     </th>
                     <th scope="col" id="parent_theme"  class="manage-column column-parent_theme">
-                        <i class="fa fa-file-o fa-3x"></i>
+                        <i class="fa fa-file-o fa-2x"></i>
                         <?php echo __( 'parent theme', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?>
                     </th>
                     <th scope="col" id="current_theme" class="manage-column column-current_theme">
-                        <i class="fa fa-copy fa-3x"></i>
-                        <?php echo __( 'current theme', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?>
+                        <i class="fa fa-copy fa-2x"></i>
+                        <?php echo __( 'current theme (child theme)', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?>
                     </th>
                     <th scope="col" id="trashed" class="manage-column column-trashed">
-                        <i class="fa fa-trash fa-3x"></i>
+                        <i class="fa fa-trash fa-2x"></i>
                         <?php echo __( 'trashed', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?>
                     </th>
                 </tr>
@@ -195,7 +271,7 @@ function inherit_theme_mods_ajax_inherit()
         echo '<p>' . __('Request is not acceptable.', INHERIT_THEME_MODS_TEXT_DOMAIN ) . '</p>';
     } else {
         inherit_theme_mods_inherit();
-        describe_inherit_theme_mods_options_ui();
+        inherit_theme_mods_ui_update_view();
     }
     die();
 }
@@ -204,12 +280,12 @@ add_action( 'wp_ajax_ITM_inherit', 'inherit_theme_mods_ajax_inherit' );
 
 function inherit_theme_mods_ajax_restore()
 {
-    $verified = wp_verify_nonce( INHERIT_THEME_MODS_NONCE_ACTION, $_REQUEST['nonce'] );
+    $verified = wp_verify_nonce( $_REQUEST['nonce'], INHERIT_THEME_MODS_NONCE_ACTION );
     if ( ! $verified ) {
         echo '<p>' . __('Request is not acceptable.', INHERIT_THEME_MODS_TEXT_DOMAIN ) . '</p>';
     } else {
         inherit_theme_mods_restore();
-        describe_inherit_theme_mods_options_ui();
+        inherit_theme_mods_ui_update_view();
     }
     die();
 }

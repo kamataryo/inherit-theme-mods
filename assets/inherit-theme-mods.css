@@ -1,3 +1,51 @@
-a#inherit:hover, a#restore:hover {
+.ITM-status-notifier {
+    margin-left: .5em;
+    opacity: .6;
+}
+
+
+.ITM-status-notifier-text {
+    margin-left: .5em;
+}
+@media screen and (max-width: 782px) {
+    .ITM-status-notifier-text {
+        display: none;
+    }
+}
+
+a#ITM-inherit, a#ITM-restore {
+    width: 75px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+a#ITM-inherit:hover, a#ITM-restore:hover {
     cursor: pointer;
+}
+
+.ITM-action-table {
+    display: table;
+    margin: .5em 0;
+    background:#ECECEC;
+    border:1px solid #CCC;
+    padding:5px;
+    margin-top:5px;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+.ITM-action-block {
+    display: table-row;
+}
+.ITM-action-element {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.ITM-button-col {
+    text-align: left;
+}
+.ITM-picture-col {
+    width: 210px;
+    text-align: center;
 }
