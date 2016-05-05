@@ -3,8 +3,14 @@
     opacity: .6;
 }
 
+th {
+    width: 50px;
+}
+td {
+    width: auto;
+}
 
-.ITM-status-notifier-text {
+.ITM-status-notifier-text, .ITM-table-header-text {
     margin-left: .5em;
 }
 @media screen and (max-width: 782px) {

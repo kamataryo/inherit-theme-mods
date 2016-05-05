@@ -32,21 +32,26 @@ jQuery(document).ready(function($){
                         .appendTo($('#ITM-title'))
                         .fadeIn(50);
                     setTimeout(function(){
-                        notifier.fadeOut(100, function(){
+                        notifier.fadeOut(200, function(){
                             notifier.remove();
                         });
-                    },1500);
+                    },2500);
                 });
             });
         };
     };
 
     var replaceITMcontent = function(html){
+        $new = $(html).hide();
         $('#ITM-Content')
-            .after($(html))
-            .remove();
-        $('#ITM-inherit').click(postFor('inherit'));
-        $('#ITM-restore').click(postFor('restore'));
+            .after($new)
+            .fadeOut(300, function(){
+                $('#ITM-Content').remove();
+                $new.fadeIn(200);
+                $('#ITM-inherit').click(postFor('inherit'));
+                $('#ITM-restore').click(postFor('restore'));
+                // WP admin tableのイベントリスナーを結びつける関数がどこかにあるはずなので、それを探して　ここで呼ぶ
+            });
     };
 
     $('#ITM-inherit').click(postFor('inherit'));

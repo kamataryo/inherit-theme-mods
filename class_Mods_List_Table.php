@@ -31,9 +31,9 @@ class Mods_List_Table extends WP_List_Table
     {
         return array(
             'key'          => 'Key',
-            'parent theme' => 'Parent Theme',
-            'child theme'  => 'Child Theme',
-            'trashed'      => 'Trashed',
+            'parent theme' => '<i class="fa fa-file-o fa-2x"></i><span class="ITM-table-header-text">Parent Theme</span>',
+            'child theme'  => '<i class="fa fa-copy fa-2x"></i><span class="ITM-table-header-text">Child Theme</span>',
+            'trashed'      => '<i class="fa fa-trash fa-2x"></i><span class="ITM-table-header-text">Trashed</span>',
         );
     }
 
@@ -123,7 +123,7 @@ class Mods_List_Table extends WP_List_Table
                 $value = "<span $styleAttr></span><span>$value</span>";
             } else if ( $match_inmageURL === 1 ) {
                 #display image if image url
-                $value = "<img src=\"$value\" style=\"max-width:200px\" alt=\"\" /><br /><span>$value</span>";
+                $value = "<img src=\"$value\" style=\"width:100%\" alt=\"\" /><br /><span>$value</span>";
             }
 
             return $value;

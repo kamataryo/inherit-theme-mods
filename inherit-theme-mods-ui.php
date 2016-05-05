@@ -118,7 +118,7 @@ function inherit_theme_mods_ui_update_view()
 
     $listTable = new Mods_List_Table( $child_slug, $parent_slug );
     $listTable->prepare_items();
-    echo '<div class="wrap">';
+    echo '<div id="ITM-Content" class="wrap">';
     $listTable->display();
     echo '</div>';
 }
