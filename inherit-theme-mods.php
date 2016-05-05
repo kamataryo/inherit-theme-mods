@@ -59,8 +59,7 @@ function inherit_theme_mods_inherit()
 
 function inherit_theme_mods_get_stored_mods()
 {
-    $child = wp_get_theme()->stylesheet;
-    $result = get_option( $child );
+    $result = get_option( INHERIT_THEME_MODS_STORING_OPTION_NAME );
     if ($result) {
         $result = maybe_unserialize( $result );
     }
@@ -72,9 +71,6 @@ function inherit_theme_mods_restore()
     $child = wp_get_theme()->stylesheet;
     $stored_mod = inherit_theme_mods_get_stored_mods();
     $result = inherit_theme_mods_set_theme_mods_of( $child, $stored_mod );
-    if ($result) {
-        delete_option( INHERIT_THEME_MODS_STORING_OPTION_NAME );
-    }
     return $result;
 }
 

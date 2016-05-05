@@ -240,22 +240,26 @@ class InheritThemeModsTest extends WP_UnitTestCase
         $name_child = 'undefined-new-theme-mod-to-testsdssss';
         $value_child = 'bbb';
         set_theme_mod( $name_child, $value_child );
-        $store = get_theme_mods();
+        $storing = get_theme_mods();
 
         //inherit
         $result = inherit_theme_mods_inherit();
         $actual = get_theme_mods();
 
-        //test inherit
+        //test if inheritted
         $this->assertTrue( $result );
         $this->assertEquals( $value_parent, $actual[$name_parent] );
+
+        // test if stored
+        $stored = inherit_theme_mods_get_stored_mods();
+        $this->assertEquals( $value_child, $stored[$name_child] );
 
         // restore
         $result = inherit_theme_mods_restore();
 
-        //test restore
+        //test if restored
         $this->assertTrue( $result );
-        $this->assertEquals( $value_child, $store[$name_child] );
+        $this->assertEquals( $value_child, $storing[$name_child] );
 
         //clean up.
         remove_theme_mod( $name_child );
