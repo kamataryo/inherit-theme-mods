@@ -1,0 +1,20 @@
+{
+  "name": "inherit-theme-mods",
+  "description": "",
+  "main": "Gruntfile.js",
+  "authors": [
+    "KamataRyo"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/KamataRyo/inherit-theme-mods",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "font-awsome#^4.6.2"
+  }
+}

@@ -5,6 +5,7 @@
   "main": "Gruntfile.js",
   "author": "KamataRyo",
   "scripts": {
+      "install": "bower install",
       "i18n": "grunt i18n"
   },
   "devDependencies": {

@@ -1,0 +1,3 @@
+a#inherit:hover, a#restore:hover {
+    cursor: pointer;
+}
