@@ -63,8 +63,16 @@ function describe_inherit_theme_mods_ui_content_header()
 {
     ?>
     <div class="wrap">
-        <h1 id="ITM-title"><?php _e( 'Inherit Theme Mods', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></h1>
+        <h1 id="ITM-title"><?php _e( 'Inherit Theme Mods', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></h1>
+        <div class="ITM-visit-site">
+            <a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+                <?php _e('Visit Site', 'default'); ?>
+            </a>
+        </div>
         <form class="ITM-form">
+
+            <h2 class="ITM-action-header"><?php  _e( 'Inherit Properties', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></h2>
+            <p><?php _e( "Copy parent theme's properties to child. The last child properties are stored at trash box once for backup.", INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></p>
             <div class="ITM-action-table">
                 <div class="ITM-action-block">
                     <div class="ITM-action-element ITM-button-col">
@@ -79,7 +87,9 @@ function describe_inherit_theme_mods_ui_content_header()
                     </div>
                 </div>
             </div>
-            <p><?php _e( "Copy parent theme's properties to child. The last child properties are stored at trash once for backup.", INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></p>
+
+            <h2 class="ITM-action-header"><?php  _e( 'Restore Properties', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></h2>
+            <p><?php _e( "Restore child properties from trash box.", INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></p>
             <div class="ITM-action-table">
                 <div class="ITM-action-block">
                     <div class="ITM-action-element ITM-button-col">
@@ -93,15 +103,13 @@ function describe_inherit_theme_mods_ui_content_header()
                 </div>
             </div>
 
-            <p><?php _e( "Restore child properties from trash box.", INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></p>
-
         </form>
     </div>
     <?php
     inherit_theme_mods_ui_update_view();
 }
 
-
+// display mods as WP Admin Table
 function inherit_theme_mods_ui_update_view()
 {
     if ( !current_user_can( 'manage_options' ) )  {
@@ -124,18 +132,38 @@ function inherit_theme_mods_ui_update_view()
     echo '</div>';
 }
 
+// same as inherit_theme_mods_ui_update_view but return array
+function inherit_theme_mods_get_mods_array()
+{
+    if ( !current_user_can( 'manage_options' ) )  {
+        echo '<p>' . __( 'You do not have sufficient permissions to access this page.', INHERIT_THEME_MODS_TEXT_DOMAIN ) . '</p>';
+        return;
+    }
+
+    $child_slug = wp_get_theme()->stylesheet;
+    $parent_slug = wp_get_theme()->template;
+
+    if ( $child_slug === $parent_slug ) {
+        echo '<p>' . __( 'Active theme has no template and is not child theme.', INHERIT_THEME_MODS_TEXT_DOMAIN ) . '</p>';
+        return;
+    }
+    // generate list table with Admin Table class
+    $listTable = new Mods_List_Table( $child_slug, $parent_slug );
+    return $listTable->data;
+}
+
 
 // check ajax nonce here
 function inherit_theme_mods_check_ajax_nonce( $callback )
 {
     $verified = wp_verify_nonce( $_REQUEST['nonce'], INHERIT_THEME_MODS_NONCE_ACTION );
     if ( ! $verified ) {
-        echo '<p>' . __('Request is not acceptable.', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ) . '</p>';
+        echo '<p>' . __('Request is not acceptable.', INHERIT_THEME_MODS_TEXT_DOMAIN ) . '</p>';
     } else {
         if ( function_exists( $callback) ) {
             $callback();
         }
-        inherit_theme_mods_ui_update_view();
+        wp_send_json( inherit_theme_mods_get_mods_array() );
     }
     die();
 }
@@ -159,8 +187,9 @@ add_action( 'wp_ajax_ITM_restore', 'inherit_theme_mods_ajax_restore' );
 // Some of theme mod slug appears in official theme were picked, not all.
 function __translation_store()
 {
-    __( 'Header Image Data', INHERIT_THEME_MODS_NONCE_ACTION, 'inherit-theme-mods' );
-    __( 'Nav Menu Locations', INHERIT_THEME_MODS_NONCE_ACTION, 'inherit-theme-mods' );
-    __( 'Sidebars Widgets', INHERIT_THEME_MODS_NONCE_ACTION, 'inherit-theme-mods' );
-    __( 'Color Scheme', INHERIT_THEME_MODS_NONCE_ACTION, 'inherit-theme-mods' ); # ベース配色 in ja
+    __( 'Header Image Data', INHERIT_THEME_MODS_NONCE_ACTION );
+    __( 'Nav Menu Locations', INHERIT_THEME_MODS_NONCE_ACTION );
+    __( 'Sidebars Widgets', INHERIT_THEME_MODS_NONCE_ACTION );
+    __( 'Color Scheme', INHERIT_THEME_MODS_NONCE_ACTION ); # ベース配色 in ja
+    __( 'Background Position X', INHERIT_THEME_MODS_NONCE_ACTION ); # 背景の位置 in ja
 }
