@@ -1,34 +1,21 @@
+
+/*notification icons and texts beside h1*/
 .ITM-status-notifier {
     margin-left: .5em;
     opacity: .6;
 }
 
-th {
-    width: 50px;
-}
-td {
-    width: auto;
-}
-
 .ITM-status-notifier-text, .ITM-table-header-text {
     margin-left: .5em;
 }
+
 @media screen and (max-width: 782px) {
     .ITM-status-notifier-text {
         display: none;
     }
 }
 
-a#ITM-inherit, a#ITM-restore {
-    width: 75px;
-    text-align: center;
-    margin-bottom: 0;
-}
-
-a#ITM-inherit:hover, a#ITM-restore:hover {
-    cursor: pointer;
-}
-
+/*buttons and descriptions of its action*/
 .ITM-action-table {
     display: table;
     margin: .5em 0;
@@ -54,4 +41,40 @@ a#ITM-inherit:hover, a#ITM-restore:hover {
 .ITM-picture-col {
     width: 210px;
     text-align: center;
+}
+
+.ITM-button {
+    width: 75px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.ITM-button:hover {
+    cursor: pointer;
+}
+
+/*Admin Table*/
+
+th {
+    width: 50px;
+}
+td {
+    width: auto;
+}
+
+/*inside table*/
+.ITM-serialized-text {
+    display: block;
+    text-decoration: underline;
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+.ITM-serialized-text:hover {
+    white-space: normal;
+    text-decoration: none;
+    overflow: auto;
+
 }

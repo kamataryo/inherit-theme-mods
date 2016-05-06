@@ -127,7 +127,7 @@ class Mods_List_Table extends WP_List_Table
                 $value = esc_url( $value );
                 $value = "<img src=\"$value\" style=\"width:100%\" alt=\"\" /><br /><span>$value</span>"; # xss OK
             } else {
-                $value = esc_html( $value );
+                $value = '<span class="ITM-serialized-text">' . esc_html( $value ) . '</span>';
             }
 
             return $value;

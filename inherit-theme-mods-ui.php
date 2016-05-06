@@ -68,7 +68,7 @@ function describe_inherit_theme_mods_ui_content_header()
             <div class="ITM-action-table">
                 <div class="ITM-action-block">
                     <div class="ITM-action-element ITM-button-col">
-                        <a id="ITM-inherit" class="button button-primary button-large"><?php echo __( 'inherit', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></a>
+                        <a id="ITM-inherit" class="ITM-button button button-primary button-large"><?php echo __( 'inherit', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></a>
                     </div>
                     <div class="ITM-action-element ITM-picture-col">
                         <i class="fa fa-file-o fa-fw fa-3x"></i>
@@ -83,7 +83,7 @@ function describe_inherit_theme_mods_ui_content_header()
             <div class="ITM-action-table">
                 <div class="ITM-action-block">
                     <div class="ITM-action-element ITM-button-col">
-                        <a id="ITM-restore" class="button button-primary button-large"><?php echo __( 'restore', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></a>
+                        <a id="ITM-restore" class="ITM-button button button-primary button-large"><?php echo __( 'restore', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></a>
                     </div>
                     <div class="ITM-action-element ITM-picture-col">
                         <i class="fa fa-copy fa-fw fa-3x"></i>
