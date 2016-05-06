@@ -82,5 +82,5 @@ function inherit_theme_mods_build_styleAttr( $styles )
     foreach ($styles as $directive => $value) {
         $result .= "$directive:$value;";
     }
-    return "style=\"$result\"";
+    return 'style="' . esc_attr( $result ) . '"';
 }

@@ -152,6 +152,7 @@ class InheritThemeModsTest extends WP_UnitTestCase
         __remove_themes( $themes );
     }
 
+
 	function test_set_theme_mods_of_fails()
     {
         //provisioning
@@ -280,5 +281,18 @@ class InheritThemeModsTest extends WP_UnitTestCase
         $styleAttrExpected = 'style="background-color:#12345;color:red;padding:0;"';
         $styleAttrActual = inherit_theme_mods_build_styleAttr( $styles );
         $this->assertEquals( $styleAttrExpected, $styleAttrActual );
+    }
+
+    function test_build_styleAttr_xss()
+    {
+        $styles = array(
+            'background-color' => '#12345',
+            'color' => 'red',
+            'padding' => 0,
+            '" ><script>alert(1);</script>' => '',
+        );
+        $styleAttrActual = inherit_theme_mods_build_styleAttr( $styles );
+        $xss_vulnerable_match = preg_match( '/<script>.*/', $styleAttrActual );
+        $this->assertEquals( 0, $xss_vulnerable_match );
     }
 }

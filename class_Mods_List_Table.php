@@ -46,11 +46,12 @@ class Mods_List_Table extends WP_List_Table
 
     public function prepare_items()
     {
+
         $per_page = 10;
         $columns = $this->get_columns();
         $hidden = array();
         $sortable = $this->get_sortable_columns();
-        $this->_column_headers = array($columns, $hidden, $sortable);
+        $this->_column_headers = array( $columns, $hidden, $sortable );
 
         $data = $this->inherit_theme_mods_generate_data_array( $this->child_slug, $this->parent_slug );
 
@@ -62,13 +63,13 @@ class Mods_List_Table extends WP_List_Table
         }
         usort( $data, 'usort_reorder' );
         $current_page = $this->get_pagenum();
-        $total_items = count($data);
-        $data = array_slice($data,(($current_page-1)*$per_page),$per_page);
+        $total_items = count( $data );
+        $data = array_slice( $data,( ( $current_page - 1 ) * $per_page ), $per_page );
         $this->items = $data;
         $this->set_pagination_args( array(
-            'total_items' => $total_items,                  //WE have to calculate the total number of items
-            'per_page'    => $per_page,                     //WE have to determine how many items to show on a page
-            'total_pages' => ceil($total_items/$per_page)   //WE have to calculate the total number of pages
+            'total_items' => $total_items,
+            'per_page'    => $per_page,
+            'total_pages' => ceil( $total_items /$per_page ),
         ) );
 
     }
@@ -119,11 +120,14 @@ class Mods_List_Table extends WP_List_Table
                     'width' => '25px',
                     'height' => '25px',
                     'margin-right' => '.5em'
-                ) );
-                $value = "<span $styleAttr></span><span>$value</span>";
+                ) ); # xss OK
+                $value = "<span $styleAttr></span><span>" . esc_html( $value ) . "</span>";
             } else if ( $match_inmageURL === 1 ) {
-                #display image if image url
-                $value = "<img src=\"$value\" style=\"width:100%\" alt=\"\" /><br /><span>$value</span>";
+                # display image if image url
+                $value = esc_url( $value );
+                $value = "<img src=\"$value\" style=\"width:100%\" alt=\"\" /><br /><span>$value</span>"; # xss OK
+            } else {
+                $value = esc_html( $value );
             }
 
             return $value;
@@ -132,8 +136,8 @@ class Mods_List_Table extends WP_List_Table
         $result = array();
         foreach ( $keys as $key ) {
             array_push( $result, array(
-                'Key'          => $key, # WordPress Internal Error?
-                'key'          => $key,
+                'Key'          => esc_html( $key ), # WordPress Internal Error? WP_List_Table require 'Key' for sortable column, instead 'key'.
+                'key'          => esc_html( $key ),
                 'parent theme' => transform_mod( $key, $parent_mods ),
                 'child theme'  => transform_mod( $key, $child_mods  ),
                 'trashed'      => transform_mod( $key, $stored_mods ),

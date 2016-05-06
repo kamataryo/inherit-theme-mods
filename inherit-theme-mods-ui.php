@@ -48,6 +48,7 @@ function inherit_theme_mods_enqueue_script()
                 'restore' => 'ITM_restore',
             ),
             'nonce' => wp_create_nonce( INHERIT_THEME_MODS_NONCE_ACTION ),
+            // status texts for UI
             'status' => array(
                 'updating..' => __( 'updating..', INHERIT_THEME_MODS_NONCE_ACTION ),
                 'finished!' => __( 'finished!', INHERIT_THEME_MODS_NONCE_ACTION ),
@@ -62,7 +63,7 @@ function describe_inherit_theme_mods_ui_content_header()
 {
     ?>
     <div class="wrap">
-        <h1 id="ITM-title"><?php echo __( 'Inherit Theme Mods', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></h1>
+        <h1 id="ITM-title"><?php _e( 'Inherit Theme Mods', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></h1>
         <form class="ITM-form">
             <div class="ITM-action-table">
                 <div class="ITM-action-block">
@@ -78,7 +79,7 @@ function describe_inherit_theme_mods_ui_content_header()
                     </div>
                 </div>
             </div>
-            <p><?php echo __( "Copy parent theme's properties to child. The last child properties are stored at trash once for backup.", INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></p>
+            <p><?php _e( "Copy parent theme's properties to child. The last child properties are stored at trash once for backup.", INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></p>
             <div class="ITM-action-table">
                 <div class="ITM-action-block">
                     <div class="ITM-action-element ITM-button-col">
@@ -92,7 +93,7 @@ function describe_inherit_theme_mods_ui_content_header()
                 </div>
             </div>
 
-            <p><?php echo __( "Restore child properties from trash box.", INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></p>
+            <p><?php _e( "Restore child properties from trash box.", INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></p>
 
         </form>
     </div>
@@ -115,7 +116,7 @@ function inherit_theme_mods_ui_update_view()
         echo '<p>' . __( 'Active theme has no template and is not child theme.', INHERIT_THEME_MODS_TEXT_DOMAIN ) . '</p>';
         return;
     }
-
+    // generate list table with Admin Table class
     $listTable = new Mods_List_Table( $child_slug, $parent_slug );
     $listTable->prepare_items();
     echo '<div id="ITM-Content" class="wrap">';
@@ -138,7 +139,6 @@ function inherit_theme_mods_check_ajax_nonce( $callback )
     }
     die();
 }
-
 
 // ajax gateways' gateways
 function inherit_theme_mods_ajax_inherit()
