@@ -56,25 +56,61 @@
 /*Admin Table*/
 
 th {
-    width: 50px;
-}
-td {
-    width: auto;
+    width: 30px;
 }
 
 /*inside table*/
+.ITM-color-indication {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    margin-right: .5em;
+
+    border:1px solid #aaa;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+.ITM-image-indication {
+    max-width:100%;
+    max-height: 75px;
+}
+
 .ITM-serialized-text {
     display: block;
     text-decoration: underline;
+    word-wrap: normal; /* for IE */
     white-space: nowrap;
     width: 100%;
     overflow: hidden;
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
 }
-.ITM-serialized-text:hover {
+@media screen and (max-width: 782px) {
+    .ITM-serialized-text {
+        word-wrap: break-word; /* for IE */
+        white-space: normal;
+        text-decoration: none;
+        overflow: auto;
+    }
+}
+
+@media screen and (min-width: 783px) {
+    table.wp-list-table tbody tr:hover {
+        background-color: #BCC8DB;
+        -webkit-transition-property: background, wordwrap, white-space, overflow;
+        transition-property: background, wordwrap, white-space, overflow;
+        -webkit-transition-duration: .02s;
+        transition-duration: .02s;
+        -webkit-transition-timing-function: ease-in-out;
+        transition-timing-function: ease-in-out;
+    }
+}
+
+table.wp-list-table tr:hover .ITM-serialized-text {
+    word-wrap: break-word;; /* for IE */
     white-space: normal;
     text-decoration: none;
     overflow: auto;
-
 }

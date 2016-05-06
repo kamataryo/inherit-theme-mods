@@ -11,8 +11,8 @@ require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'class_Mods_List_Table.
 function inherit_theme_mods_admin_menu()
 {
     $page = add_options_page(
-        __( 'Inherit Theme Mods', INHERIT_THEME_MODS_TEXT_DOMAIN ),
-        __( 'Inherit Theme Mods', INHERIT_THEME_MODS_TEXT_DOMAIN ),
+        __( 'Inherit Theme Mods', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ),
+        __( 'Inherit Theme Mods', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ),
         'manage_options',
         INHERIT_THEME_MODS_TEXT_DOMAIN,
         'describe_inherit_theme_mods_ui_content_header'
@@ -50,8 +50,8 @@ function inherit_theme_mods_enqueue_script()
             'nonce' => wp_create_nonce( INHERIT_THEME_MODS_NONCE_ACTION ),
             // status texts for UI
             'status' => array(
-                'updating..' => __( 'updating..', INHERIT_THEME_MODS_NONCE_ACTION ),
-                'finished!' => __( 'finished!', INHERIT_THEME_MODS_NONCE_ACTION ),
+                'updating..' => __( 'updating..', INHERIT_THEME_MODS_NONCE_ACTION, 'inherit-theme-mods' ),
+                'finished!' => __( 'finished!', INHERIT_THEME_MODS_NONCE_ACTION, 'inherit-theme-mods' ),
             ),
         )
     );
@@ -63,12 +63,12 @@ function describe_inherit_theme_mods_ui_content_header()
 {
     ?>
     <div class="wrap">
-        <h1 id="ITM-title"><?php _e( 'Inherit Theme Mods', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></h1>
+        <h1 id="ITM-title"><?php _e( 'Inherit Theme Mods', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></h1>
         <form class="ITM-form">
             <div class="ITM-action-table">
                 <div class="ITM-action-block">
                     <div class="ITM-action-element ITM-button-col">
-                        <a id="ITM-inherit" class="ITM-button button button-primary button-large"><?php echo __( 'inherit', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></a>
+                        <a id="ITM-inherit" class="ITM-button button button-primary button-large"><?php echo __( 'inherit', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></a>
                     </div>
                     <div class="ITM-action-element ITM-picture-col">
                         <i class="fa fa-file-o fa-fw fa-3x"></i>
@@ -79,11 +79,11 @@ function describe_inherit_theme_mods_ui_content_header()
                     </div>
                 </div>
             </div>
-            <p><?php _e( "Copy parent theme's properties to child. The last child properties are stored at trash once for backup.", INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></p>
+            <p><?php _e( "Copy parent theme's properties to child. The last child properties are stored at trash once for backup.", INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></p>
             <div class="ITM-action-table">
                 <div class="ITM-action-block">
                     <div class="ITM-action-element ITM-button-col">
-                        <a id="ITM-restore" class="ITM-button button button-primary button-large"><?php echo __( 'restore', INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></a>
+                        <a id="ITM-restore" class="ITM-button button button-primary button-large"><?php echo __( 'restore', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></a>
                     </div>
                     <div class="ITM-action-element ITM-picture-col">
                         <i class="fa fa-copy fa-fw fa-3x"></i>
@@ -93,7 +93,7 @@ function describe_inherit_theme_mods_ui_content_header()
                 </div>
             </div>
 
-            <p><?php _e( "Restore child properties from trash box.", INHERIT_THEME_MODS_TEXT_DOMAIN ); ?></p>
+            <p><?php _e( "Restore child properties from trash box.", INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></p>
 
         </form>
     </div>
@@ -105,7 +105,7 @@ function describe_inherit_theme_mods_ui_content_header()
 function inherit_theme_mods_ui_update_view()
 {
     if ( !current_user_can( 'manage_options' ) )  {
-        echo '<p>' . __( 'You do not have sufficient permissions to access this page.', INHERIT_THEME_MODS_TEXT_DOMAIN ) . '</p>';
+        echo '<p>' . __( 'You do not have sufficient permissions to access this page.', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ) . '</p>';
         return;
     }
 
@@ -113,7 +113,7 @@ function inherit_theme_mods_ui_update_view()
     $parent_slug = wp_get_theme()->template;
 
     if ( $child_slug === $parent_slug ) {
-        echo '<p>' . __( 'Active theme has no template and is not child theme.', INHERIT_THEME_MODS_TEXT_DOMAIN ) . '</p>';
+        echo '<p>' . __( 'Active theme has no template and is not child theme.', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ) . '</p>';
         return;
     }
     // generate list table with Admin Table class
@@ -130,7 +130,7 @@ function inherit_theme_mods_check_ajax_nonce( $callback )
 {
     $verified = wp_verify_nonce( $_REQUEST['nonce'], INHERIT_THEME_MODS_NONCE_ACTION );
     if ( ! $verified ) {
-        echo '<p>' . __('Request is not acceptable.', INHERIT_THEME_MODS_TEXT_DOMAIN ) . '</p>';
+        echo '<p>' . __('Request is not acceptable.', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ) . '</p>';
     } else {
         if ( function_exists( $callback) ) {
             $callback();
@@ -153,3 +153,14 @@ function inherit_theme_mods_ajax_restore()
     inherit_theme_mods_check_ajax_nonce( 'inherit_theme_mods_restore' );
 }
 add_action( 'wp_ajax_ITM_restore', 'inherit_theme_mods_ajax_restore' );
+
+// This function stores some texts only to provide for translation
+// they may appear at `wp_options` table and be not available to resolve the slug to translate.
+// Some of theme mod slug appears in official theme were picked, not all.
+function __translation_store()
+{
+    __( 'Header Image Data', INHERIT_THEME_MODS_NONCE_ACTION, 'inherit-theme-mods' );
+    __( 'Nav Menu Locations', INHERIT_THEME_MODS_NONCE_ACTION, 'inherit-theme-mods' );
+    __( 'Sidebars Widgets', INHERIT_THEME_MODS_NONCE_ACTION, 'inherit-theme-mods' );
+    __( 'Color Scheme', INHERIT_THEME_MODS_NONCE_ACTION, 'inherit-theme-mods' ); # ベース配色 in ja
+}

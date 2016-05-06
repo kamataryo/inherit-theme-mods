@@ -16,9 +16,9 @@ class Mods_List_Table extends WP_List_Table
         $this->child_slug = $child_slug;
         $this->parent_slug = $parent_slug;
         parent::__construct( array(
-            'singular' => __( 'key', INHERIT_THEME_MODS_TEXT_DOMAIN ),
-            'plural'   => __( 'keys', INHERIT_THEME_MODS_TEXT_DOMAIN ),
-            'ajax'     => false,
+            'singular' => __( 'key', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ),
+            'plural'   => __( 'keys', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ),
+            'ajax'     => true,
         ) );
     }
 
@@ -30,9 +30,9 @@ class Mods_List_Table extends WP_List_Table
     function get_columns()
     {
         return array(
-            'key'          => 'Key',
-            'parent theme' => '<i class="fa fa-file-o fa-2x"></i><span class="ITM-table-header-text">Parent Theme</span>',
-            'child theme'  => '<i class="fa fa-copy fa-2x"></i><span class="ITM-table-header-text">Child Theme</span>',
+            'key'          => __( 'Key', INHERIT_THEME_MODS_TEXT_DOMAIN, 'inherit-theme-mods' ),
+            'parent-theme' => '<i class="fa fa-file-o fa-2x"></i><span class="ITM-table-header-text">Parent Theme</span>',
+            'child-theme'  => '<i class="fa fa-copy fa-2x"></i><span class="ITM-table-header-text">Child Theme</span>',
             'trashed'      => '<i class="fa fa-trash fa-2x"></i><span class="ITM-table-header-text">Trashed</span>',
         );
     }
@@ -47,7 +47,7 @@ class Mods_List_Table extends WP_List_Table
     public function prepare_items()
     {
 
-        $per_page = 10;
+        $per_page = 3;
         $columns = $this->get_columns();
         $hidden = array();
         $sortable = $this->get_sortable_columns();
@@ -55,11 +55,11 @@ class Mods_List_Table extends WP_List_Table
 
         $data = $this->inherit_theme_mods_generate_data_array( $this->child_slug, $this->parent_slug );
 
-        function usort_reorder( $a,$b ){
+        function usort_reorder( $a, $b ){
             $orderby = ( ! empty( $_REQUEST['orderby'] ) ) ? $_REQUEST['orderby'] : 'key'; //If no sort, default to title
-            $order   = ( ! empty( $_REQUEST['order']   ) ) ? $_REQUEST['order']   : 'asc'; //If no order, default to asc
+            $order   = ( ! empty( $_REQUEST['order']   ) ) ? $_REQUEST['order']   : 'desc'; //If no order, default to asc
             $result = strcmp( $a[$orderby], $b[$orderby] ); //Determine sort order
-            return ($order==='asc') ? $result : -$result; //Send final sort direction to usort
+            return ( $order === 'asc' ) ? $result : -$result; //Send final sort direction to usort
         }
         usort( $data, 'usort_reorder' );
         $current_page = $this->get_pagenum();
@@ -115,17 +115,13 @@ class Mods_List_Table extends WP_List_Table
                 # display color if color string
                 $colorStr = substr($value, 0, 1) === '#' ? $value : "#$value";
                 $styleAttr = inherit_theme_mods_build_styleAttr( array(
-                    'background-color' => $colorStr,
-                    'display' => 'inline-block',
-                    'width' => '25px',
-                    'height' => '25px',
-                    'margin-right' => '.5em'
+                    'background-color' => $colorStr
                 ) ); # xss OK
-                $value = "<span $styleAttr></span><span>" . esc_html( $value ) . "</span>";
+                $value = "<span class=\"ITM-color-indication\" $styleAttr></span><span>" . esc_html( $value ) . "</span>";
             } else if ( $match_inmageURL === 1 ) {
                 # display image if image url
                 $value = esc_url( $value );
-                $value = "<img src=\"$value\" style=\"width:100%\" alt=\"\" /><br /><span>$value</span>"; # xss OK
+                $value = "<img src=\"$value\" class=\"ITM-image-indication\" alt=\"\" /><br /><span>$value</span>"; # xss OK
             } else {
                 $value = '<span class="ITM-serialized-text">' . esc_html( $value ) . '</span>';
             }
@@ -133,13 +129,49 @@ class Mods_List_Table extends WP_List_Table
             return $value;
         }
 
+        // try translate in order to Array $slugs.
+        function __chain( $text, $slugs )
+        {
+            $translated = false;
+            $translated_text = '';
+            while ( count( $slugs ) !== 0 && ! $translated ) {
+                $slug = array_shift( $slugs );
+                $translated_text = __( $text, $slug, 'inherit-theme-mods' );
+                $translated = $text !== $translated_text;
+            }
+            return esc_html( $translated_text );
+        }
+
+
         $result = array();
+
         foreach ( $keys as $key ) {
+            // slug into translatable text (is there any slugify/unslugify standard function?)
+
+            $key_elements = explode( '_', $key );
+            foreach ( $key_elements as $index => $element ) {
+                $key_elements[$index] =
+                    strtoupper( substr( $element, 0,  1 ) ) .
+                                substr( $element, 1 );
+            }
+            $key_parsing = implode( ' ', $key_elements );
+            $key_parsed = __chain(
+                $key_parsing,
+                array(
+                    $child_slug,
+                    $parent_slug,
+                    INHERIT_THEME_MODS_TEXT_DOMAIN,
+                    'default',
+                )
+            ); # xss OK
+
+            // $key_parsed = $key_parsed . '<br /><small>(' . esc_html( $key ) . ')</small>';
+
             array_push( $result, array(
-                'Key'          => esc_html( $key ), # WordPress Internal Error? WP_List_Table require 'Key' for sortable column, instead 'key'.
-                'key'          => esc_html( $key ),
-                'parent theme' => transform_mod( $key, $parent_mods ),
-                'child theme'  => transform_mod( $key, $child_mods  ),
+                'Key'          => $key_parsed, # WordPress Internal Error? WP_List_Table require 'Key' for sortable column, instead 'key'.
+                'key'          => $key_parsed,
+                'parent-theme' => transform_mod( $key, $parent_mods ),
+                'child-theme'  => transform_mod( $key, $child_mods  ),
                 'trashed'      => transform_mod( $key, $stored_mods ),
             ) );
         }

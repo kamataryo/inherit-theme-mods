@@ -22,7 +22,6 @@ jQuery(document).ready(function($){
             }, function(res){
                 sync = false;
                 // view update
-                replaceITMcontent(res);
 
                 // update notification
                 notifier.fadeOut(50, function(){
@@ -34,8 +33,9 @@ jQuery(document).ready(function($){
                     setTimeout(function(){
                         notifier.fadeOut(200, function(){
                             notifier.remove();
+                            replaceITMcontent(res);
                         });
-                    },2500);
+                    },2000);
                 });
             });
         };
