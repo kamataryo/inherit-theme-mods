@@ -1,86 +1,67 @@
 <?php
 /**
- * Plugin Name: Inherit Theme Mods
- * Version: 0.1-alpha
- * Description: This plugin simply copies theme mods from parental theme.
- * Author: KamataRyo
- * Author URI: http://biwako.io/
- * Plugin URI: http://biwako.io/
- * Text Domain: inherit-theme-mods
- * Domain Path: /languages
- * @package Inherit-theme-mods
+ * @package inherit-theme-mods
  */
 
-require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'inherit-theme-mods-ui.php';
-define( 'INHERIT_THEME_MODS_TEXT_DOMAIN', 'inherit-theme-mods' );
-define( 'INHERIT_THEME_MODS_STORING_OPTION_NAME', 'inherit_theme_mods_stored_option' );
+class Inherit_Theme_Mods {
 
+	public $parent_theme_slug;
+	public $child_theme_slug;
 
-function inherit_theme_mods_get_theme_mods_of( $slug )
-{
-    $result = get_option( "theme_mods_$slug", false );
-    if ( $result ) {
-        $result = maybe_unserialize( $result );
-    }
-    return $result;
-}
+	function __construct() {
+		$this->parent_theme_slug = wp_get_theme()->template;
+		$this->child_theme_slug  = wp_get_theme()->stylesheet;
+	}
 
-function inherit_theme_mods_set_theme_mods_of( $slug, $option_value )
-{
-    if ( ! array_key_exists( $slug, wp_get_themes() ) ) {
-        return false;
-    }
-    return update_option( "theme_mods_$slug", $option_value );
-}
+	static function get_theme_mods_of( $slug ) {
+		return maybe_unserialize( get_option( ITM_OPTION_PREFIX . $slug, false ) );
+	}
 
-function inherit_theme_mods_inherit()
-{
-    $parent = wp_get_theme()->template;
-    $child = wp_get_theme()->stylesheet;
-    $is_child = $child !== $parent;
+	static function set_theme_mods_of( $slug, $values ) {
+		return self::is_installed_theme( $slug ) ?
+			update_option( ITM_OPTION_PREFIX . $slug, $values ) : false;
+	}
 
-    if ( $is_child ) {
-        // store values at first
-        $store = inherit_theme_mods_get_theme_mods_of( $child );
-        if ( get_option( INHERIT_THEME_MODS_STORING_OPTION_NAME ) ) {
-            update_option( INHERIT_THEME_MODS_STORING_OPTION_NAME, $store ,'no' );
-        } else {
-            add_option( INHERIT_THEME_MODS_STORING_OPTION_NAME, $store, '' ,'no' );
-        }
+	static function get_stored_mods(){
+		return maybe_unserialize( get_option( ITM_STORING_OPTION_NAME ) );
+	}
 
-        // inherit
-        $parent_mod = inherit_theme_mods_get_theme_mods_of( $parent );
-        $result = inherit_theme_mods_set_theme_mods_of( $child, $parent_mod );
-    } else {
-        $result = false;
-    }
-    return $result;
-}
+	static function is_installed_theme( $slug ) {
+		return array_key_exists( $slug, wp_get_themes() );
+	}
 
-function inherit_theme_mods_get_stored_mods()
-{
-    $result = get_option( INHERIT_THEME_MODS_STORING_OPTION_NAME );
-    if ($result) {
-        $result = maybe_unserialize( $result );
-    }
-    return $result;
-}
+	private function is_child_theme_activate() {
+		return $this->parent_theme_slug !== $this->child_theme_slug;
+	}
 
-function inherit_theme_mods_restore()
-{
-    $child = wp_get_theme()->stylesheet;
-    $stored_mod = inherit_theme_mods_get_stored_mods();
-    $result = inherit_theme_mods_set_theme_mods_of( $child, $stored_mod );
-    return $result;
-}
+	public function inherit() {
 
+		if ( $this->is_child_theme_activate() ) {
 
-// helper_functions
-function inherit_theme_mods_build_styleAttr( $styles )
-{
-    $result = '';
-    foreach ($styles as $directive => $value) {
-        $result .= "$directive:$value;";
-    }
-    return 'style="' . esc_attr( $result ) . '"';
+			// store values at first
+			$storing_value = self::get_theme_mods_of( $this->child_theme_slug );
+			if ( get_option( ITM_STORING_OPTION_NAME ) ) {
+				update_option( ITM_STORING_OPTION_NAME, $storing_value ,'no' );
+			} else {
+				add_option( ITM_STORING_OPTION_NAME, $storing_value, '' ,'no' );
+			}
+
+			// inherit
+			return self::set_theme_mods_of(
+				$this->child_theme_slug,
+				self::get_theme_mods_of( $this->parent_theme_slug )
+			);
+
+		} else {
+			return false;
+		}
+	}
+
+	public function restore()
+	{
+		return self::set_theme_mods_of(
+			$this->child_theme_slug,
+			self::get_stored_mods()
+		);
+	}
 }

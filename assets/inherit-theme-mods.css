@@ -12,11 +12,12 @@
     }
 }
 
+/*as preview nav*/
 .ITM-visit-site {
     display: none;
 }
 
-/*buttons and descriptions of its action*/
+/*buttons and descriptions for each ajax action*/
 .ITM-action-header{
     margin-bottom: .5em;
 }
@@ -57,13 +58,13 @@
     cursor: pointer;
 }
 
-/*Admin Table*/
+/*WP Admin Table customization*/
 
 th {
     width: 30px;
 }
 
-/*inside table*/
+/*each pattern inseide table-cell*/
 .ITM-color-indication {
     display: inline-block;
     width: 25px;
@@ -91,6 +92,7 @@ th {
     -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
 }
+
 @media screen and (max-width: 782px) {
     .ITM-serialized-text {
         word-wrap: break-word; /* for IE */
@@ -100,15 +102,17 @@ th {
     }
 }
 
+
+/*hover action on table-row*/
 @media screen and (min-width: 783px) {
     table.wp-list-table tbody tr:hover {
         background-color: #BCC8DB;
         -webkit-transition-property: background, wordwrap, white-space, overflow;
         transition-property: background, wordwrap, white-space, overflow;
-        -webkit-transition-duration: .02s;
-        transition-duration: .02s;
-        -webkit-transition-timing-function: ease-in-out;
-        transition-timing-function: ease-in-out;
+        -webkit-transition-duration: .1s;
+        transition-duration: .1s;
+        -webkit-transition-timing-function: ease-out;
+        transition-timing-function: ease-out;
     }
 }
 

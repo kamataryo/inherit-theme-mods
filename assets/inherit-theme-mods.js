@@ -19,7 +19,9 @@ jQuery(document).ready(function($){
             $.post(ajax.endpoint, {
                 action: ajax.actions[action],
                 nonce: ajax.nonce
+
             }, function(data){
+                console.log(data);
                 sync = false;
                 // view update
                 $('#ITM-Content>table.wp-list-table>tbody').fadeOut(200, function(){
