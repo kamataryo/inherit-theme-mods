@@ -15,35 +15,41 @@ jQuery(document).ready(function($){
                 .hide()
                 .appendTo($('#ITM-title'))
                 .fadeIn(100);
+                
             // ajax
             $.post(ajax.endpoint, {
                 action: ajax.actions[action],
                 nonce: ajax.nonce
 
-            }, function(data){
-                console.log(data);
-                sync = false;
-                // view update
-                $('#ITM-Content>table.wp-list-table>tbody').fadeOut(200, function(){
-                    replaceITMcontent(data, function(){
-                        $('#ITM-Content>table.wp-list-table>tbody').fadeIn(300);
+            }, function(res){
+                console.log(res);
+                if (res.success) {
+                    sync = false;
+                    // view update
+                    $('#ITM-Content>table.wp-list-table>tbody').fadeOut(200, function(){
+                        replaceITMcontent(res.data, function(){
+                            $('#ITM-Content>table.wp-list-table>tbody').fadeIn(300);
 
-                        // update notification
-                        notifier.fadeOut(50, function(){
-                            notifier.remove();
-                            notifier = $('<span class="ITM-status-notifier ITM-aside"><i class="fa fa-check fa-wf"></i><span class="ITM-aside  ITM-status-notifier-text">' + ajax.status['finished!'] + '</span></span>')
-                                .hide()
-                                .appendTo($('#ITM-title'))
-                                .fadeIn(50);
-                            setTimeout(function(){
-                                notifier.fadeOut(200, function(){
-                                    notifier.remove();
-                                    $('.ITM-visit-site').css('display', 'block');
-                                });
-                            },2000);
+                            // update notification
+                            notifier.fadeOut(50, function(){
+                                notifier.remove();
+                                notifier = $('<span class="ITM-status-notifier ITM-aside"><i class="fa fa-check fa-wf"></i><span class="ITM-aside  ITM-status-notifier-text">' + ajax.status['finished!'] + '</span></span>')
+                                    .hide()
+                                    .appendTo($('#ITM-title'))
+                                    .fadeIn(50);
+                                setTimeout(function(){
+                                    notifier.fadeOut(200, function(){
+                                        notifier.remove();
+                                        $('.ITM-visit-site').css('display', 'block');
+                                    });
+                                },2000);
+                            });
                         });
                     });
-                });
+                } else {
+                    alert(res.message);
+                }
+
             });
         };
     };

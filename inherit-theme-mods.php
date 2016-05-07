@@ -30,13 +30,13 @@ class Inherit_Theme_Mods {
 		return array_key_exists( $slug, wp_get_themes() );
 	}
 
-	private function is_child_theme_activate() {
+	public function is_child_theme_active() {
 		return $this->parent_theme_slug !== $this->child_theme_slug;
 	}
 
 	public function inherit() {
 
-		if ( $this->is_child_theme_activate() ) {
+		if ( $this->is_child_theme_active() ) {
 
 			// store values at first
 			$storing_value = self::get_theme_mods_of( $this->child_theme_slug );

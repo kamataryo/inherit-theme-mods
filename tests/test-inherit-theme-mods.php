@@ -1,89 +1,5 @@
 <?php
 /**
- * Class SampleTest
- *
- * @package inherit-theme-mods
- */
-
-/**
- * moc themes
- */
-$themes = array(
-	array(
-		'Theme Name' => 'Parent Theme',
-		'Theme URI' => 'http://biwako.io/',
-		'Author' => 'KamataRyo',
-		'Author URI' => 'https://biwako.io/',
-		'Description' => 'Test theme',
-		'Version' => '1.0.0',
-		'License' => 'GNU General Public License v2 or later',
-		'License URI' => 'http://www.gnu.org/licenses/gpl-2.0.html',
-		'Text Domain' => 'inherit-theme-mods-parent-theme',
-		'Tags' => '',
-	),
-
-	array(
-		'Template' => 'inherit-theme-mods-parent-theme',
-		'Theme Name' => 'Child Theme',
-		'Theme URI' => 'http://biwako.io/',
-		'Author' => 'KamataRyo',
-		'Author URI' => 'https://biwako.io/',
-		'Description' => 'Test theme',
-		'Version' => '1.0.0',
-		'License' => 'GNU General Public License v2 or later',
-		'License URI' => 'http://www.gnu.org/licenses/gpl-2.0.html',
-		'Text Domain' => 'inherit-theme-mods-child-theme',
-		'Tags' => '',
-	),
-);
-
-/**
- * this function generates themes attributes provided by arguments above.
- */
-function __generate_themes ( $themes )
-{
-	foreach ( $themes as $theme ) {
-		$folder = get_template_directory () . '/../' . $theme['Text Domain'];
-		$css = $folder . '/style.css';
-		$php = $folder . '/index.php';
-
-		$css_content = "/*\n" ;
-		foreach ($theme as $key => $value) {
-			$css_content .= "$key: $value\n";
-		}
-		$css_content .= "*/\n" ;
-
-		if ( !file_exists( $folder ) ) {
-			mkdir( $folder , 0777, true);
-		}
-		file_put_contents( $css, $css_content );
-		file_put_contents( $php, '<?php' );
-	}
-}
-
-/**
- * this function removes themes by ceratain arguments above.
- */
-function __remove_themes ( $themes )
-{
-	foreach ( $themes as $theme ) {
-		$folder = get_template_directory () . '/../' . $theme['Text Domain'];
-		$css = $folder . '/style.css';
-		$php = $folder . '/index.php';
-
-		if ( file_exists( $css ) ) {
-			unlink( $css );
-		}
-		if ( file_exists( $php ) ) {
-			unlink( $php );
-		}
-		if ( file_exists( $folder ) ) {
-			rmdir( $folder );
-		}
-	}
-}
-
-/**
  * Test cases.
  * *Problems*
  * - It seems to be better to generate theme at the start of test and
@@ -96,26 +12,58 @@ function __remove_themes ( $themes )
  */
 class InheritThemeModsTest extends WP_UnitTestCase
 {
+	var $themes;
+	function __construct() {
+		parent::__construct();
+		
+		$this->themes = array(
+			array(
+				'Theme Name' => 'Parent Theme',
+				'Theme URI' => 'http://biwako.io/',
+				'Author' => 'KamataRyo',
+				'Author URI' => 'https://biwako.io/',
+				'Description' => 'Test theme',
+				'Version' => '1.0.0',
+				'License' => 'GNU General Public License v2 or later',
+				'License URI' => 'http://www.gnu.org/licenses/gpl-2.0.html',
+				'Text Domain' => 'inherit-theme-mods-parent-theme',
+				'Tags' => '',
+			),
+
+			array(
+				'Template' => 'inherit-theme-mods-parent-theme',
+				'Theme Name' => 'Child Theme',
+				'Theme URI' => 'http://biwako.io/',
+				'Author' => 'KamataRyo',
+				'Author URI' => 'https://biwako.io/',
+				'Description' => 'Test theme',
+				'Version' => '1.0.0',
+				'License' => 'GNU General Public License v2 or later',
+				'License URI' => 'http://www.gnu.org/licenses/gpl-2.0.html',
+				'Text Domain' => 'inherit-theme-mods-child-theme',
+				'Tags' => '',
+			),
+		);
+
+	}
 	/**
 	 * Test for test helper functions above.
 	 */
 	function test_theme_generation() {
 		// provisioning
-		global $themes;
-		__generate_themes( $themes );
+		$themes = $this->__generate_themes();
 
 		// assertions
 		foreach ( $themes as $theme ) {
 			$this->assertArrayHasKey( $theme['Text Domain'], wp_get_themes() );
 		}
 		// clean up
-		__remove_themes( $themes );
+		$this->__remove_themes();
 	}
 
 	function test_class_construction_success() {
 		// provisioning
-		global $themes;
-		__generate_themes( $themes );
+		$themes = $this->__generate_themes();
 
 		$parent_theme_slug = $themes[0]['Text Domain'];
 		$child_theme_slug  = $themes[1]['Text Domain'];
@@ -127,26 +75,24 @@ class InheritThemeModsTest extends WP_UnitTestCase
 		$this->assertEquals( $child_theme_slug,  $itm->child_theme_slug  );
 
 		// clean up
-		__remove_themes( $themes );
+		$this->__remove_themes();
 	}
 
 	function test_get_theme_mods_of_fails() {
 		// provisioning
-		global $themes;
-		__generate_themes( $themes );
+		$themes = $this->__generate_themes();
 
 		// assertions
 		$this->assertFalse( Inherit_Theme_Mods::get_theme_mods_of( 'undefined-theme-slug' ) );
 
 		//clean up.
-		__remove_themes( $themes );
+		$this->__remove_themes();
 	}
 
 	function test_get_theme_mods_of_success()
 	{
 		// provisioning
-		global $themes;
-		__generate_themes( $themes );
+		$themes = $this->__generate_themes();
 
 		// select certain theme
 		$theme_slug = $themes[0]['Text Domain'];
@@ -163,7 +109,7 @@ class InheritThemeModsTest extends WP_UnitTestCase
 
 		//clean up
 		remove_theme_mod( $name );
-		__remove_themes( $themes );
+		$this->__remove_themes();
 	}
 
 
@@ -182,8 +128,7 @@ class InheritThemeModsTest extends WP_UnitTestCase
 	function test_set_theme_mods_of_success()
 	{
 		//provisioning
-		global $themes;
-		__generate_themes( $themes );
+		$themes = $this->__generate_themes();
 
 		// create value for updating
 		$theme_slug = $themes[0]['Text Domain'];
@@ -203,15 +148,14 @@ class InheritThemeModsTest extends WP_UnitTestCase
 
 		//clean up.
 		remove_theme_mod( $name );
-		__remove_themes( $themes );
+		$this->__remove_themes();
 	}
 
 
 	function test_inherit_fails()
 	{
 		// provisioning
-		global $themes;
-		__generate_themes( $themes );
+		$themes = $this->__generate_themes();
 
 		// change to Template, nothing to be inherited
 		$parent_theme_slug = $themes[0]['Text Domain'];
@@ -223,15 +167,14 @@ class InheritThemeModsTest extends WP_UnitTestCase
 		$this->assertFalse( $itm->inherit() );
 
 		//clean up.
-		__remove_themes( $themes );
+		$this->__remove_themes();
 	}
 
 
 	function test_inherit_and_retore_success()
 	{
 		//provisioning
-		global $themes;
-		__generate_themes( $themes );
+		$themes = $this->__generate_themes();
 
 		$parent_theme_slug = $themes[0]['Text Domain'];
 		$child_theme_slug  = $themes[1]['Text Domain'];
@@ -274,34 +217,54 @@ class InheritThemeModsTest extends WP_UnitTestCase
 		remove_theme_mod( $option_name_for_child );
 		switch_theme( $parent_theme_slug );
 		remove_theme_mod( $option_name_for_parent );
-		__remove_themes( $themes );
+		$this->__remove_themes();
 	}
 
-
-	// test for helper functions
-	function test_build_styleAttr()
+	/**
+	 * this function generates themes attributes provided by arguments above.
+	 */
+	function __generate_themes()
 	{
-		$styles = array(
-			'background-color' => '#12345',
-			'color' => 'red',
-			'padding' => 0
-		);
-		$styleAttrExpected = 'style="background-color:#12345;color:red;padding:0;"';
-		$styleAttrActual = inherit_theme_mods_build_styleAttr( $styles );
-		$this->assertEquals( $styleAttrExpected, $styleAttrActual );
+		foreach ( $this->themes as $theme ) {
+			$folder = get_template_directory () . '/../' . $theme['Text Domain'];
+			$css = $folder . '/style.css';
+			$php = $folder . '/index.php';
+
+			$css_content = "/*\n" ;
+			foreach ($theme as $key => $value) {
+				$css_content .= "$key: $value\n";
+			}
+			$css_content .= "*/\n" ;
+
+			if ( !file_exists( $folder ) ) {
+				mkdir( $folder , 0777, true);
+			}
+			file_put_contents( $css, $css_content );
+			file_put_contents( $php, '<?php' );
+		}
+		return $this->themes;
 	}
 
-	function test_build_styleAttr_xss()
+	/**
+	 * this function removes themes by ceratain arguments above.
+	 */
+	function __remove_themes()
 	{
-		$styles = array(
-			'background-color'              => '#12345',
-			'color'                         => 'red',
-			'padding'                       => 0,
-			'" ><script>alert(1);</script>' => '',
-			'aaa'                           => '" ><script>alert(1);</script>',
-		);
-		$styleAttrActual = inherit_theme_mods_build_styleAttr( $styles );
-		$xss_vulnerable_match = preg_match( '/<script>.*/', $styleAttrActual );
-		$this->assertEquals( 0, $xss_vulnerable_match );
+		foreach ( $this->themes as $theme ) {
+			$folder = get_template_directory () . '/../' . $theme['Text Domain'];
+			$css = $folder . '/style.css';
+			$php = $folder . '/index.php';
+
+			if ( file_exists( $css ) ) {
+				unlink( $css );
+			}
+			if ( file_exists( $php ) ) {
+				unlink( $php );
+			}
+			if ( file_exists( $folder ) ) {
+				rmdir( $folder );
+			}
+		}
+		return $this->themes;
 	}
 }
