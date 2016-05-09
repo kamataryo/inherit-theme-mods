@@ -1,3 +1,5 @@
+sudo: false
+
 language: php
 
 notifications:
@@ -5,27 +7,12 @@ notifications:
     on_success: never
     on_failure: change
 
-branches:
-  only:
-    - master
 
 php:
   - 5.3
   - 5.6
   - 7.0
 
-env:
-  - WP_VERSION=latest WP_MULTISITE=0
-  - WP_VERSION=4.4.2 WP_MULTISITE=0
-  - WP_VERSION=4.3.1 WP_MULTISITE=0
-  - WP_VERSION=4.2.4 WP_MULTISITE=0
-  - WP_VERSION=4.1.5 WP_MULTISITE=0
-
-
-matrix:
-  include:
-    - php: 5.3
-      env: WP_VERSION=latest WP_MULTISITE=1
 
 before_script:
   - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
@@ -36,5 +23,22 @@ script:
   - ls ./lib
   - phpunit
 
-# - GH_REF=github.com/KamataRyo/inherit-theme-mods.git
-# - secure="MOJH007gu7rUv2IjNd9yw5evCG823BCgVrUIoS2iWI0Fq4CsHcnoWqq53AeZNV0E4/GBzFM8Z3pzKCgp9s4tfZ40Gp2cOeZuBF0EbundXEnwQvDgq0QHS199XYq+W+0u3ypLuL40/REGlVnczViSIOIfFGlJ3ewdswU3N8Q8UwAlc2OiO63uGX1lr1VBDP0AG7BPr2x3DHRWLFstUWLRtOi1EV1zlkFSS9b3sAHrfQJWMV2D/5GCKhjzE6cWfuf0GQsl4tRLU2J3lFw4V5iz12afpxIn0ejllI5c45WNWx0TSWPTWuQUlUJpfnKkALWtmoCgCiT7bXbhzXcxrQTbo6XKCgRKjXw4qYmLr/YMgchNQYkX6PV6AXErbPs4mgqwnCLEH7iTdhId9eEkImC5wn0pA92YhOaybM8nv8HyFaeq4yKgIBTvzbTNy8ogiayI5cDAzlUBg22I4Ieaq/i/0yMm90fzYqRdIJj5aWAUa+izi6SKaXmYWBR8VS5OZL9EoI9v4YO35wvt/ABQlkJgWwMOkcKL6Cg/SB0H1y1ehAQ4G7rLIYgyJOHKhx4UwPtDagfS7RUTfH5ir5LoE76FMwutpv3myQZzSx9BN2TLovA4svA81u3wx1zguPMquztB2OJbJA5WrsCiRAKN9FZ4+cR4SSIvmHtVzjKvbEeR0Ls="
+after_success:
+  - bash bin/deploy.sh
+
+env:
+  matrix:
+    - WP_VERSION=latest WP_MULTISITE=0
+    - WP_VERSION=4.2 WP_MULTISITE=0
+    - WP_VERSION=4.1 WP_MULTISITE=0
+    - WP_VERSION=4.0 WP_MULTISITE=0
+    - WP_VERSION=3.9 WP_MULTISITE=0
+
+  global:
+    - GH_REF: github.com/KamataRyo/inherit-theme-mods.git
+    - secure: "MOJH007gu7rUv2IjNd9yw5evCG823BCgVrUIoS2iWI0Fq4CsHcnoWqq53AeZNV0E4/GBzFM8Z3pzKCgp9s4tfZ40Gp2cOeZuBF0EbundXEnwQvDgq0QHS199XYq+W+0u3ypLuL40/REGlVnczViSIOIfFGlJ3ewdswU3N8Q8UwAlc2OiO63uGX1lr1VBDP0AG7BPr2x3DHRWLFstUWLRtOi1EV1zlkFSS9b3sAHrfQJWMV2D/5GCKhjzE6cWfuf0GQsl4tRLU2J3lFw4V5iz12afpxIn0ejllI5c45WNWx0TSWPTWuQUlUJpfnKkALWtmoCgCiT7bXbhzXcxrQTbo6XKCgRKjXw4qYmLr/YMgchNQYkX6PV6AXErbPs4mgqwnCLEH7iTdhId9eEkImC5wn0pA92YhOaybM8nv8HyFaeq4yKgIBTvzbTNy8ogiayI5cDAzlUBg22I4Ieaq/i/0yMm90fzYqRdIJj5aWAUa+izi6SKaXmYWBR8VS5OZL9EoI9v4YO35wvt/ABQlkJgWwMOkcKL6Cg/SB0H1y1ehAQ4G7rLIYgyJOHKhx4UwPtDagfS7RUTfH5ir5LoE76FMwutpv3myQZzSx9BN2TLovA4svA81u3wx1zguPMquztB2OJbJA5WrsCiRAKN9FZ4+cR4SSIvmHtVzjKvbEeR0Ls="
+
+matrix:
+  include:
+    - php: 5.6
+      env: WP_VERSION=latest WP_MULTISITE=1
