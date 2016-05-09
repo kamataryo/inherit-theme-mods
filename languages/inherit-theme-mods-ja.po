@@ -1,5 +1,5 @@
-# Copyright (C) 2016 
-# This file is distributed under the same license as the  package.
+# Copyright (C) 2016
+# This file is distributed under the same license as the package.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
@@ -75,11 +75,11 @@ msgstr ""
 
 #: inherit-theme-mods-table.php:38
 msgid "(Parent theme)"
-msgstr ""
+msgstr "(親テーマ)"
 
 #: inherit-theme-mods-table.php:39
 msgid "(Child theme)"
-msgstr ""
+msgstr "(子テーマ)"
 
 #: inherit-theme-mods-table.php:40 inherit-theme-mods-table.php:46
 msgid "Trashed"
