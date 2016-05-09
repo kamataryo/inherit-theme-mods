@@ -15,22 +15,17 @@ fi
 rm -rf .git
 rm -r .gitignore
 
-echo "# system
-bin
+echo "bin
 .travis.yml
 .editorconfig
 .gitignore
-# uncompiled source
 assets/*.coffee
-# tests
 tests
 phpunit.xml.dist
-# npm
 package.json
 node_modules
 gulpfile.js
 Gruntfile.js
-#bower
 bower.json
 .bowerrc" > .gitignore
 
