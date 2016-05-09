@@ -49,14 +49,25 @@ class Inherit_Theme_Mods {
 
 		if ( $this->is_child_theme_active() ) {
 
-			// store values at first
-			$storing_value = self::get_theme_mods_of( $this->child_theme_slug );
-			if ( get_option( ITM_STORING_OPTION_NAME ) ) {
-				update_option( ITM_STORING_OPTION_NAME, $storing_value ,'no' );
-			} else {
-				add_option( ITM_STORING_OPTION_NAME, $storing_value, '' ,'no' );
-			}
+			// store first
+			$this->store();
+			// inherit
+			return self::merge_theme_mods_of(
+				$this->child_theme_slug,
+				self::get_theme_mods_of( $this->parent_theme_slug )
+			);
 
+		} else {
+			return false;
+		}
+	}
+
+	public function overwrite() {
+
+		if ( $this->is_child_theme_active() ) {
+
+			// store first
+			$this->store();
 			// inherit
 			return self::set_theme_mods_of(
 				$this->child_theme_slug,
@@ -68,11 +79,30 @@ class Inherit_Theme_Mods {
 		}
 	}
 
-	public function restore()
-	{
-		return self::set_theme_mods_of(
-			$this->child_theme_slug,
-			self::get_stored_mods()
-		);
+	public function store() {
+
+		if ( $this->is_child_theme_active() ) {
+
+			$storing_value = self::get_theme_mods_of( $this->child_theme_slug );
+			return get_option( ITM_STORING_OPTION_NAME ) ?
+				update_option( ITM_STORING_OPTION_NAME, $storing_value ,'no' ) :
+				add_option( ITM_STORING_OPTION_NAME, $storing_value, '' ,'no' );
+
+		} else {
+			return false;
+		}
+	}
+
+	public function restore() {
+
+		if ( $this->is_child_theme_active() ) {
+
+			return self::set_theme_mods_of(
+				$this->child_theme_slug,
+				self::get_stored_mods()
+			);
+		} else {
+			return false;
+		}
 	}
 }

@@ -10,14 +10,16 @@ class Inherit_Theme_Mods_UI {
     static private $ajax_actions = array(
         'inherit' => 'ITM_inherit',
         'restore' => 'ITM_restore',
+        'overwrite' => 'ITM_overwrite',
     );
     private $itm;
 
     function __construct() {
         $this->itm = new Inherit_Theme_Mods();
         add_action( 'admin_menu', array( $this, 'register_admin_menu' ) );
-        add_action( 'wp_ajax_' . self::$ajax_actions['inherit'], array( $this, 'ajax_inherit' ) );
-        add_action( 'wp_ajax_' . self::$ajax_actions['restore'], array( $this, 'ajax_restore' ) );
+        add_action( 'wp_ajax_' . self::$ajax_actions['inherit'],   array( $this, 'ajax_inherit' ) );
+        add_action( 'wp_ajax_' . self::$ajax_actions['overwrite'], array( $this, 'ajax_overwrite' ) );
+        add_action( 'wp_ajax_' . self::$ajax_actions['restore'],   array( $this, 'ajax_restore' ) );
     }
 
     function register_admin_menu()
@@ -70,6 +72,17 @@ class Inherit_Theme_Mods_UI {
         }
     }
 
+    function ajax_overwrite() {
+        $message = $this->check_ajax_not_acceptable( 'overwrite' );
+        if ( ! $message ) {
+            $this->itm->overwrite();
+            wp_send_json_success( $this->get_new_table()->data ); # JSON, xss OK
+        } else {
+            wp_send_json_error( esc_html( $message ) );
+        }
+    }
+
+
     function ajax_restore() {
         $message = $this->check_ajax_not_acceptable( 'restore' );
         if ( ! $message ) {
@@ -116,7 +129,7 @@ class Inherit_Theme_Mods_UI {
         </div>
         <form class="ITM-form">
             <h2 class="ITM-action-header"><?php  _e( 'Inherit Properties', ITM_TEXT_DOMAIN ); ?></h2>
-            <p><?php _e( "Copy parent theme's properties to child. The last child properties are stored at trash box once for backup.", ITM_TEXT_DOMAIN ); ?></p>
+            <p><?php _e( "Copy and inherit parent theme's properties to child. Original child properties will be preserved. The last child properties are stored at trash box once for backup.", ITM_TEXT_DOMAIN ); ?></p>
             <div class="ITM-action-table">
                 <div class="ITM-action-block">
                     <div class="ITM-action-element ITM-button-col">
@@ -133,6 +146,27 @@ class Inherit_Theme_Mods_UI {
                     </div>
                 </div>
             </div>
+
+            <h2 class="ITM-action-header"><?php  _e( 'Overwrite Properties', ITM_TEXT_DOMAIN ); ?></h2>
+            <p><?php _e( "Copy and overwrite parent theme's properties to child. Original child properties will be aborted. The last child properties are stored at trash box once for backup.", ITM_TEXT_DOMAIN ); ?></p>
+            <div class="ITM-action-table">
+                <div class="ITM-action-block">
+                    <div class="ITM-action-element ITM-button-col">
+                        <a id="ITM-overwrite" class="ITM-button button button-primary button-large" data-action="<?php echo esc_attr( self::$ajax_actions['overwrite']); ?>">
+                            <?php _e( 'overwrite', ITM_TEXT_DOMAIN ); ?>
+                        </a>
+                    </div>
+                    <div class="ITM-action-element ITM-picture-col">
+                        <i class="fa fa-file-o fa-fw fa-3x"></i>
+                        <i class="fa fa-arrow-right fa-2x"></i>
+                        <i class="fa fa-file-o fa-fw fa-3x"></i>
+                        <i class="fa fa-arrow-right fa-2x"></i>
+                        <i class="fa fa-trash-o fa-fw fa-3x"></i>
+                    </div>
+                </div>
+            </div>
+
+
             <h2 class="ITM-action-header"><?php  _e( 'Restore Properties', ITM_TEXT_DOMAIN ); ?></h2>
             <p><?php _e( "Restore child properties from trash box.", ITM_TEXT_DOMAIN ); ?></p>
             <div class="ITM-action-table">

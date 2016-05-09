@@ -99,6 +99,10 @@ th, td {
     text-overflow: ellipsis;
 }
 
+.ITM-button {
+    padding:0 !important;
+}
+
 @media screen and (max-width: 782px) {
     .ITM-serialized-text {
         word-wrap: break-word; /* for IE */
@@ -106,6 +110,10 @@ th, td {
         text-decoration: none;
         overflow: auto;
     }
+    .ITM-button {
+        padding: 6px 0 !important;
+    }
+
 }
 
 
