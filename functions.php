@@ -7,19 +7,18 @@
  * Author URI: http://biwako.io/
  * Plugin URI: http://biwako.io/
  * Text Domain: inherit-theme-mods
- * Domain Path: /languages
+ * Domain Path: /languages/
  * @package Inherit-theme-mods
  */
 
 define( 'ITM_TEXT_DOMAIN',         'inherit-theme-mods' );
 define( 'ITM_OPTION_PREFIX',       'theme_mods_' );
 define( 'ITM_STORING_OPTION_NAME', 'inherit_theme_mods_stored_option' );
-define( 'ITM_NONCE_FIELD',         'nonce' );
-define( 'ITM_NONCE_ACTION',        'ITM_nonce' );
 
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
+
 require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'inherit-theme-mods.php' );
 require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'inherit-theme-mods-table.php' );
 require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'inherit-theme-mods-ui.php' );
@@ -42,24 +41,30 @@ class ITM_Util {
 	// try translate one by one in order to $slugs as context.
 	static function __chained( $text, $slugs ) {
 		do {
-			$translated_text = __( $text, array_shift( $slugs ) );
+			$translated_text = __( $text, array_shift( $slugs ), 'inherit-theme-mods' );
 		} while ( 0 !== count( $slugs ) && $text === $translated_text );
 		return $translated_text;
 	}
 
-	// This function stores some texts only to provide for translation
-	// they may appear at `wp_options` table and be not available to resolve the slug to translate.
-	// Some of theme mod slug appears in official theme were picked, not all.
+
+	// This function only stores texts in some famous themes only to provide for translation
+	// they may appear at `wp_options` table and it's translation could not be resolved automatically.
 	private function __translation_store()
 	{
-		__( 'Header Image Data',     ITM_NONCE_ACTION );
-		__( 'Nav Menu Locations',    ITM_NONCE_ACTION );
-		__( 'Sidebars Widgets',      ITM_NONCE_ACTION );
-		__( 'Color Scheme',          ITM_NONCE_ACTION ); # ベース配色 in ja
-		__( 'Background Position X', ITM_NONCE_ACTION ); # 背景の位置 in ja
+		__( 'Header Image Data',       ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
+		__( 'Nav Menu Locations',      ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
+		__( 'Sidebars Widgets',        ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
+		__( 'Color Scheme',            ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # ベース配色 in ja
+		__( 'Background Position X',   ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # 背景の位置 in ja
+		__( 'Main Text Color',         ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
+		__( 'Main Text Color',         ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # メインのテキストカラー
+		__( 'Header Textcolor',        ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # ヘッダーテキスト色
+		__( 'Link Color',              ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # リンク色
+		__( 'Sidebar Textcolor',       ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # サイドバーテキスト色
+		__( 'Custom Logo',             ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # ロゴ
+		__( 'Featured Content Layout', ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
 	}
 }
 
-// describe UI
+// describe UI for admin page
 new Inherit_Theme_Mods_UI();
-// var_dump(add_option(ITM_OPTION_PREFIX . 'biwako-io', array('test' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')));

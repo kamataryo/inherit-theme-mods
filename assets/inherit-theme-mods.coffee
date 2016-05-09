@@ -61,7 +61,11 @@ clearNotifier = ->
 makeRequest = (action) ->
     deferred = $.Deferred()
 
-    $.post ajax.endpoint, {action, nonce: ajax.nonce}, ({success, data}) ->
+    $.post ajax.endpoint, {action, nonce: ajax.nonce}, (arg) ->
+        console.log arg
+        {success, data} = arg
+        unless success?
+            deferred.reject()
         if success
             deferred.resolve(data)
         else
@@ -76,11 +80,16 @@ updateTable = (data) ->
     $table = $('#ITM-Content>table.wp-list-table>tbody')
     $table.fadeOut 100, ->
         $table.children('tr').each (i, tr) ->
+            foundValues = false
             $(tr).children('td:not(.column-key)').each (i, td) ->
                 $span = $(td).children 'span.ITM-list-data'
                 [key, col] = [$span.data('key'), $span.data('col')]
                 cols = data.filter (item, index) -> item.native_key is key
-                $(td).html cols[0][col]
+                if cols.length > 0 and cols[0][col]?
+                    foundValues = foundValues or true
+                    if $(td).html isnt cols[0][col]
+                        $(td).html cols[0][col]
+            if foundValues then $(tr).show() else $(tr).hide()
 
         $table.fadeIn 200, ->
             deferred.resolve()
@@ -115,7 +124,7 @@ $(document).ready ($) ->
                         , 2000
 
             .fail (message) ->
-                updateNotifier 'error', message
+                updateNotifier 'error', if message? then message else ajax.status.unknownError
                 updateInstantNotifier ['fa', 'fa-warning', 'fa-wf']
                     .done ->
                         timerId2 = setTimeout ->

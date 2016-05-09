@@ -59,7 +59,11 @@
       nonce: ajax.nonce
     }, function(arg) {
       var data, success;
+      console.log(arg);
       success = arg.success, data = arg.data;
+      if (success == null) {
+        deferred.reject();
+      }
       if (success) {
         return deferred.resolve(data);
       } else {
@@ -75,15 +79,27 @@
     $table = $('#ITM-Content>table.wp-list-table>tbody');
     $table.fadeOut(100, function() {
       $table.children('tr').each(function(i, tr) {
-        return $(tr).children('td:not(.column-key)').each(function(i, td) {
+        var foundValues;
+        foundValues = false;
+        $(tr).children('td:not(.column-key)').each(function(i, td) {
           var $span, col, cols, key, ref;
           $span = $(td).children('span.ITM-list-data');
           ref = [$span.data('key'), $span.data('col')], key = ref[0], col = ref[1];
           cols = data.filter(function(item, index) {
             return item.native_key === key;
           });
-          return $(td).html(cols[0][col]);
+          if (cols.length > 0 && (cols[0][col] != null)) {
+            foundValues = foundValues || true;
+            if ($(td).html !== cols[0][col]) {
+              return $(td).html(cols[0][col]);
+            }
+          }
         });
+        if (foundValues) {
+          return $(tr).show();
+        } else {
+          return $(tr).hide();
+        }
       });
       return $table.fadeIn(200, function() {
         return deferred.resolve();
@@ -114,7 +130,7 @@
           }, 2000);
         });
       }).fail(function(message) {
-        updateNotifier('error', message);
+        updateNotifier('error', message != null ? message : ajax.status.unknownError);
         return updateInstantNotifier(['fa', 'fa-warning', 'fa-wf']).done(function() {
           return timerId2 = setTimeout(function() {
             return clearInstantNotifier();
