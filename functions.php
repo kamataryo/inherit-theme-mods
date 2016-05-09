@@ -11,10 +11,6 @@
  * @package Inherit-theme-mods
  */
 
-define( 'ITM_TEXT_DOMAIN',         'inherit-theme-mods' );
-define( 'ITM_OPTION_PREFIX',       'theme_mods_' );
-define( 'ITM_STORING_OPTION_NAME', 'inherit_theme_mods_stored_option' );
-
 if ( ! class_exists( 'WP_List_Table' ) ) {
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
@@ -51,17 +47,17 @@ class ITM_Util {
 	// they may appear at `wp_options` table and it's translation could not be resolved automatically.
 	private function __translation_store()
 	{
-		__( 'Header Image Data',       ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
-		__( 'Nav Menu Locations',      ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
-		__( 'Sidebars Widgets',        ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
-		__( 'Color Scheme',            ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
-		__( 'Background Position X',   ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
-		__( 'Main Text Color',         ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
-		__( 'Header Textcolor',        ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
-		__( 'Link Color',              ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
-		__( 'Sidebar Textcolor',       ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
-		__( 'Custom Logo',             ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
-		__( 'Featured Content Layout', ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
+		__( 'Header Image Data',       'inherit-theme-mods' );
+		__( 'Nav Menu Locations',      'inherit-theme-mods' );
+		__( 'Sidebars Widgets',        'inherit-theme-mods' );
+		__( 'Color Scheme',            'inherit-theme-mods' );
+		__( 'Background Position X',   'inherit-theme-mods' );
+		__( 'Main Text Color',         'inherit-theme-mods' );
+		__( 'Header Textcolor',        'inherit-theme-mods' );
+		__( 'Link Color',              'inherit-theme-mods' );
+		__( 'Sidebar Textcolor',       'inherit-theme-mods' );
+		__( 'Custom Logo',             'inherit-theme-mods' );
+		__( 'Featured Content Layout', 'inherit-theme-mods' );
 	}
 }
 

@@ -1,6 +1,7 @@
 <?php
 /**
  * @package inherit-theme-mods
+ * Control IO of this plugin function via UI.
  */
 class Inherit_Theme_Mods_UI {
 
@@ -26,7 +27,7 @@ class Inherit_Theme_Mods_UI {
 
     function register_textdomain() {
         load_plugin_textdomain(
-			ITM_TEXT_DOMAIN,
+			'inherit-theme-mods',
 			false,
 			basename( dirname( __FILE__ ) ) . '/languages'
         );
@@ -34,10 +35,10 @@ class Inherit_Theme_Mods_UI {
 
     function register_admin_menu() {
     	$hook = add_options_page(
-    		__( 'Inherit Theme Mods', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ),
-    		__( 'Inherit Theme Mods', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ),
+    		__( 'Inherit Theme Mods', 'inherit-theme-mods' ),
+    		__( 'Inherit Theme Mods', 'inherit-theme-mods' ),
     		self::CAPABILITY,
-    		ITM_TEXT_DOMAIN,
+    		'inherit-theme-mods',
     		array( $this, 'describe_ui' )
     	);
         add_action( "admin_head-$hook", array( $this, 'enqueue_scripts' ) );
@@ -63,8 +64,8 @@ class Inherit_Theme_Mods_UI {
             'endpoint' => admin_url( 'admin-ajax.php' ),
             'nonce'    => wp_create_nonce( self::NONCE_ACTION ),
             'status'   => array(
-                'success'      => __( 'Processed successfully.', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ) . '<a href="' . esc_url( home_url( '/' ) ) . '" class="ITM-aside">' . __( 'Visit Site', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ) . '</a>',
-                'unknownError' => __( 'Unknown error', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ),
+                'success'      => __( 'Processed successfully.', 'inherit-theme-mods' ) . '<a href="' . esc_url( home_url( '/' ) ) . '" class="ITM-aside">' . __( 'Visit Site', 'inherit-theme-mods' ) . '</a>',
+                'unknownError' => __( 'Unknown error', 'inherit-theme-mods' ),
             ),
         ) );
     }
@@ -101,11 +102,15 @@ class Inherit_Theme_Mods_UI {
         }
     }
 
-    // trim
+    // trim unnecessary data before response
     static function pre_send( $data ) {
         foreach ($data as $index => $datum ) {
-            unset( $data[$index]['key'] );
-            unset( $data[$index]['Key'] );
+            if ( array_key_exists( $data[$index], 'key' ) ) {
+                unset( $data[$index]['key'] );
+            }
+            if ( array_key_exists( $data[$index], 'Key' ) ) {
+                unset( $data[$index]['Key'] );
+            }
         }
         return $data;
     }
@@ -113,7 +118,7 @@ class Inherit_Theme_Mods_UI {
     function describe_ui() {
         ?>
         <div id="ITM" class="wrap">
-    		<h1 id="ITM-title"><?php _e( 'Inherit Theme Mods', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); ?>
+    		<h1 id="ITM-title"><?php _e( 'Inherit Theme Mods', 'inherit-theme-mods' ); ?>
                 <span id="ITM-instant-notifier" class="ITM-status-notifier ITM-aside"></span>
             </h1>
             <?php
@@ -121,7 +126,7 @@ class Inherit_Theme_Mods_UI {
                 ?>
                 <div id="ITM-notifier" class="notice notice-warning">
                     <p>
-                        <?php _e( 'The active theme is not child theme. This plugin is simply working as inspector.', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); ?>
+                        <?php _e( 'The active theme is not child theme. This plugin is simply working as inspector.', 'inherit-theme-mods' ); ?>
                     </p>
                 </div>
                 <?php
@@ -140,18 +145,19 @@ class Inherit_Theme_Mods_UI {
         <div id="ITM-notifier" class="ITM-visit-site notice notice-success">
             <p>
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>">
-                    <?php _e( 'Visit Site', 'default', 'inherit-theme-mods' ); ?>
+                    <?php _e( 'Visit Site', 'inherit-theme-mods' ); ?>
                 </a>
             </p>
         </div>
         <form class="ITM-form">
-            <h2 class="ITM-action-header"><?php  _e( 'Inherit Properties', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></h2>
-            <p><?php _e( "Copy and inherit parent theme's properties to child. Original child properties will be preserved. The last child properties are stored at trash box once for backup.", ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></p>
+
+            <h2 class="ITM-action-header"><?php  _e( 'Inherit Properties', 'inherit-theme-mods' ); ?></h2>
+            <p><?php _e( "Copy and inherit parent theme's properties to child. Original child properties will be preserved. The last child properties are stored at trash box once for backup.", 'inherit-theme-mods' ); ?></p>
             <div class="ITM-action-table">
                 <div class="ITM-action-block">
                     <div class="ITM-action-element ITM-button-col">
                         <a id="ITM-inherit" class="ITM-button button button-primary button-large" data-action="<?php echo esc_attr( self::$ajax_actions['inherit']); ?>">
-                            <?php _e( 'inherit', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); ?>
+                            <?php _e( 'inherit', 'inherit-theme-mods' ); ?>
                         </a>
                     </div>
                     <div class="ITM-action-element ITM-picture-col">
@@ -164,13 +170,13 @@ class Inherit_Theme_Mods_UI {
                 </div>
             </div>
 
-            <h2 class="ITM-action-header"><?php  _e( 'Overwrite Properties', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></h2>
-            <p><?php _e( "Copy and overwrite parent theme's properties to child. Original child properties will be aborted. The last child properties are stored at trash box once for backup.", ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></p>
+            <h2 class="ITM-action-header"><?php  _e( 'Overwrite Properties', 'inherit-theme-mods' ); ?></h2>
+            <p><?php _e( "Copy and overwrite parent theme's properties to child. Original child properties will be aborted. The last child properties are stored at trash box once for backup.", 'inherit-theme-mods' ); ?></p>
             <div class="ITM-action-table">
                 <div class="ITM-action-block">
                     <div class="ITM-action-element ITM-button-col">
                         <a id="ITM-overwrite" class="ITM-button button button-primary button-large" data-action="<?php echo esc_attr( self::$ajax_actions['overwrite']); ?>">
-                            <?php _e( 'overwrite', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); ?>
+                            <?php _e( 'overwrite', 'inherit-theme-mods' ); ?>
                         </a>
                     </div>
                     <div class="ITM-action-element ITM-picture-col">
@@ -184,13 +190,13 @@ class Inherit_Theme_Mods_UI {
             </div>
 
 
-            <h2 class="ITM-action-header"><?php  _e( 'Restore Properties', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></h2>
-            <p><?php _e( "Restore child properties from trash box.", ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); ?></p>
+            <h2 class="ITM-action-header"><?php  _e( 'Restore Properties', 'inherit-theme-mods' ); ?></h2>
+            <p><?php _e( "Restore child properties from trash box.", 'inherit-theme-mods' ); ?></p>
             <div class="ITM-action-table">
                 <div class="ITM-action-block">
                     <div class="ITM-action-element ITM-button-col">
                         <a id="ITM-restore" class="ITM-button button button-primary button-large" data-action="<?php echo esc_attr( self::$ajax_actions['restore']); ?>">
-                            <?php _e( 'restore', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); ?>
+                            <?php _e( 'restore', 'inherit-theme-mods' ); ?>
                         </a>
                     </div>
                     <div class="ITM-action-element ITM-picture-col">
@@ -233,13 +239,13 @@ class Inherit_Theme_Mods_UI {
 
     public function check_ajax_not_acceptable( $method ) {
         if ( ! current_user_can( self::CAPABILITY ) ) {
-            return __( 'You do not have sufficient permissions for the request.', ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
+            return __( 'You do not have sufficient permissions for the request.', 'inherit-theme-mods' );
 
         } else if ( ! self::verify_nonce() ) {
-            return __( 'Invalid request.', ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
+            return __( 'Invalid request.', 'inherit-theme-mods' );
 
         } else if ( ! $this->itm->is_child_theme_active() ) {
-            return sprintf( __( 'No Child Theme has been activated.', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ) );
+            return sprintf( __( 'No Child Theme has been activated.', 'inherit-theme-mods' ) );
         } else {
             return false;
         }

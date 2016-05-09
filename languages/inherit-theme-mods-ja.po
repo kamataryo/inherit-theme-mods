@@ -144,7 +144,7 @@ msgid ""
 "properties will be aborted. The last child properties are stored at trash "
 "box once for backup."
 msgstr ""
-"親テーマのプロパティ値を子テーマに継承します。子テーマ固有のプロパティ値は破棄されます。"
+"親テーマのプロパティ値を子テーマに上書きします。子テーマ固有のプロパティ値は破棄されます。"
 "最後に変更した値がゴミ箱にバックアップされます。"
 
 #: inherit-theme-mods-ui.php:167

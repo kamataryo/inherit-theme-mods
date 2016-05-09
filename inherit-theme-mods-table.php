@@ -34,16 +34,16 @@ class Inherit_Theme_Mods_Table extends WP_List_Table
 	function get_columns() {
 		if ( $this->is_inheritable ) {
 			return array(
-				'key'          => __( 'Settings', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ),
-				'parent-theme' => '<i class="fa fa-file-o fa-2x"></i><span class="ITM-aside">' . esc_html( $this->parent_theme_name ) . '<small class="ITM-aside">' . __( '(Parent theme)', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ) . '</small></span>',
-				'child-theme'  => '<i class="fa fa-copy fa-2x"></i><span class="ITM-aside">' . esc_html( $this->child_theme_name ) . '<small class="ITM-aside">' . __( '(Child theme)', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ) . '</small></span>',
-				'trashed'      => '<i class="fa fa-trash fa-2x"></i><span class="ITM-aside">' . __( 'Trashed', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ) . '</span>',
+				'key'          => __( 'Settings', 'inherit-theme-mods' ),
+				'parent-theme' => '<i class="fa fa-file-o fa-2x"></i><span class="ITM-aside">' . esc_html( $this->parent_theme_name ) . '<small class="ITM-aside">' . __( '(Parent theme)', 'inherit-theme-mods' ) . '</small></span>',
+				'child-theme'  => '<i class="fa fa-copy fa-2x"></i><span class="ITM-aside">' . esc_html( $this->child_theme_name ) . '<small class="ITM-aside">' . __( '(Child theme)', 'inherit-theme-mods' ) . '</small></span>',
+				'trashed'      => '<i class="fa fa-trash fa-2x"></i><span class="ITM-aside">' . __( 'Trashed', 'inherit-theme-mods' ) . '</span>',
 			);
 		} else {
 			return array(
-				'key'          => __( 'Key', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ),
+				'key'          => __( 'Key', 'inherit-theme-mods' ),
 				'parent-theme' => '<i class="fa fa-file-o fa-2x"></i><span class="ITM-aside">' . esc_html( $this->parent_slug ) . '</span>',
-				'trashed'      => '<i class="fa fa-trash fa-2x"></i><span class="ITM-aside">' . __( 'Trashed', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ) . '</span>',
+				'trashed'      => '<i class="fa fa-trash fa-2x"></i><span class="ITM-aside">' . __( 'Trashed', 'inherit-theme-mods' ) . '</span>',
 			);
 		}
 	}
@@ -128,8 +128,7 @@ class Inherit_Theme_Mods_Table extends WP_List_Table
 				array(
 					$this->child_slug,
 					$this->parent_slug,
-					ITM_TEXT_DOMAIN,
-					'default',
+										'default',
 				)
 			); # xss OK
 
@@ -153,7 +152,7 @@ class Inherit_Theme_Mods_Table extends WP_List_Table
 		$data_col = 'data-col="' . esc_attr( $col ) . '"';
 
 		if ( ! array_key_exists( $key, $mods ) ) {
-			return "<span class=\"ITM-list-data\" $data_key $data_col><small class=\"no-value\">" . __( '(no value)', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ) . '</small></span>';
+			return "<span class=\"ITM-list-data\" $data_key $data_col><small class=\"no-value\">" . __( '(no value)', 'inherit-theme-mods' ) . '</small></span>';
 		} else {
 			$value = esc_html( maybe_serialize( $mods[$key] ) );
 		}

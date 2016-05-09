@@ -1,9 +1,15 @@
 <?php
 /**
  * @package inherit-theme-mods
+ * provides core functions for WordPress Options API
+ * Instance
  */
 
 class Inherit_Theme_Mods {
+
+	const OPTION_PREFIX    = 'theme_mods_';
+	public const STORE_KEY = 'inherit_theme_mods_stored_option';
+
 
 	public $parent_theme_slug;
 	public $child_theme_slug;
@@ -14,27 +20,27 @@ class Inherit_Theme_Mods {
 	}
 
 	static function get_theme_mods_of( $slug ) {
-		return maybe_unserialize( get_option( ITM_OPTION_PREFIX . $slug, false ) );
+		return maybe_unserialize( get_option( self::OPTION_PREFIX . $slug, false ) );
 	}
 
 	static function set_theme_mods_of( $slug, $values ) {
 		return self::is_installed_theme( $slug ) ?
-			update_option( ITM_OPTION_PREFIX . $slug, $values ) : false;
+			update_option( self::OPTION_PREFIX . $slug, $values ) : false;
 	}
 
 	static function merge_theme_mods_of( $slug, $overwriter ) {
 		return self::is_installed_theme( $slug ) ?
 			update_option(
-				ITM_OPTION_PREFIX . $slug,
+				self::OPTION_PREFIX . $slug,
 				array_merge(
-					get_option( ITM_OPTION_PREFIX . $slug ),
+					get_option( self::OPTION_PREFIX . $slug ),
 					$overwriter
 				)
 			) : false;
 	}
 
 	static function get_stored_mods(){
-		return maybe_unserialize( get_option( ITM_STORING_OPTION_NAME ) );
+		return maybe_unserialize( get_option( self::STORE_KEY ) );
 	}
 
 	static function is_installed_theme( $slug ) {
@@ -84,9 +90,9 @@ class Inherit_Theme_Mods {
 		if ( $this->is_child_theme_active() ) {
 
 			$storing_value = self::get_theme_mods_of( $this->child_theme_slug );
-			return get_option( ITM_STORING_OPTION_NAME ) ?
-				update_option( ITM_STORING_OPTION_NAME, $storing_value ,'no' ) :
-				add_option( ITM_STORING_OPTION_NAME, $storing_value, '' ,'no' );
+			return get_option( self::STORE_KEY ) ?
+				update_option( self::STORE_KEY, $storing_value ,'no' ) :
+				add_option( self::STORE_KEY, $storing_value, '' ,'no' );
 
 		} else {
 			return false;

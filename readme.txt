@@ -24,6 +24,16 @@ This plugin simply copies and inherit( or overwrite) parental property to the ch
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Open 'Settings' -> 'Inherit Theme Mods' menu.
 
+== Frequently Asked Questions ==
+
+= A question that someone might have =
+
+An answer to that question.
+
+= What about foo bar? =
+
+Answer to foo bar dilemma.
+
 == Screenshots ==
 
 1. You can find menu in 'Settings' after plugin activation.
@@ -33,4 +43,4 @@ This plugin simply copies and inherit( or overwrite) parental property to the ch
 == Changelog ==
 
 = 1.0.0 =
-* 1st released
+* released
