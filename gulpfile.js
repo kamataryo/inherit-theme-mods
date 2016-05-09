@@ -17,6 +17,8 @@ gulp.task('gettext', function(){
         .pipe(gulp.dest('./languages/'));
 });
 
-gulp.task('watch', ['coffee', 'gettext'], function(){
-    gulp.watch(['./assets/*.coffee','./languages/*.po'], ['coffee','gettext']);
+gulp.task('build',['coffee', 'gettext']);
+
+gulp.task('watch', ['build'], function(){
+    gulp.watch(['./assets/*.coffee','./languages/*.po'], ['build']);
 });
