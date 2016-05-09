@@ -54,14 +54,13 @@ class ITM_Util {
 		__( 'Header Image Data',       ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
 		__( 'Nav Menu Locations',      ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
 		__( 'Sidebars Widgets',        ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
-		__( 'Color Scheme',            ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # ベース配色 in ja
-		__( 'Background Position X',   ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # 背景の位置 in ja
+		__( 'Color Scheme',            ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
+		__( 'Background Position X',   ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
 		__( 'Main Text Color',         ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
-		__( 'Main Text Color',         ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # メインのテキストカラー
-		__( 'Header Textcolor',        ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # ヘッダーテキスト色
-		__( 'Link Color',              ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # リンク色
-		__( 'Sidebar Textcolor',       ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # サイドバーテキスト色
-		__( 'Custom Logo',             ITM_TEXT_DOMAIN, 'inherit-theme-mods' ); # ロゴ
+		__( 'Header Textcolor',        ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
+		__( 'Link Color',              ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
+		__( 'Sidebar Textcolor',       ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
+		__( 'Custom Logo',             ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
 		__( 'Featured Content Layout', ITM_TEXT_DOMAIN, 'inherit-theme-mods' );
 	}
 }

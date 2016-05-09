@@ -63,10 +63,7 @@ class Inherit_Theme_Mods_UI {
             'endpoint' => admin_url( 'admin-ajax.php' ),
             'nonce'    => wp_create_nonce( self::NONCE_ACTION ),
             'status'   => array(
-                'updating'     => __( 'Updating..', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ),
-                'finished'     => __( 'Finished!', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ),
                 'success'      => __( 'Processed successfully.', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ) . '<a href="' . esc_url( home_url( '/' ) ) . '" class="ITM-aside">' . __( 'Visit Site', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ) . '</a>',
-                'error'        => __( 'error', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ),
                 'unknownError' => __( 'Unknown error', ITM_TEXT_DOMAIN, 'inherit-theme-mods' ),
             ),
         ) );
