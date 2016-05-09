@@ -19,12 +19,12 @@ before_script:
   - npm install
 
 script:
-  - ls ./assets/*.js
-  - ls ./lib
+  - npm test
   - phpunit
 
 after_success:
   - bash bin/deploy.sh
+  - npm run generatePot
 
 env:
   matrix:

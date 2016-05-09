@@ -17,7 +17,6 @@
     "url": "https://github.com/KamataRyo/inherit-theme-mods"
   },
   "dependencies": {
-    "font-awesome": "font-awsome#^4.6.2",
-    "bootstrap": "^3.3.6"
+    "font-awesome": "font-awsome#^4.6.2"
   }
 }
