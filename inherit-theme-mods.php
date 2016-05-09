@@ -7,8 +7,8 @@
 
 class Inherit_Theme_Mods {
 
-	const OPTION_PREFIX    = 'theme_mods_';
-	public const STORE_KEY = 'inherit_theme_mods_stored_option';
+	const OPTION_PREFIX = 'theme_mods_';
+	const STORE_KEY     = 'inherit_theme_mods_stored_option';
 
 
 	public $parent_theme_slug;
