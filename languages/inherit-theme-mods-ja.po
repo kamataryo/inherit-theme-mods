@@ -115,7 +115,7 @@ msgid ""
 "The active theme is not child theme. This plugin is simply working as "
 "inspector."
 msgstr ""
-"子テーマが有効化されていません。このプラグインはインスペクターとして機能しています。"
+"子テーマが有効化されていません。このプラグインは現在インスペクターとしてのみ機能しています。"
 
 #: inherit-theme-mods-ui.php:142
 msgid "Inherit Properties"
