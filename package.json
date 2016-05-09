@@ -1,13 +1,22 @@
 {
   "name": "inherit-theme-mods",
-  "version": "0.0.0",
-  "main": "Gruntfile.js",
+  "version": "1.0.0",
+  "description": "This WordPress plugin simply copies theme mods from parental theme.",
+  "keywords": ["WordPress", "plugin", "theme", "child theme", "customizer", "inherit", "copy", "property"],
+  "bugs": "https://github.com/KamataRyo/inherit-theme-mods/issues",
+  "license": "GPL-2.0",
   "author": "KamataRyo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KamataRyo/inherit-theme-mods"
+  },
   "scripts": {
-    "install": "bower install",
-    "i18n": "grunt i18n"
+    "install": "./node_modules/bower/bin/bower install",
+    "i18n": "grunt i18n",
+    "build" : "/.node_modules/gulp/bin/gulp.js coffee"
   },
   "devDependencies": {
+    "bower": "^1.7.9",
     "grunt": "^0.4.5",
     "grunt-wp-i18n": "^0.5.0",
     "grunt-wp-readme-to-markdown": "~0.9.0",
