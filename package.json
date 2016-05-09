@@ -22,7 +22,7 @@
   "scripts": {
     "build": "./node_modules/gulp/bin/gulp.js build",
     "install": "./node_modules/bower/bin/bower install; npm tun build",
-    "i18n": "grunt i18n"
+    "generatePot": "grunt i18n"
   },
   "devDependencies": {
     "bower": "^1.7.9",
