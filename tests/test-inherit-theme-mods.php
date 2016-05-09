@@ -10,12 +10,11 @@
  *   'reload()' may be necessary for WordPress to refresh wp_get_themes(),
  *   but I've not found it so far.
  */
-class InheritThemeModsTest extends WP_UnitTestCase
-{
+class InheritThemeModsTest extends WP_UnitTestCase {
 	var $themes;
 	function __construct() {
 		parent::__construct();
-		
+
 		$this->themes = array(
 			array(
 				'Theme Name' => 'Parent Theme',
@@ -89,8 +88,7 @@ class InheritThemeModsTest extends WP_UnitTestCase
 		$this->__remove_themes();
 	}
 
-	function test_get_theme_mods_of_success()
-	{
+	function test_get_theme_mods_of_success() {
 		// provisioning
 		$themes = $this->__generate_themes();
 
@@ -113,8 +111,7 @@ class InheritThemeModsTest extends WP_UnitTestCase
 	}
 
 
-	function test_set_theme_mods_of_fails()
-	{
+	function test_set_theme_mods_of_fails() {
 		// do update with new plugin's function
 		$result = Inherit_Theme_Mods::set_theme_mods_of(
 			'nonsense-theme-name',
@@ -125,8 +122,7 @@ class InheritThemeModsTest extends WP_UnitTestCase
 		$this->assertFalse( $result );
 	}
 
-	function test_set_theme_mods_of_success()
-	{
+	function test_set_theme_mods_of_success() {
 		//provisioning
 		$themes = $this->__generate_themes();
 
@@ -151,9 +147,60 @@ class InheritThemeModsTest extends WP_UnitTestCase
 		$this->__remove_themes();
 	}
 
+	function test_merge_theme_mods_of_fails() {
+		// do update with new plugin's function
+		$result = Inherit_Theme_Mods::merge_theme_mods_of(
+			'nonsense-theme-name',
+			array( 'some name' => 'some value' )
+		);
 
-	function test_inherit_fails()
-	{
+		// however test fails with nonsense theme name not existing.
+		$this->assertFalse( $result );
+	}
+
+	function test_merge_theme_mods_of_success() {
+		//provisioning
+		$themes = $this->__generate_themes();
+
+		// create value for updating
+		$name_overwriter = 'name1';
+		$value_overwriter = 'val1';
+		$options_overwriter = array( $name_overwriter => $value_overwriter );
+
+		//create value to be update
+		$name_overwritee = 'name1';
+		$value_overwritee = 'overwritten';
+		$name_not_overwritee = 'name2';
+		$value_not_overwritee = 'not-overwritten';
+		$options_overwritee = array(
+			$name_overwritee     => $value_overwritee,
+			$name_not_overwritee => $value_not_overwritee,
+		);
+
+		//set values
+		$theme_slug = $themes[0]['Text Domain'];
+		switch_theme( $theme_slug );
+		set_theme_mod( $name_overwritee, $value_overwritee );
+		set_theme_mod( $name_not_overwritee, $value_not_overwritee );
+
+		// do update with new plugin's function
+		Inherit_Theme_Mods::merge_theme_mods_of( $theme_slug, $options_overwriter );
+		$actual = get_theme_mods();
+
+		// test if overwritten
+		$this->assertEquals($value_overwriter ,$actual[$name_overwritee] );
+		// test if not overweitten
+		$this->assertEquals($value_not_overwritee ,$actual[$name_not_overwritee] );
+
+		//clean up.
+		remove_theme_mod( $name_overwritee );
+		remove_theme_mod( $name_not_overwritee );
+		$this->__remove_themes();
+	}
+
+
+
+	function test_inherit_fails() {
 		// provisioning
 		$themes = $this->__generate_themes();
 
@@ -171,8 +218,7 @@ class InheritThemeModsTest extends WP_UnitTestCase
 	}
 
 
-	function test_inherit_and_retore_success()
-	{
+	function test_inherit_and_retore_success() {
 		//provisioning
 		$themes = $this->__generate_themes();
 
@@ -221,10 +267,10 @@ class InheritThemeModsTest extends WP_UnitTestCase
 	}
 
 	/**
+	 * helper function for this test.
 	 * this function generates themes attributes provided by arguments above.
 	 */
-	function __generate_themes()
-	{
+	function __generate_themes() {
 		foreach ( $this->themes as $theme ) {
 			$folder = get_template_directory () . '/../' . $theme['Text Domain'];
 			$css = $folder . '/style.css';
@@ -246,10 +292,10 @@ class InheritThemeModsTest extends WP_UnitTestCase
 	}
 
 	/**
+	 * helper function for this test.
 	 * this function removes themes by ceratain arguments above.
 	 */
-	function __remove_themes()
-	{
+	function __remove_themes() {
 		foreach ( $this->themes as $theme ) {
 			$folder = get_template_directory () . '/../' . $theme['Text Domain'];
 			$css = $folder . '/style.css';

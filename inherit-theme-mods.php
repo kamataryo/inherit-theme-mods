@@ -22,6 +22,17 @@ class Inherit_Theme_Mods {
 			update_option( ITM_OPTION_PREFIX . $slug, $values ) : false;
 	}
 
+	static function merge_theme_mods_of( $slug, $overwriter ) {
+		return self::is_installed_theme( $slug ) ?
+			update_option(
+				ITM_OPTION_PREFIX . $slug,
+				array_merge(
+					get_option( ITM_OPTION_PREFIX . $slug ),
+					$overwriter
+				)
+			) : false;
+	}
+
 	static function get_stored_mods(){
 		return maybe_unserialize( get_option( ITM_STORING_OPTION_NAME ) );
 	}
