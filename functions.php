@@ -38,6 +38,15 @@ class ITM_Util {
     	}
     	return 'style="' . esc_attr( $result ) . '"';
     }
+
+	// try translate one by one in order to $slugs as context.
+	static function __chained( $text, $slugs ) {
+		do {
+			$translated_text = __( $text, array_shift( $slugs ) );
+		} while ( 0 !== count( $slugs ) && $text === $translated_text );
+		return $translated_text;
+	}
+
 	// This function stores some texts only to provide for translation
 	// they may appear at `wp_options` table and be not available to resolve the slug to translate.
 	// Some of theme mod slug appears in official theme were picked, not all.
@@ -51,4 +60,5 @@ class ITM_Util {
 	}
 }
 
+// describe UI
 new Inherit_Theme_Mods_UI();

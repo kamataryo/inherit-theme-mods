@@ -7,10 +7,10 @@ class InheritThemeModsUITest extends WP_UnitTestCase
     }
 
     static function __mimic_verified_request() {
-        $_REQUEST[Inherit_Theme_Mods_UI::NONCE_FIELD] = wp_create_nonce( Inherit_Theme_Mods_UI::NONCE_ACTION );
+        $_REQUEST['nonce'] = wp_create_nonce( Inherit_Theme_Mods_UI::NONCE_ACTION );
     }
     static function __mimic_invalid_request() {
-        $_REQUEST[Inherit_Theme_Mods_UI::NONCE_FIELD] = '';
+        $_REQUEST['nonce'] = '';
     }
     static function __prepare_user( $username, $pass, $caps ) {
         $id = wp_create_user( $username, $pass, "$username@localhost" );

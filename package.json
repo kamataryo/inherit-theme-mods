@@ -1,16 +1,19 @@
-
 {
   "name": "inherit-theme-mods",
   "version": "0.0.0",
   "main": "Gruntfile.js",
   "author": "KamataRyo",
   "scripts": {
-      "install": "bower install",
-      "i18n": "grunt i18n"
+    "install": "bower install",
+    "i18n": "grunt i18n"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-wp-i18n": "^0.5.0",
-    "grunt-wp-readme-to-markdown": "~0.9.0"
+    "grunt-wp-readme-to-markdown": "~0.9.0",
+    "gulp": "^3.9.1",
+    "gulp-coffee": "^2.3.2",
+    "gulp-notify": "^2.2.0",
+    "gulp-plumber": "^1.1.0"
   }
 }

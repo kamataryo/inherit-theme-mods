@@ -8,6 +8,8 @@ class Inherit_Theme_Mods_Table extends WP_List_Table
 
 	var $child_slug;
 	var $parent_slug;
+	var $child_theme_name;
+	var $parent_theme_name;
 	var $is_inheritable;
 	var $data;
 	function __construct( $child_slug, $parent_slug ) {
@@ -20,41 +22,39 @@ class Inherit_Theme_Mods_Table extends WP_List_Table
 		$this->child_slug = $child_slug;
 		$this->parent_slug = $parent_slug;
 		$this->is_inheritable = $child_slug !== $parent_slug;
+		$this->child_theme_name = wp_get_theme( $child_slug )->Name;
+		$this->parent_theme_name = wp_get_theme( $parent_slug )->Name;
 		$this->generate_data_array();
 	}
 
-	function column_default( $item, $column_name )
-	{
+	function column_default( $item, $column_name ) {
 		return maybe_serialize( $item[$column_name] );
 	}
 
-	function get_columns()
-	{
+	function get_columns() {
 		if ( $this->is_inheritable ) {
 			return array(
 				'key'          => __( 'Key', ITM_TEXT_DOMAIN ),
-				'parent-theme' => '<i class="fa fa-file-o fa-2x"></i><span class="ITM-aside">' . $this->parent_slug . '<small class="ITM-aside">(template)</small></span>',
-				'child-theme'  => '<i class="fa fa-copy fa-2x"></i><span class="ITM-aside">' . $this->child_slug . '<small class="ITM-aside">(child theme)</small></span>',
-				'trashed'      => '<i class="fa fa-trash fa-2x"></i><span class="ITM-aside">Trashed</span>',
+				'parent-theme' => '<i class="fa fa-file-o fa-2x"></i><span class="ITM-aside">' . esc_html( $this->parent_theme_name ) . '<small class="ITM-aside">' . __( '(Parent theme)', ITM_TEXT_DOMAIN ) . '</small></span>',
+				'child-theme'  => '<i class="fa fa-copy fa-2x"></i><span class="ITM-aside">' . esc_html( $this->child_theme_name ) . '<small class="ITM-aside">' . __( '(Child theme)', ITM_TEXT_DOMAIN ) . '</small></span>',
+				'trashed'      => '<i class="fa fa-trash fa-2x"></i><span class="ITM-aside">' . __( 'Trashed', ITM_TEXT_DOMAIN ) . '</span>',
 			);
 		} else {
 			return array(
 				'key'          => __( 'Key', ITM_TEXT_DOMAIN ),
-				'parent-theme' => '<i class="fa fa-file-o fa-2x"></i><span class="ITM-aside">' . $this->parent_slug . '</span>',
-				'trashed'      => '<i class="fa fa-trash fa-2x"></i><span class="ITM-aside">Trashed</span>',
+				'parent-theme' => '<i class="fa fa-file-o fa-2x"></i><span class="ITM-aside">' . esc_html( $this->parent_slug ) . '</span>',
+				'trashed'      => '<i class="fa fa-trash fa-2x"></i><span class="ITM-aside">' . __( 'Trashed', ITM_TEXT_DOMAIN ) . '</span>',
 			);
 		}
 	}
 
-	function get_sortable_columns()
-	{
+	function get_sortable_columns() {
 		return array(
 			'key' => array( 'Key', false ),
 		);
 	}
 
-	public function prepare_items()
-	{
+	public function prepare_items() {
 
 		$per_page = self::LIST_PER_PAGE;
 		$columns = $this->get_columns();
@@ -83,8 +83,7 @@ class Inherit_Theme_Mods_Table extends WP_List_Table
 
 	}
 
-	function generate_data_array()
-	{
+	function generate_data_array() {
 		$child_mods = Inherit_Theme_Mods::get_theme_mods_of( $this->child_slug );
 		$parent_mods = Inherit_Theme_Mods::get_theme_mods_of( $this->parent_slug );
 		$stored_mods = Inherit_Theme_Mods::get_stored_mods();
@@ -118,7 +117,7 @@ class Inherit_Theme_Mods_Table extends WP_List_Table
 								substr( $element, 1 );
 			}
 			$key_parsing = implode( ' ', $key_elements );
-			$key_parsed = self::__chain(
+			$key_parsed = ITM_Util::__chained(
 				$key_parsing,
 				array(
 					$this->child_slug,
@@ -128,15 +127,13 @@ class Inherit_Theme_Mods_Table extends WP_List_Table
 				)
 			); # xss OK
 
-			// $key_parsed = $key_parsed . '<br /><small>(' . esc_html( $key ) . ')</small>';
-
 			array_push( $result, array(
 				'Key'          => $key_parsed, # WordPress Internal Error? WP_List_Table require 'Key' for sortable column, instead 'key'.
 				'key'          => $key_parsed,
 				'native_key'   => $key,
-				'parent-theme' => self::transform_mod( $key, $parent_mods, 'parent-theme' ),
-				'child-theme'  => self::transform_mod( $key, $child_mods,  'child-theme'  ),
-				'trashed'      => self::transform_mod( $key, $stored_mods, 'trashed' ),
+				'parent-theme' => self::decorate_mod( $key, $parent_mods, 'parent-theme' ),
+				'child-theme'  => self::decorate_mod( $key, $child_mods,  'child-theme'  ),
+				'trashed'      => self::decorate_mod( $key, $stored_mods, 'trashed' ),
 			) );
 		}
 		$this->data = $result;
@@ -144,23 +141,21 @@ class Inherit_Theme_Mods_Table extends WP_List_Table
 
 
 
-	static function transform_mod( $key, $mods, $col )
-	{
-		// attach empty value
-		if ( ! array_key_exists( $key, $mods ) ) {
-			$mods[$key] = '';
-		} else {
-			$mods[$key] = maybe_serialize( $mods[$key] );
-		}
-
-		$value = $mods[$key];
-		$match_color     = preg_match( '/^#?([0-9,a-f,A-F]{3}|[0-9,a-f,A-F]{6})$/', $value );
-		$match_inmageURL = preg_match( '/\.(jpg|jpeg|png|gif)$/i', $value );
+	static function decorate_mod( $key, $mods, $col ) {
 
 		$data_key = 'data-key="' . esc_attr( $key ) . '"';
 		$data_col = 'data-col="' . esc_attr( $col ) . '"';
 
-		if( $match_color === 1 ) {
+		if ( ! array_key_exists( $key, $mods ) ) {
+			return "<span class=\"ITM-list-data\" $data_key $data_col><small class=\"no-value\">" . __( '(no value)', ITM_TEXT_DOMAIN ) . '</small></span>';
+		} else {
+			$value = esc_html( maybe_serialize( $mods[$key] ) );
+		}
+
+		$match_color     = preg_match( '/^#?([0-9,a-f,A-F]{3}|[0-9,a-f,A-F]{6})$/', $value );
+		$match_inmageURL = preg_match( '/\.(jpg|jpeg|png|gif)$/i', $value );
+
+		if( 1 === $match_color ) {
 			# display color if color string
 			$color_str = substr($value, 0, 1) === '#' ? $value : "#$value";
 			$style_attr = ITM_Util::style_attr( array(
@@ -168,27 +163,14 @@ class Inherit_Theme_Mods_Table extends WP_List_Table
 			) ); # xss OK
 			$value = esc_html( $value );
 			$value = "<div class=\"ITM-color-indication\" $style_attr></div><span class=\"ITM-list-data\" $data_key $data_col>$value</span>";
-		} else if ( $match_inmageURL === 1 ) {
+		} else if ( 1 === $match_inmageURL ) {
 			# display image if image url
 			$value = esc_url( $value );
-			$value = "<img src=\"$value\" class=\"ITM-image-indication\" alt=\"\" /><br /><span class=\"ITM-list-data\" $data_key $data_col>$value</span>"; # xss OK
+			$value = "<img src=\"$value\" class=\"ITM-image-indication\" alt=\"\" /><br /><span class=\"ITM-list-data\" $data_key $data_col>$value</span>";# xss OK
 		} else {
 			$value = "<span class=\"ITM-list-data ITM-serialized-text\" $data_key $data_col>" . esc_html( $value ) . '</span>';
 		}
 
 		return $value;
-	}
-
-	// try translate in order to Array $slugs.
-	static function __chain( $text, $slugs )
-	{
-		$translated = false;
-		$translated_text = '';
-		while ( count( $slugs ) !== 0 && ! $translated ) {
-			$slug = array_shift( $slugs );
-			$translated_text = __( $text, $slug );
-			$translated = $text !== $translated_text;
-		}
-		return esc_html( $translated_text );
 	}
 }

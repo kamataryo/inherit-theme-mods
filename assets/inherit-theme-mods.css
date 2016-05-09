@@ -63,8 +63,14 @@
 th {
     width: 30px;
 }
+th, td {
+    vertical-align: middle;
+}
 
 /*each pattern inseide table-cell*/
+.ITM-list-data .no-value {
+    opacity:.7;
+}
 .ITM-color-indication {
     display: inline-block;
     width: 25px;
