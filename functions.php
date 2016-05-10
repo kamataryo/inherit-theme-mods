@@ -62,6 +62,6 @@ class ITM_Util {
 		__( 'Featured Content Layout', 'inherit-theme-mods' );
 	}
 }
-
+// var_dump(Inherit_Theme_Mods::get_stored_mods());
 // describe UI for admin page
 new Inherit_Theme_Mods_UI();

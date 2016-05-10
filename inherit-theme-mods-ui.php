@@ -72,57 +72,35 @@ class Inherit_Theme_Mods_UI {
 		) );
 	}
 
-	function ajax_inherit() {
-		$message = $this->check_ajax_not_acceptable( 'inherit' );
+	private function ajax( $action ) {
+		$message = $this->check_ajax_not_acceptable( $action );
 		if ( ! $message ) {
-			$this->itm->inherit();
-			wp_send_json_success( self::pre_send( $this->get_new_table()->data ) ); # JSON, xss OK
-		} else {
-			wp_send_json_error( esc_html( $message ) );
-		}
-	}
-
-	function ajax_overwrite() {
-		$message = $this->check_ajax_not_acceptable( 'overwrite' );
-		if ( ! $message ) {
-			$this->itm->overwrite();
-			wp_send_json_success( self::pre_send( $this->get_new_table()->data ) ); # JSON, xss OK
-		} else {
-			wp_send_json_error( esc_html( $message ) );
-		}
-	}
-
-	function ajax_restore() {
-		$message = $this->check_ajax_not_acceptable( 'restore' );
-		if ( ! $message ) {
-			$this->itm->restore();
-			wp_send_json_success( self::pre_send( $this->get_new_table()->data ) ); # JSON, xss OK
-		} else {
-			wp_send_json_error( esc_html( $message ) );
-		}
-	}
-
-	// trim unnecessary data before response
-	static function pre_send( $data ) {
-		foreach ($data as $index => $datum ) {
-			if ( array_key_exists( $data[$index], 'key' ) ) {
+			( new Inherit_Theme_Mods() )->$action();
+			$data = $this->get_new_table()->data;
+			foreach ($data as $index => $datum ) {
 				unset( $data[$index]['key'] );
-			}
-			if ( array_key_exists( $data[$index], 'Key' ) ) {
 				unset( $data[$index]['Key'] );
 			}
+			wp_send_json_success( $data ); # xss OK
+		} else {
+			wp_send_json_error( esc_html( $message ) );
 		}
-		return $data;
 	}
 
-	function describe_ui() {
+	public function ajax_inherit()   { $this->ajax( 'inherit' ); }
+
+	public function ajax_overwrite() { $this->ajax( 'overwrite' ); }
+
+	public function ajax_restore()   { $this->ajax( 'restore' ); }
+
+	public function describe_ui() {
 		?>
 		<div id="ITM" class="wrap">
 			<h1 id="ITM-title"><?php _e( 'Inherit Theme Mods', 'inherit-theme-mods' ); ?>
 				<span id="ITM-instant-notifier" class="ITM-status-notifier ITM-aside"></span>
 			</h1>
 			<?php
-			if ( ! $this->itm->is_child_theme_active() ) {
+			if ( ! ( new Inherit_Theme_Mods() )->is_child_theme_active() ) {
 				?>
 				<div id="ITM-notifier" class="notice notice-warning">
 					<p>
@@ -238,7 +216,7 @@ class Inherit_Theme_Mods_UI {
 		}
 	}
 
-	public function check_ajax_not_acceptable( $method ) {
+	private function check_ajax_not_acceptable( $method ) {
 		if ( ! current_user_can( self::CAPABILITY ) ) {
 			return __( 'You do not have sufficient permissions for the request.', 'inherit-theme-mods' );
 

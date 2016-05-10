@@ -1,17 +1,15 @@
 <?php
 
-class InheritThemeModsUITest extends WP_UnitTestCase
-{
-    function __construct() {
-        parent::__construct();
-    }
+class InheritThemeModsUITest extends WP_UnitTestCase {
 
     static function __mimic_verified_request() {
         $_REQUEST['nonce'] = wp_create_nonce( Inherit_Theme_Mods_UI::NONCE_ACTION );
     }
+
     static function __mimic_invalid_request() {
         $_REQUEST['nonce'] = '';
     }
+
     static function __prepare_user( $username, $pass, $caps ) {
         $id = wp_create_user( $username, $pass, "$username@localhost" );
         $user = new WP_User( $id );
@@ -25,10 +23,10 @@ class InheritThemeModsUITest extends WP_UnitTestCase
         }
         return $id;
     }
+
     static function __abort_user( $id ) {
         return wp_delete_user( $id );
     }
-
 
     function test_construction_success() {
 

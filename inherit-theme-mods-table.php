@@ -146,16 +146,12 @@ class Inherit_Theme_Mods_Table extends WP_List_Table {
 			return $value;
 		}
 
-
-
 		$result = array();
 		foreach ( $keys as $key ) {
-
 			// Eliminate unnecessary field to see
 			if ( is_int( $key ) ) {
 				continue;
 			}
-
 			// transform slug into maybe translatable text
 			// 'translate_word' -> 'Translate Word'
 			// (is there any slugify/unslugify standard function?)
@@ -165,7 +161,6 @@ class Inherit_Theme_Mods_Table extends WP_List_Table {
 					strtoupper( substr( $element, 0,  1 ) ) .
 								substr( $element, 1 );
 			}
-
 			// try translate
 			$key_parsed = ITM_Util::__chained(
 				implode( ' ', $key_elements ),

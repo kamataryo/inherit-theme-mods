@@ -118,6 +118,7 @@
       } else {
         sync = true;
       }
+      $('body').css('cursor', 'wait');
       clearTimeout(timerId1);
       clearTimeout(timerId2);
       clearNotifier();
@@ -137,7 +138,8 @@
           }, 2000);
         });
       }).always(function() {
-        return sync = false;
+        sync = false;
+        return $('body').css('cursor', 'default');
       });
     });
   });

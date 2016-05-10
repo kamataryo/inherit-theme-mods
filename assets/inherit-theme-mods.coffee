@@ -57,7 +57,6 @@ clearNotifier = ->
 
     return  deferred.promise()
 
-
 makeRequest = (action) ->
     deferred = $.Deferred()
 
@@ -105,6 +104,7 @@ $(document).ready ($) ->
     $('.ITM-button').click ->
         if sync then return else sync = true
 
+        $('body').css 'cursor', 'wait'
         clearTimeout timerId1
         clearTimeout timerId2
         clearNotifier()
@@ -130,4 +130,6 @@ $(document).ready ($) ->
                         timerId2 = setTimeout ->
                             clearInstantNotifier()
                         , 2000
-            .always -> sync = false
+            .always ->
+                sync = false
+                $('body').css 'cursor', 'default'

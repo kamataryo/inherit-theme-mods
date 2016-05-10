@@ -21,7 +21,8 @@ class Inherit_Theme_Mods {
 
 	// This substitutes get_theme_mod.
 	static function get_theme_mods_of( $slug ) {
-		return maybe_unserialize( get_option( self::OPTION_PREFIX . $slug, false ) );
+		$result = get_option( self::OPTION_PREFIX . $slug, false );
+		return ( '' === $result ) ? array() : $result;
 	}
 
 	// This substitutes set_theme_mod.
@@ -33,10 +34,10 @@ class Inherit_Theme_Mods {
 	// This substitutes set_theme_mod and merges options.
 	static function merge_theme_mods_of( $slug, $overwriter ) {
 		return self::is_installed_theme( $slug ) ?
-			update_option(
-				self::OPTION_PREFIX . $slug,
+			self::set_theme_mods_of(
+				$slug,
 				array_merge(
-					get_option( self::OPTION_PREFIX . $slug ),
+					maybe_unserialize( get_option( self::OPTION_PREFIX . $slug ) ),
 					$overwriter
 				)
 			) : false;
@@ -44,7 +45,7 @@ class Inherit_Theme_Mods {
 
 	// substitutes get_theme_mod, virtually for 'trash box'
 	static function get_stored_mods(){
-		return maybe_unserialize( get_option( self::STORE_KEY ) );
+		return get_option( self::STORE_KEY, false );
 	}
 
 	static function is_installed_theme( $slug ) {
@@ -97,7 +98,7 @@ class Inherit_Theme_Mods {
 		if ( $this->is_child_theme_active() ) {
 
 			$storing_value = self::get_theme_mods_of( $this->child_theme_slug );
-			return get_option( self::STORE_KEY ) ?
+			return get_option( self::STORE_KEY, false ) ?
 				update_option( self::STORE_KEY, $storing_value ,'no' ) :
 				add_option( self::STORE_KEY, $storing_value, '' ,'no' );
 
