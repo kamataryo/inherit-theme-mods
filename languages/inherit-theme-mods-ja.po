@@ -25,7 +25,7 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: functions.php:54
+#: functions.php:50
 msgid "Header Image Data"
 msgstr "ヘッダー画像データ"
 
@@ -35,7 +35,7 @@ msgstr "ナビゲーションの位置"
 
 #: functions.php:56
 msgid "Sidebars Widgets"
-msgstr "サードバーウィジェット"
+msgstr "サイドバーウィジェット"
 
 #: functions.php:57
 msgid "Color Scheme"

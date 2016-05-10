@@ -8,45 +8,47 @@
  * Plugin URI: https://github.com/KamataRyo/inherit-theme-mods
  * Text Domain: inherit-theme-mods
  * Domain Path: /languages/
+ *
  * @package Inherit-theme-mods
  */
-
-if ( ! class_exists( 'WP_List_Table' ) ) {
-	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
-}
 
 require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'inherit-theme-mods.php' );
 require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'inherit-theme-mods-table.php' );
 require_once( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'inherit-theme-mods-ui.php' );
 
+/**
+ * Utility functions
+ */
 class ITM_Util {
+	// transform valiable arguments into plugin path.
 	public static function url(){
 		$dirs = func_get_args();
 		return plugins_url( implode( $dirs, DIRECTORY_SEPARATOR ), __FILE__ );
 	}
 
+	// build style attribute value from array
 	public static function style_attr( $styles )
-    {
-    	$result = '';
-    	foreach ($styles as $directive => $value) {
-    		$result .= "$directive:$value;";
-    	}
-    	return 'style="' . esc_attr( $result ) . '"';
-    }
+	{
+		$result = '';
+		foreach ($styles as $directive => $value) {
+			$result .= "$directive:$value;";
+		}
+		return 'style="' . esc_attr( $result ) . '"';
+	}
 
 	// try translate one by one in order to $slugs as context.
 	static function __chained( $text, $slugs ) {
 		do {
-			$translated_text = __( $text, array_shift( $slugs ), 'inherit-theme-mods' );
+			# Use 'translate' function to avoid to be caught by gettext.
+			$translated_text = translate( $text, array_shift( $slugs ) );
 		} while ( 0 !== count( $slugs ) && $text === $translated_text );
 		return $translated_text;
 	}
 
-
-	// This function only stores texts in some famous themes only to provide for translation
-	// they may appear at `wp_options` table and it's translation could not be resolved automatically.
-	private function __translation_store()
-	{
+	// This plugin tries to solve original name for translation, but sometime fails.
+	// So this function only stores texts for gettext.
+	// Terms below may appear in some famous themes.
+	private function __translation_store() {
 		__( 'Header Image Data',       'inherit-theme-mods' );
 		__( 'Nav Menu Locations',      'inherit-theme-mods' );
 		__( 'Sidebars Widgets',        'inherit-theme-mods' );

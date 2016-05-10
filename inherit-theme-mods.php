@@ -1,16 +1,16 @@
 <?php
 /**
  * @package inherit-theme-mods
- * provides core functions for WordPress Options API
- * Instance
  */
 
+/**
+* Wrapper for Options API
+*/
 class Inherit_Theme_Mods {
-
+	// prefix for theme mods defined by WordPress
 	const OPTION_PREFIX = 'theme_mods_';
+	// option name to store mods in trash box
 	const STORE_KEY     = 'inherit_theme_mods_stored_option';
-
-
 	public $parent_theme_slug;
 	public $child_theme_slug;
 
@@ -19,15 +19,18 @@ class Inherit_Theme_Mods {
 		$this->child_theme_slug  = wp_get_theme()->stylesheet;
 	}
 
+	// This substitutes get_theme_mod.
 	static function get_theme_mods_of( $slug ) {
 		return maybe_unserialize( get_option( self::OPTION_PREFIX . $slug, false ) );
 	}
 
+	// This substitutes set_theme_mod.
 	static function set_theme_mods_of( $slug, $values ) {
 		return self::is_installed_theme( $slug ) ?
 			update_option( self::OPTION_PREFIX . $slug, $values ) : false;
 	}
 
+	// This substitutes set_theme_mod and merges options.
 	static function merge_theme_mods_of( $slug, $overwriter ) {
 		return self::is_installed_theme( $slug ) ?
 			update_option(
@@ -39,6 +42,7 @@ class Inherit_Theme_Mods {
 			) : false;
 	}
 
+	// substitutes get_theme_mod, virtually for 'trash box'
 	static function get_stored_mods(){
 		return maybe_unserialize( get_option( self::STORE_KEY ) );
 	}
@@ -51,6 +55,7 @@ class Inherit_Theme_Mods {
 		return $this->parent_theme_slug !== $this->child_theme_slug;
 	}
 
+	// inherit theme mods from parent into child
 	public function inherit() {
 
 		if ( $this->is_child_theme_active() ) {
@@ -68,13 +73,14 @@ class Inherit_Theme_Mods {
 		}
 	}
 
+	// overwrite theme mods from parent into child
 	public function overwrite() {
 
 		if ( $this->is_child_theme_active() ) {
 
 			// store first
 			$this->store();
-			// inherit
+			// overwrite
 			return self::set_theme_mods_of(
 				$this->child_theme_slug,
 				self::get_theme_mods_of( $this->parent_theme_slug )
@@ -85,6 +91,7 @@ class Inherit_Theme_Mods {
 		}
 	}
 
+	// store child theme mods into trash box
 	public function store() {
 
 		if ( $this->is_child_theme_active() ) {
@@ -99,6 +106,7 @@ class Inherit_Theme_Mods {
 		}
 	}
 
+	// restore child theme mods from trash box
 	public function restore() {
 
 		if ( $this->is_child_theme_active() ) {
