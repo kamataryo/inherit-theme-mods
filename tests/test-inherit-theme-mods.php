@@ -291,7 +291,7 @@ class InheritThemeModsTest extends WP_UnitTestCase {
         }
     }
 
-    function test_merge_theme_mods_of_success() {
+    function test_merge_theme_mods_of_success1() {
 
 		$mods = new Mods(
 			$this->parent_slug,
@@ -326,6 +326,51 @@ class InheritThemeModsTest extends WP_UnitTestCase {
 				'name1' => 'val1-parent',
 				'name2' => 'val2-parent',
 				'name3' => 'val3-child',
+			),
+			$mods->actual()->child
+		);
+
+        switch_theme( $this->parent_slug );
+        foreach ($mods->actual()->parent as $key => $value) {
+            remove_theme_mod( $key );
+        }
+        switch_theme( $this->child_slug );
+        foreach ($mods->actual()->parent as $key => $value) {
+            remove_theme_mod( $key );
+        }
+    }
+
+    function test_merge_theme_mods_of_success2() {
+
+		$mods = new Mods(
+			$this->parent_slug,
+			array(
+				'name1' => 'val1-parent',
+				'name2' => 'val2-parent',
+			),
+			$this->child_slug,
+			array()
+		);
+
+		Inherit_theme_mods::set_theme_mods_of(
+			$this->parent_slug,
+			$mods->assigned()->parent
+		);
+		Inherit_theme_mods::set_theme_mods_of(
+			$this->child_slug,
+			$mods->assigned()->child
+		);
+
+        // do update with new plugin's function
+        Inherit_Theme_Mods::merge_theme_mods_of(
+			$this->child_slug, $mods->assigned()->parent
+		);
+
+		// test if mods merged actually
+		$this->assertArrayDeepEquals(
+			array(
+				'name1' => 'val1-parent',
+				'name2' => 'val2-parent',
 			),
 			$mods->actual()->child
 		);

@@ -1,7 +1,7 @@
 === Inherit-theme-mods ===
 Contributors: kamataryo
 Donate link: http://biwako.io/
-Tags: child theme, customizer, inherit, copy, settings, property
+Tags: child theme, customizer, inspector, inherit, copy, settings, property
 Requires at least: 3.9
 Tested up to: 3.9
 Stable tag: 4.3
@@ -17,6 +17,7 @@ This plugin, Inherit Theme Mods enable to copy child theme property from that of
 Do you still need parent theme's customizer properties when building your website with its child theme?
 Inherit Theme Mods solve it.
 This plugin simply copies and inherit( or overwrite) parental property to the child.
+Also it works as an inspector of customizer properties.
 
 == Installation ==
 

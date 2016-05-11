@@ -33,13 +33,15 @@ class Inherit_Theme_Mods {
 
 	// This substitutes set_theme_mod and merges options.
 	static function merge_theme_mods_of( $slug, $overwriter ) {
+
+		$overwritten = get_option( self::OPTION_PREFIX . $slug );
+		if (! is_array( $overwritten ) ) {
+			$overwritten = array();
+		}
 		return self::is_installed_theme( $slug ) ?
 			self::set_theme_mods_of(
 				$slug,
-				array_merge(
-					maybe_unserialize( get_option( self::OPTION_PREFIX . $slug ) ),
-					$overwriter
-				)
+				array_merge( $overwritten, $overwriter )
 			) : false;
 	}
 
