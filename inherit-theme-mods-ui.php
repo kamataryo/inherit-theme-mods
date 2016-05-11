@@ -75,7 +75,8 @@ class Inherit_Theme_Mods_UI {
 	private function ajax( $action ) {
 		$message = $this->check_ajax_not_acceptable( $action );
 		if ( ! $message ) {
-			( new Inherit_Theme_Mods() )->$action();
+			call_user_func( array( new Inherit_Theme_Mods(), $action ) ); # PHP5.3
+			// ( new Inherit_Theme_Mods() )->$action(); # PHP5.4
 			$data = $this->get_new_table()->data;
 			foreach ($data as $index => $datum ) {
 				unset( $data[$index]['key'] );
