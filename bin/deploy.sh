@@ -7,7 +7,7 @@ if [[ "false" != "$TRAVIS_PULL_REQUEST" ]]; then
 	exit
 fi
 
-if [[ "master" != "$TRAVIS_BRANCH" && "$TRAVIS_BRANCH" =~ ^v?[0-9](\.[0-9])* ]]; then
+if ! [[ "master" == "$TRAVIS_BRANCH" || "$TRAVIS_BRANCH" =~ ^v?[0-9](\.[0-9])* ]]; then
 	echo "Not on the 'master' branch or tags."
 	exit
 fi
@@ -34,10 +34,13 @@ git init
 git config user.name "kamataryo"
 git config user.email "mugil.cephalus@gmail.com"
 git add .
-git commit --quiet -m "Deploy from travis"
-git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:latest > /dev/null 2>&1
+
+if [[ "master" == "$TRAVIS_BRANCH" ]]; then
+	git commit --quiet -m "Deploy from travis"
+	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:latest > /dev/null 2>&1
+fi
 
 if [[ "$TRAVIS_BRANCH" =~ ^v?[0-9](\.[0-9])* ]]; then
-	git tag "${TRAVIS_BRANCH}-release"
-	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" "master:${TRAVIS_BRANCH}-release" > /dev/null 2>&1
+	git tag "${TRAVIS_BRANCH}-released"
+	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" "master:${TRAVIS_BRANCH}-released" > /dev/null 2>&1
 fi
