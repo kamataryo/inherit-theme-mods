@@ -7,7 +7,7 @@ if [[ "false" != "$TRAVIS_PULL_REQUEST" ]]; then
 	exit
 fi
 
-if [[ "master" != "$TRAVIS_BRANCH" && "$TRAVIS_BRANCH" =~ ^v?[0-9\\.]+ ]]; then
+if [[ "master" != "$TRAVIS_BRANCH" && "$TRAVIS_BRANCH" =~ ^v?[0-9](\.[0-9])* ]]; then
 	echo "Not on the 'master' branch or tags."
 	exit
 fi
@@ -37,7 +37,7 @@ git add .
 git commit --quiet -m "Deploy from travis"
 git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:latest > /dev/null 2>&1
 
-if [[ != "$TRAVIS_BRANCH" =~ ^v?[0-9\\.]+ ]]; then
+if [[ != "$TRAVIS_BRANCH" =~ ^v?[0-9](\.[0-9])* ]]; then
 	git tag $TRAVIS_BRANCH
-	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:$TRAVIS_BRANCH > /dev/null 2>&1
+	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" "master:${TRAVIS_BRANCH}-release" > /dev/null 2>&1
 fi
