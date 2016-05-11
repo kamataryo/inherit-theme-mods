@@ -387,22 +387,26 @@ class InheritThemeModsTest extends WP_UnitTestCase {
 
     function test_inherit_fails() {
         switch_theme( $this->parent_slug );
-        $this->assertFalse( (new Inherit_Theme_Mods() )->inherit() );
+        $itm = new Inherit_Theme_Mods();
+        $this->assertFalse( $itm->inherit() );
     }
 
     function test_overwrite_fails() {
         switch_theme( $this->parent_slug );
-        $this->assertFalse( (new Inherit_Theme_Mods() )->overwrite() );
+        $itm = new Inherit_Theme_Mods();
+        $this->assertFalse( $itm->overwrite() );
     }
 
     function test_store_fails() {
         switch_theme( $this->parent_slug );
-        $this->assertFalse( (new Inherit_Theme_Mods() )->store() );
+        $itm = new Inherit_Theme_Mods();
+        $this->assertFalse( $itm->store() );
     }
 
     function test_restore_fails() {
         switch_theme( $this->parent_slug );
-        $this->assertFalse( (new Inherit_Theme_Mods() )->restore() );
+        $itm = new Inherit_Theme_Mods();
+        $this->assertFalse( $itm->restore() );
     }
 
     function test_store_success() {
@@ -431,7 +435,8 @@ class InheritThemeModsTest extends WP_UnitTestCase {
 
         switch_theme( $this->child_slug );
 
-        $this->assertTrue( ( new Inherit_Theme_Mods() )->store() );
+        $itm = new Inherit_Theme_Mods();
+        $this->assertTrue( $itm->store() );
         $this->assertArrayDeepEquals(
             $mods->assigned()->child,
             $mods->actual()->trashed
