@@ -75,8 +75,8 @@ class Inherit_Theme_Mods_UI {
 	private function ajax( $action ) {
 		$message = $this->check_ajax_not_acceptable( $action );
 		if ( ! $message ) {
-			call_user_func( array( new Inherit_Theme_Mods(), $action ) ); # PHP5.3
-			// ( new Inherit_Theme_Mods() )->$action(); # PHP5.4
+			// $this->itm->$action(); # >PHP5.4
+			call_user_func( array( $this->itm, $action ) ); # PHP5.3
 			$data = $this->get_new_table()->data;
 			foreach ($data as $index => $datum ) {
 				unset( $data[$index]['key'] );
@@ -101,7 +101,8 @@ class Inherit_Theme_Mods_UI {
 				<span id="ITM-instant-notifier" class="ITM-status-notifier ITM-aside"></span>
 			</h1>
 			<?php
-			if ( ! ( new Inherit_Theme_Mods() )->is_child_theme_active() ) {
+			$itm = new Inherit_Theme_Mods();
+			if ( ! $itm->is_child_theme_active() ) { # PHP5.3
 				?>
 				<div id="ITM-notifier" class="notice notice-warning">
 					<p>
