@@ -37,7 +37,7 @@ git add .
 git commit --quiet -m "Deploy from travis"
 git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:latest > /dev/null 2>&1
 
-if [[ != "$TRAVIS_BRANCH" =~ ^v?[0-9](\.[0-9])* ]]; then
-	git tag $TRAVIS_BRANCH
+if [[ "$TRAVIS_BRANCH" =~ ^v?[0-9](\.[0-9])* ]]; then
+	git tag "${TRAVIS_BRANCH}-release"
 	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" "master:${TRAVIS_BRANCH}-release" > /dev/null 2>&1
 fi
