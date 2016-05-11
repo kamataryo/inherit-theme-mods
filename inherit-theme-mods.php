@@ -10,7 +10,7 @@ class Inherit_Theme_Mods {
 	// prefix for theme mods defined by WordPress
 	const OPTION_PREFIX = 'theme_mods_';
 	// option name to store mods in trash box
-	const STORE_KEY     = 'inherit_theme_mods_stored_option';
+	const STORE_KEY = 'inherit_theme_mods_stored_option';
 	public $parent_theme_slug;
 	public $child_theme_slug;
 
@@ -97,10 +97,13 @@ class Inherit_Theme_Mods {
 
 		if ( $this->is_child_theme_active() ) {
 
-			$storing_value = self::get_theme_mods_of( $this->child_theme_slug );
-			return get_option( self::STORE_KEY, false ) ?
-				update_option( self::STORE_KEY, $storing_value ,'no' ) :
-				add_option( self::STORE_KEY, $storing_value, '' ,'no' );
+			delete_option( self::STORE_KEY );
+			return add_option(
+				self::STORE_KEY,
+				self::get_theme_mods_of( $this->child_theme_slug ),
+				'',
+				'no'
+			);
 
 		} else {
 			return false;
