@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/inherit-theme-mods\n"
-"POT-Creation-Date: 2016-05-10 00:25:08+00:00\n"
+"POT-Creation-Date: 2016-05-11 06:23:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,147 +25,155 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: functions.php:49
+#: functions.php:52
 msgid "Header Image Data"
 msgstr ""
 
-#: functions.php:50
+#: functions.php:53
 msgid "Nav Menu Locations"
 msgstr ""
 
-#: functions.php:51
+#: functions.php:54
 msgid "Sidebars Widgets"
 msgstr ""
 
-#: functions.php:52
+#: functions.php:55
 msgid "Color Scheme"
 msgstr ""
 
-#: functions.php:53
+#: functions.php:56
 msgid "Background Position X"
 msgstr ""
 
-#: functions.php:54
+#: functions.php:57
 msgid "Main Text Color"
 msgstr ""
 
-#: functions.php:55
+#: functions.php:58
 msgid "Header Textcolor"
 msgstr ""
 
-#: functions.php:56
+#: functions.php:59
 msgid "Link Color"
 msgstr ""
 
-#: functions.php:57
+#: functions.php:60
 msgid "Sidebar Textcolor"
 msgstr ""
 
-#: functions.php:58
+#: functions.php:61
 msgid "Custom Logo"
 msgstr ""
 
-#: functions.php:59
+#: functions.php:62
 msgid "Featured Content Layout"
 msgstr ""
 
-#: inherit-theme-mods-table.php:37
+#: inherit-theme-mods-table.php:45
 msgid "Settings"
 msgstr ""
 
-#: inherit-theme-mods-table.php:38
+#: inherit-theme-mods-table.php:46
 msgid "(Parent theme)"
 msgstr ""
 
-#: inherit-theme-mods-table.php:39
+#: inherit-theme-mods-table.php:47
 msgid "(Child theme)"
 msgstr ""
 
-#: inherit-theme-mods-table.php:40 inherit-theme-mods-table.php:46
+#: inherit-theme-mods-table.php:48 inherit-theme-mods-table.php:53
 msgid "Trashed"
 msgstr ""
 
-#: inherit-theme-mods-table.php:44
+#: inherit-theme-mods-table.php:51
 msgid "Key"
 msgstr ""
 
-#: inherit-theme-mods-table.php:156
+#: inherit-theme-mods-table.php:121
 msgid "(no value)"
 msgstr ""
 
-#: inherit-theme-mods-ui.php:38 inherit-theme-mods-ui.php:39
-#: inherit-theme-mods-ui.php:121
+#: inherit-theme-mods-ui.php:40 inherit-theme-mods-ui.php:41
+#: inherit-theme-mods-ui.php:101
 msgid "Inherit Theme Mods"
 msgstr ""
 
-#: inherit-theme-mods-ui.php:67
+#: inherit-theme-mods-ui.php:69
 msgid "Processed successfully."
 msgstr ""
 
-#: inherit-theme-mods-ui.php:67 inherit-theme-mods-ui.php:148
+#: inherit-theme-mods-ui.php:69
 msgid "Visit Site"
 msgstr ""
 
-#: inherit-theme-mods-ui.php:68
+#: inherit-theme-mods-ui.php:70
 msgid "Unknown error"
 msgstr ""
 
-#: inherit-theme-mods-ui.php:129
-msgid ""
-"The active theme is not child theme. This plugin is simply working as "
-"inspector."
+#: inherit-theme-mods-ui.php:71
+msgid "Updating.."
 msgstr ""
 
-#: inherit-theme-mods-ui.php:154
+#: inherit-theme-mods-ui.php:111
+msgid ""
+"The active theme is not child theme. To use this plugin, activate child "
+"theme. This plugin is simply working as inspector now."
+msgstr ""
+
+#: inherit-theme-mods-ui.php:128
+msgid "This is a plugin to inherit parent theme's to child. "
+msgstr ""
+
+#: inherit-theme-mods-ui.php:133
 msgid "Inherit Properties"
 msgstr ""
 
-#: inherit-theme-mods-ui.php:155
+#: inherit-theme-mods-ui.php:134
 msgid ""
 "Copy and inherit parent theme's properties to child. Original child "
 "properties will be preserved. The last child properties are stored at trash "
 "box once for backup."
 msgstr ""
 
-#: inherit-theme-mods-ui.php:160
+#: inherit-theme-mods-ui.php:139
 msgid "inherit"
 msgstr ""
 
-#: inherit-theme-mods-ui.php:173
+#: inherit-theme-mods-ui.php:152
 msgid "Overwrite Properties"
 msgstr ""
 
-#: inherit-theme-mods-ui.php:174
+#: inherit-theme-mods-ui.php:153
 msgid ""
 "Copy and overwrite parent theme's properties to child. Original child "
 "properties will be aborted. The last child properties are stored at trash "
 "box once for backup."
 msgstr ""
 
-#: inherit-theme-mods-ui.php:179
+#: inherit-theme-mods-ui.php:158
 msgid "overwrite"
 msgstr ""
 
-#: inherit-theme-mods-ui.php:193
+#: inherit-theme-mods-ui.php:172
 msgid "Restore Properties"
 msgstr ""
 
-#: inherit-theme-mods-ui.php:194
+#: inherit-theme-mods-ui.php:173
 msgid "Restore child properties from trash box."
 msgstr ""
 
-#: inherit-theme-mods-ui.php:199
+#: inherit-theme-mods-ui.php:178
 msgid "restore"
 msgstr ""
 
-#: inherit-theme-mods-ui.php:242
+#: inherit-theme-mods-ui.php:222
 msgid "You do not have sufficient permissions for the request."
 msgstr ""
 
-#: inherit-theme-mods-ui.php:245
+#: inherit-theme-mods-ui.php:225
 msgid "Invalid request."
 msgstr ""
 
-#: inherit-theme-mods-ui.php:248
+#: inherit-theme-mods-ui.php:228
 msgid "No Child Theme has been activated."
 msgstr ""

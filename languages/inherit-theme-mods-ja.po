@@ -1,11 +1,11 @@
 # Copyright (C) 2016
-# This file is distributed under the same license as the package.
+# This file is distributed under the same license as the  package.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/inherit-theme-mods\n"
-"POT-Creation-Date: 2016-05-09 10:06:59+00:00\n"
+"POT-Creation-Date: 2016-05-11 06:23:12+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,103 +25,113 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: functions.php:50
+#: functions.php:52
 msgid "Header Image Data"
 msgstr "ヘッダー画像データ"
 
-#: functions.php:55
+#: functions.php:53
 msgid "Nav Menu Locations"
 msgstr "ナビゲーションの位置"
 
-#: functions.php:56
+#: functions.php:54
 msgid "Sidebars Widgets"
 msgstr "サイドバーウィジェット"
 
-#: functions.php:57
+#: functions.php:55
 msgid "Color Scheme"
 msgstr "ベース配色"
 
-#: functions.php:58
+#: functions.php:56
 msgid "Background Position X"
 msgstr "背景の位置"
 
-#: functions.php:59 functions.php:60
+#: functions.php:57
 msgid "Main Text Color"
 msgstr "メインのテキストカラー"
 
-#: functions.php:61
+#: functions.php:58
 msgid "Header Textcolor"
 msgstr "ヘッダーテキスト色"
 
-#: functions.php:62
+#: functions.php:59
 msgid "Link Color"
 msgstr "リンク色"
 
-#: functions.php:63
+#: functions.php:60
 msgid "Sidebar Textcolor"
 msgstr "サイドバーテキスト色"
 
-#: functions.php:64
+#: functions.php:61
 msgid "Custom Logo"
-msgstr "ロゴ"
+msgstr "カスタム・ロゴ"
 
-#: functions.php:65
+#: functions.php:62
 msgid "Featured Content Layout"
 msgstr "おすすめコンテンツのレイアウト"
 
-#: inherit-theme-mods-table.php:37
+#: inherit-theme-mods-table.php:45
 msgid "Settings"
 msgstr "設定項目"
 
-#: inherit-theme-mods-table.php:38
+#: inherit-theme-mods-table.php:46
 msgid "(Parent theme)"
 msgstr "(親テーマ)"
 
-#: inherit-theme-mods-table.php:39
+#: inherit-theme-mods-table.php:47
 msgid "(Child theme)"
 msgstr "(子テーマ)"
 
-#: inherit-theme-mods-table.php:40 inherit-theme-mods-table.php:46
+#: inherit-theme-mods-table.php:48 inherit-theme-mods-table.php:53
 msgid "Trashed"
 msgstr "ゴミ箱"
 
-#: inherit-theme-mods-table.php:44
+#: inherit-theme-mods-table.php:51
 msgid "Key"
 msgstr "項目"
 
-#: inherit-theme-mods-table.php:156
+#: inherit-theme-mods-table.php:121
 msgid "(no value)"
 msgstr "(値なし)"
 
-#: inherit-theme-mods-ui.php:28 inherit-theme-mods-ui.php:29
-#: inherit-theme-mods-ui.php:110
+#: inherit-theme-mods-ui.php:40 inherit-theme-mods-ui.php:41
+#: inherit-theme-mods-ui.php:101
 msgid "Inherit Theme Mods"
 msgstr "Inherit Theme Mods"
 
-#: inherit-theme-mods-ui.php:59
+#: inherit-theme-mods-ui.php:69
 msgid "Processed successfully."
 msgstr "処理が成功しました。"
 
-#: inherit-theme-mods-ui.php:59 inherit-theme-mods-ui.php:137
+#: inherit-theme-mods-ui.php:69
 msgid "Visit Site"
 msgstr "サイトを表示"
 
-#: inherit-theme-mods-ui.php:61
+#: inherit-theme-mods-ui.php:70
 msgid "Unknown error"
 msgstr "不明なエラーです。"
 
-#: inherit-theme-mods-ui.php:118
-msgid ""
-"The active theme is not child theme. This plugin is simply working as "
-"inspector."
-msgstr ""
-"子テーマが有効化されていません。このプラグインは現在インスペクターとしてのみ機能しています。"
+#: inherit-theme-mods-ui.php:71
+msgid "Updating.."
+msgstr "更新中です.."
 
-#: inherit-theme-mods-ui.php:142
+#: inherit-theme-mods-ui.php:111
+msgid ""
+"The active theme is not child theme. To use this plugin, activate child "
+"theme. This plugin is simply working as inspector now."
+msgstr ""
+"子テーマが有効化されていません。このプラグインを使用するためには、"
+"子テーマを有効化してください。現在はテーマ・プロパティのインスペクターとして"
+"のみ機能しています。"
+
+#: inherit-theme-mods-ui.php:128
+msgid "This is a plugin to inherit parent theme's properties to child."
+msgstr "これは、親テーマのプロパティ値を子テーマに引き継ぐためのプラグインです。"
+
+#: inherit-theme-mods-ui.php:133
 msgid "Inherit Properties"
 msgstr "プロパティ値の継承"
 
-#: inherit-theme-mods-ui.php:143
+#: inherit-theme-mods-ui.php:134
 msgid ""
 "Copy and inherit parent theme's properties to child. Original child "
 "properties will be preserved. The last child properties are stored at trash "
@@ -130,15 +140,15 @@ msgstr ""
 "親テーマのプロパティ値を子テーマに継承します。子テーマ固有のプロパティ値は保存されます。"
 "最後に変更した値がゴミ箱にバックアップされます。"
 
-#: inherit-theme-mods-ui.php:148
+#: inherit-theme-mods-ui.php:139
 msgid "inherit"
 msgstr "継承"
 
-#: inherit-theme-mods-ui.php:161
+#: inherit-theme-mods-ui.php:152
 msgid "Overwrite Properties"
 msgstr "プロパティ値の上書き"
 
-#: inherit-theme-mods-ui.php:162
+#: inherit-theme-mods-ui.php:153
 msgid ""
 "Copy and overwrite parent theme's properties to child. Original child "
 "properties will be aborted. The last child properties are stored at trash "
@@ -147,30 +157,30 @@ msgstr ""
 "親テーマのプロパティ値を子テーマに上書きします。子テーマ固有のプロパティ値は破棄されます。"
 "最後に変更した値がゴミ箱にバックアップされます。"
 
-#: inherit-theme-mods-ui.php:167
+#: inherit-theme-mods-ui.php:158
 msgid "overwrite"
 msgstr "上書き"
 
-#: inherit-theme-mods-ui.php:181
+#: inherit-theme-mods-ui.php:172
 msgid "Restore Properties"
 msgstr "プロパティ値の復元"
 
-#: inherit-theme-mods-ui.php:182
+#: inherit-theme-mods-ui.php:173
 msgid "Restore child properties from trash box."
 msgstr "子テーマのプロパティ値をゴミ箱から復元します。"
 
-#: inherit-theme-mods-ui.php:187
+#: inherit-theme-mods-ui.php:178
 msgid "restore"
 msgstr "復元"
 
-#: inherit-theme-mods-ui.php:230
+#: inherit-theme-mods-ui.php:222
 msgid "You do not have sufficient permissions for the request."
 msgstr "このリクエストを行うのに十分な権限がありません。"
 
-#: inherit-theme-mods-ui.php:233
+#: inherit-theme-mods-ui.php:225
 msgid "Invalid request."
 msgstr "不正なリクエストです。"
 
-#: inherit-theme-mods-ui.php:236
+#: inherit-theme-mods-ui.php:228
 msgid "No Child Theme has been activated."
 msgstr "子テーマが有効化されていません。"

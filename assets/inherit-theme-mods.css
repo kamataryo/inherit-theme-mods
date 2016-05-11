@@ -1,21 +1,7 @@
-/*notification icons and texts beside h1*/
-.ITM-status-notifier {
-    opacity: .7;
-}
 .ITM-aside {
     margin-left: .5em;
 }
 
-@media screen and (max-width: 782px) {
-    .ITM-status-notifier-text {
-        display: none;
-    }
-}
-
-/*as preview nav*/
-.ITM-visit-site {
-    display: none;
-}
 
 /*buttons and descriptions for each ajax action*/
 .ITM-action-header{

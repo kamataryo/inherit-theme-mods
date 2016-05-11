@@ -68,6 +68,7 @@ class Inherit_Theme_Mods_UI {
 			'status'   => array(
 				'success'      => __( 'Processed successfully.', 'inherit-theme-mods' ) . '<a href="' . esc_url( home_url( '/' ) ) . '" class="ITM-aside">' . __( 'Visit Site', 'inherit-theme-mods' ) . '</a>',
 				'unknownError' => __( 'Unknown error', 'inherit-theme-mods' ),
+				'updating'     => __( 'Updating..', 'inherit_theme_mods', 'inherit-theme-mods' ),
 			),
 		) );
 	}
@@ -100,13 +101,14 @@ class Inherit_Theme_Mods_UI {
 			<h1 id="ITM-title"><?php _e( 'Inherit Theme Mods', 'inherit-theme-mods' ); ?>
 				<span id="ITM-instant-notifier" class="ITM-status-notifier ITM-aside"></span>
 			</h1>
+
 			<?php
 			$itm = new Inherit_Theme_Mods();
 			if ( ! $itm->is_child_theme_active() ) { # PHP5.3
 				?>
 				<div id="ITM-notifier" class="notice notice-warning">
 					<p>
-						<?php _e( 'The active theme is not child theme. This plugin is simply working as inspector.', 'inherit-theme-mods' ); ?>
+						<?php _e( 'The active theme is not child theme. To use this plugin, activate child theme. This plugin is simply working as inspector now.', 'inherit-theme-mods' ); ?>
 					</p>
 				</div>
 				<?php
@@ -123,12 +125,9 @@ class Inherit_Theme_Mods_UI {
 	static function describe_header_area() {
 		?>
 		<div id="ITM-notifier" class="ITM-visit-site notice notice-success">
-			<p>
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
-					<?php _e( 'Visit Site', 'inherit-theme-mods' ); ?>
-				</a>
-			</p>
+			<p><?php _e( "This is a plugin to inherit parent theme's properties to child.", 'inherit-theme-mods' ); ?></p>
 		</div>
+
 		<form class="ITM-form">
 
 			<h2 class="ITM-action-header"><?php  _e( 'Inherit Properties', 'inherit-theme-mods' ); ?></h2>

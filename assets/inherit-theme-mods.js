@@ -1,36 +1,7 @@
 (function() {
-  var $, clearInstantNotifier, clearNotifier, makeRequest, updateInstantNotifier, updateNotifier, updateTable;
+  var $, clearNotifier, makeRequest, updateNotifier, updateTable;
 
   $ = jQuery;
-
-  updateInstantNotifier = function(classes) {
-    var $container, deferred, msecToApper;
-    deferred = $.Deferred();
-    $container = $('#ITM-instant-notifier');
-    if ($container.children().length === 0) {
-      msecToApper = 0;
-    } else {
-      msecToApper = 50;
-    }
-    $container.fadeOut(msecToApper, function() {
-      $(this).empty();
-      return $(this).fadeIn(50, function() {
-        return $("<i class=\"" + (classes.join(' ')) + "\"></i>").hide().appendTo($(this)).fadeIn(50, function() {
-          return deferred.resolve();
-        });
-      });
-    });
-    return deferred.promise();
-  };
-
-  clearInstantNotifier = function() {
-    var deferred;
-    deferred = $.Deferred();
-    $('#ITM-instant-notifier').fadeOut(50, function() {
-      return $(this).empty();
-    });
-    return deferred.promise();
-  };
 
   updateNotifier = function(type, innerHTML) {
     var deferred;
@@ -59,7 +30,6 @@
       nonce: ajax.nonce
     }, function(arg) {
       var data, success;
-      console.log(arg);
       success = arg.success, data = arg.data;
       if (success == null) {
         deferred.reject();
@@ -109,9 +79,8 @@
   };
 
   $(document).ready(function($) {
-    var ref, sync, timerId1, timerId2;
+    var sync;
     sync = false;
-    ref = [], timerId1 = ref[0], timerId2 = ref[1];
     return $('.ITM-button').click(function() {
       if (sync) {
         return;
@@ -119,24 +88,11 @@
         sync = true;
       }
       $('body').css('cursor', 'wait');
-      clearTimeout(timerId1);
-      clearTimeout(timerId2);
-      clearNotifier();
-      clearInstantNotifier();
-      return $.when.apply(null, [makeRequest($(this).data('action')), updateInstantNotifier(['fa', 'fa-spinner', 'fa-spin', 'fa-wf'])]).done(updateTable).done(function() {
-        updateNotifier('success', ajax.status.success);
-        return updateInstantNotifier(['fa', 'fa-check', 'fa-wf']).done(function() {
-          return timerId1 = setTimeout(function() {
-            return clearInstantNotifier();
-          }, 2000);
-        });
+      updateNotifier('success', ajax.status.updating);
+      return makeRequest($(this).data('action')).done(updateTable).done(function() {
+        return updateNotifier('success', ajax.status.success);
       }).fail(function(message) {
-        updateNotifier('error', message != null ? message : ajax.status.unknownError);
-        return updateInstantNotifier(['fa', 'fa-warning', 'fa-wf']).done(function() {
-          return timerId2 = setTimeout(function() {
-            return clearInstantNotifier();
-          }, 2000);
-        });
+        return updateNotifier('error', message != null ? message : ajax.status.unknownError);
       }).always(function() {
         sync = false;
         return $('body').css('cursor', 'default');

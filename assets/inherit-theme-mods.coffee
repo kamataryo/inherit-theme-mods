@@ -1,37 +1,6 @@
 # **notice**
 $ = jQuery # Don't complile me with {bare:true}
 
-updateInstantNotifier = (classes) ->
-    deferred = $.Deferred()
-
-    $container= $ '#ITM-instant-notifier'
-    if $container.children().length is 0
-        msecToApper = 0
-    else
-        msecToApper = 50
-
-    $container.fadeOut msecToApper, ->
-        $(this).empty()
-        $(this).fadeIn 50, ->
-            $ "<i class=\"#{classes.join ' '}\"></i>"
-                .hide()
-                .appendTo $(this)
-                .fadeIn 50, ->
-                    deferred.resolve()
-
-    return  deferred.promise()
-
-
-clearInstantNotifier = ->
-    deferred = $.Deferred()
-
-    $('#ITM-instant-notifier').fadeOut 50, ->
-        $(this).empty()
-
-    return  deferred.promise()
-
-
-
 updateNotifier = (type, innerHTML) ->
     deferred = $.Deferred()
 
@@ -60,9 +29,7 @@ clearNotifier = ->
 makeRequest = (action) ->
     deferred = $.Deferred()
 
-    $.post ajax.endpoint, {action, nonce: ajax.nonce}, (arg) ->
-        console.log arg
-        {success, data} = arg
+    $.post ajax.endpoint, {action, nonce: ajax.nonce}, ({success, data}) ->
         unless success?
             deferred.reject()
         if success
@@ -99,37 +66,20 @@ updateTable = (data) ->
 
 $(document).ready ($) ->
     sync = false # prevent multiple request
-    [timerId1, timerId2] = []
 
     $('.ITM-button').click ->
+
         if sync then return else sync = true
-
         $('body').css 'cursor', 'wait'
-        clearTimeout timerId1
-        clearTimeout timerId2
-        clearNotifier()
-        clearInstantNotifier()
+        updateNotifier 'success', ajax.status.updating
 
-        $.when.apply null, [
-            makeRequest $(this).data 'action'
-            updateInstantNotifier ['fa', 'fa-spinner', 'fa-spin', 'fa-wf']
-        ]
+        makeRequest $(this).data 'action'
             .done updateTable
             .done ->
                 updateNotifier 'success', ajax.status.success
-                updateInstantNotifier ['fa', 'fa-check', 'fa-wf']
-                    .done ->
-                        timerId1 = setTimeout ->
-                            clearInstantNotifier()
-                        , 2000
 
             .fail (message) ->
                 updateNotifier 'error', if message? then message else ajax.status.unknownError
-                updateInstantNotifier ['fa', 'fa-warning', 'fa-wf']
-                    .done ->
-                        timerId2 = setTimeout ->
-                            clearInstantNotifier()
-                        , 2000
             .always ->
                 sync = false
                 $('body').css 'cursor', 'default'
