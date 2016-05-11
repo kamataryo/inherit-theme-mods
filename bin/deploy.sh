@@ -46,7 +46,5 @@ if [[ "$TRAVIS_BRANCH" =~ ^v?[0-9](\.[0-9])* ]]; then
 	echo "deploy as tagged '$tag'"
 	git commit --quiet -m "Deploy from travis"
 	git tag $tag
-	git tag
-	git branch
-	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" "master:$tag" > /dev/null 2>&1
+	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" --tags > /dev/null 2>&1
 fi
