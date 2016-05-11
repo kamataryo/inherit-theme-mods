@@ -32,17 +32,17 @@ bower.json
 
 git init
 git config user.name "kamataryo"
-git config user.email "mugil.cephalus@gmail.com"
+git config user.email "kamataryo@travis-ci.org"
 git add .
 
 if [[ "master" == "$TRAVIS_BRANCH" ]]; then
-	echo "deploy as master:latest"
+	echo "deploy as 'latest'"
 	git commit --quiet -m "Deploy from travis"
 	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:latest > /dev/null 2>&1
 fi
 
 if [[ "$TRAVIS_BRANCH" =~ ^v?[0-9](\.[0-9])* ]]; then
-	echo "deploy as ${TRAVIS_BRANCH}:${TRAVIS_BRANCH}-released"
+	echo "deploy as '${TRAVIS_BRANCH}-released'"
 	git commit --quiet -m "Deploy from travis"
 	git tag "${TRAVIS_BRANCH}-released"
 	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" "master:${TRAVIS_BRANCH}-released" > /dev/null 2>&1
