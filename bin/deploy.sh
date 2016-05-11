@@ -7,9 +7,8 @@ if [[ "false" != "$TRAVIS_PULL_REQUEST" ]]; then
 	exit
 fi
 
-TAG_PATTERN=^v?[0-9](\.[0-9])*
 
-if ! [[ "master" == "$TRAVIS_BRANCH" || "$TRAVIS_BRANCH" =~ $TAG_PATTERN ]]; then
+if ! [[ "master" == "$TRAVIS_BRANCH" || "$TRAVIS_BRANCH" =~ ^v?[0-9](\.[0-9])* ]]; then
 	echo "Not on the 'master' branch or tags."
 	exit
 fi
@@ -46,7 +45,7 @@ if [[ "master" == "$TRAVIS_BRANCH" ]]; then
 	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:latest > /dev/null 2>&1
 fi
 
-if [[ "$TRAVIS_BRANCH" =~ $TAG_PATTERN ]]; then
+if [[ "$TRAVIS_BRANCH" =~ ^v?[0-9](\.[0-9])* ]]; then
 
 	TAG_NAME=${TRAVIS_BRANCH}-release
 	echo "deploy as tagged '$TAG_NAME'"
