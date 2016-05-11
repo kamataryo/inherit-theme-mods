@@ -15,7 +15,8 @@ fi
 rm -rf .git
 rm -r .gitignore
 
-echo "bin
+echo "README.md
+bin
 .travis.yml
 .editorconfig
 .gitignore

@@ -8,11 +8,11 @@ Stable tag: 4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Inherit Theme Mods enable to copy child theme property from that of parent.
+'Inherit Theme Mods' enable to copy child theme properties from those of parent.
 
 == Description ==
 
-This plugin, Inherit Theme Mods enable to copy child theme property from that of parent.
+This plugin, 'Inherit Theme Mods' enable to copy child theme property from that of parent.
 
 Do you still need parent theme's customizer properties when building your website with its child theme?
 Inherit Theme Mods solve it.
@@ -25,15 +25,23 @@ Also it works as an inspector of customizer properties.
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Open 'Settings' -> 'Inherit Theme Mods' menu.
 
+== required ==
+
+* tested on PHP5.3 to PHP7.0
+* tested on WordPress3.9 to WordPress4.5.2
+
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= When should I use this plugin? =
 
-An answer to that question.
+If you are to start customize your website with a child theme,
+you can see that customizer properties of the parent theme is not inheritted.
+It might be good to use this plugin and inherit parental property at first.
 
-= What about foo bar? =
+= When should not I use this plugin? =
 
-Answer to foo bar dilemma.
+This plugin is less effective with well-customized child theme with many customizer terms.
+Use 'Inherit Theme Mods' as an inspector.
 
 == Screenshots ==
 
