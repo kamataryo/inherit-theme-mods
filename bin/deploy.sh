@@ -5,7 +5,7 @@ set -e
 if ! [[ "$WP_VERSION"         == "$WP_VERSION_TO_DEPLOY" && \
         "$TRAVIS_PHP_VERSION" == "$PHP_VERSION_TO_DEPLOY" && \
 		"$WP_MULTISITE"       == "$WP_MULTISITE_TO_DEPLOY" ]]; then
-	echo "Not deploying for PHP=$TRAVIS_PHP_VERSION & WP=$WP_VERSION";
+	echo "Not deploying for this matrix";
 	exit
 elif [[ "false" != "$TRAVIS_PULL_REQUEST" ]]; then
 	echo "Not deploying pull requests."
