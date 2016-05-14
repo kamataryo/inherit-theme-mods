@@ -51,6 +51,7 @@ fi
 if ! [[  "" == "$TRAVIS_TAG" ]]; then
 	echo "deploy as tagged '$TRAVIS_TAG'"
 	git commit --quiet -m"Deploy from travis, tested on PHP=$TRAVIS_PHP_VERSION & WP=$WP_VERSION"
+	git push --quiet origin ":$TRAVIS_TAG"
 	git tag "$TRAVIS_TAG" -m"$COMMIT_MESSAGE\nOriginal commit is $TRAVIS_COMMIT."
 	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" --tags > /dev/null 2>&1
 fi
