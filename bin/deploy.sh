@@ -42,7 +42,7 @@ git init
 git config user.name "kamataryo"
 git config user.email "kamataryo@travis-ci.org"
 git add .
-git commit --quiet -m "Deploy from travis.\nOriginal commit is $TRAVIS_COMMIT."
+git commit --quiet -m"Deploy from travis." -m"Original commit is $TRAVIS_COMMIT."
 
 if [[ "master" == "$TRAVIS_BRANCH" ]]; then
 	echo "deploy on 'latest' branch, tested on PHP=$TRAVIS_PHP_VERSION & WP=$WP_VERSION"
@@ -50,8 +50,8 @@ if [[ "master" == "$TRAVIS_BRANCH" ]]; then
 fi
 if ! [[  "" == "$TRAVIS_TAG" ]]; then
 	echo "deploy as '$TRAVIS_TAG', tested on PHP=$TRAVIS_PHP_VERSION & WP=$WP_VERSION"
-	git push --quiet origin ":$TRAVIS_TAG"
-	git tag --quiet "$TRAVIS_TAG" -m"$COMMIT_MESSAGE\nOriginal commit is $TRAVIS_COMMIT."
+	git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" ":$TRAVIS_TAG" > /dev/null 2>&1
+	git tag --quiet "$TRAVIS_TAG" -m"$COMMIT_MESSAGE" -m"Original commit is $TRAVIS_COMMIT."
 	option="--tags"
 fi
 
