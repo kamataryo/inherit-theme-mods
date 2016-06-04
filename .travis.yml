@@ -17,7 +17,7 @@ php:
   - 5.6
 
 before_script:
-  - curl https://gist.githubusercontent.com/KamataRyo/cf31b8ffe87cebae64a3acf702692e76/raw/7f9aac841b5c9be3de235b6c70c480fbdaa50c34/install-wp-tests.sh > ./install-wp-tests.sh
+  - curl https://github.com/KamataRyo/travis-sctipts-collection/blob/master/install-wp-tests.sh > ./install-wp-tests.sh
   - bash ./install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
   - npm cache clean
   - travis_retry npm install
@@ -28,7 +28,7 @@ script:
 
 after_success:
   - npm run generatePot
-  - curl https://gist.githubusercontent.com/KamataRyo/8fd5e7b6aea4de1b3b48a5f4c429ecbe/raw/df91683e27a18e62e441fae6e0bc95b4d49d67b0/wp_plugin_deploy.sh | bash
+  - curl https://raw.githubusercontent.com/KamataRyo/travis-sctipts-collection/master/deploy-wp-plugin.sh | bash
 
 env:
   matrix:
@@ -40,7 +40,7 @@ env:
     - PHP_VERSION_TO_DEPLOY: 5.6
     - WP_MULTISITE_TO_DEPLOY: 0
     - GH_REF: github.com/KamataRyo/inherit-theme-mods.git
-    - SVN_REPO: https://plugins.svn.wordpress.org/inherit-theme-mods/
+    - SVN_REF: https://plugins.svn.wordpress.org/inherit-theme-mods/
     - secure: "K1ysPioCfFWek3yuc1sYhwox/Lzsd8Tx7Fn/MnH8G124ksl7+/+gkuHhLmHVBrCvImr8rfwbG+W2fnecxAQQ/neeLT6F7AoSEH1jZKynCADn66z8cSWHfI/giQAlrmBwXi4AFpMC9xpiUhGBywBMJwkY5uJWVE7n2WmSEESo3CfOJxupU2gac0LlRPVVWzc2l9KqhIZpSM04IgLoNp5Aw/3+vxjWFalFcsoemRA0Te93tAgmA15dvrl08wz5TsuHBZynsyQjKbtBhrPulvLxzfMr89Cmhp/0IpMlQuKNQvpJKkHxw8IHyByox/7zvx658tO604CtsnKfT/KhQbmJKMUslTt4M74aMEEAoMJp6uWfbHe4tnrUZl5Bb660FrC8CZ0tISsIEbfWOc4FZhpZn84ho1XYOiHTWQpkve9wdBfbb1YGQX+r52z8Eb27LnQvNzq0dL7S7CLpKwje1q8ity+nsPOWYU6DQNq41a/orPCjy/4aMCFnOpo75G6sBDoZBb/aFfJTuVZe6bJGGDolbmR0hVpfOBruEC4nSTh+L5NZ0OInzfhEc21ihMZ7NqT26QxfOrkX2sfAtxmfSYb8/V6qapqyZfzW5G1czLMZTAIJIHJONxPG9AueSgWJfEEgbS/pzeIr1JXvWCSv5PG/IHVK80ddVjwacctYm+yaONM="
 
 matrix:
