@@ -1,6 +1,6 @@
 {
   "name": "inherit-theme-mods",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "'Inherit Theme Mods' enables to copy customizer properties from parent theme to child.",
   "keywords": [
     "WordPress",

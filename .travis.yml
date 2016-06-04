@@ -10,17 +10,17 @@ notifications:
 branches:
   only:
     - master
-    - /^v?[0-9](\.[0-9])*/
+    - "/^v?[0-9](\\.[0-9])*/"
 
 php:
   - 5.3
   - 5.6
 
 before_script:
-  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+  - curl https://gist.githubusercontent.com/KamataRyo/cf31b8ffe87cebae64a3acf702692e76/raw/7f9aac841b5c9be3de235b6c70c480fbdaa50c34/install-wp-tests.sh > ./install-wp-tests.sh
+  - bash ./install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
   - npm cache clean
-  - npm install -g  npm-install-retry
-  - npm-install-retry --wait 500 --attempts 10
+  - travis_retry npm install
 
 script:
   - npm test
@@ -28,7 +28,7 @@ script:
 
 after_success:
   - npm run generatePot
-  - bash bin/deploy.sh
+  - curl https://gist.githubusercontent.com/KamataRyo/8fd5e7b6aea4de1b3b48a5f4c429ecbe/raw/df91683e27a18e62e441fae6e0bc95b4d49d67b0/wp_plugin_deploy.sh | bash
 
 env:
   matrix:
