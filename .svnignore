@@ -1,0 +1,16 @@
+assets/*.coffee
+assets/*.sass
+tests
+.bowerrc
+.editorconfig
+.gitignore
+.svnignore
+.travis.yml
+bower.json
+Gruntfile.js
+Gruntfile.coffee
+gulpfile.js
+gulpfile.coffee
+package.json
+phpunit.xml
+README.md
