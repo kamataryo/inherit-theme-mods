@@ -1,6 +1,7 @@
 assets/*.coffee
 assets/*.sass
 tests
+.git
 .bowerrc
 .editorconfig
 .gitignore
