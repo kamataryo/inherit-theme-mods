@@ -13,7 +13,7 @@ branches:
     - "/^v?[0-9](\\.[0-9])*/"
 
 php:
-  - 5.3
+  # - 5.3
   - 5.6
 
 before_script:
@@ -33,7 +33,7 @@ after_success:
 env:
   matrix:
     - WP_VERSION=latest WP_MULTISITE=0
-    - WP_VERSION=3.9 WP_MULTISITE=0
+    # - WP_VERSION=3.9 WP_MULTISITE=0
 
   global:
     - WP_VERSION_TO_DEPLOY: latest
@@ -44,7 +44,7 @@ env:
     # GH_TOKEN, SVN_USER, SVN_REPO
     - secure: "anX8iopxbjEpKVkBFWCEi+kVaOfGq1d4ceDvMe7flpdjxOhIbS69LRQHKa97byetxfZToU6pfFRVKked2ByvGDsfSbjktDscujfwWo5D83IOp0RsYdLn21Sm/6+Mh4ldZuKAE2NeQSDuVVL58XGmO1MN8Af2tbk0Z797pvXbFiOn77lt7EVFd44LRg4qdU/8zZ5H+NqH1JpPtuC4RSlzCSNk1Kib8/eLsUjg2D2zQO1aR7x8+XUe+a6o7Cvohi3am+T0EN5vZjJFOCq6RU0LIzsDLgawsGEgwMWsXmQfRIgkGuDhs4b3AZecpV9zITnQwuPR7U9WckIEjndWs4/TtGKMQS6TEsTS3OzCibTOhWba7/08nu91VMhLNAQzaSPmIqxPm01W2rpQKH7wDZPxN+0Lmr7AYYpTLGj6k8DBz2Xw5yt6rzKHTiAheTTnIKGsOokPXT0XEWYstQ7umBtlrvFZhWGhssU0hIrvHh6uOj8qSd7iMfn8oGOt1Arc5DmIuW0BTodv1E9CXSADKpvQfkrOVoRwaXPF8UZKtj/sFSqPenTxlU2pCiLPpM04fGQGOJxFUaeBAgAWc4tFRkttfGjsI+JKVQfCMtlWBKM3MDmQsqd/eqlt7/q76OdRmGgTUX3PjlhOyX90Azh03eFVDCYD3se+pExBdJrLHPNdmJ8="
 
-matrix:
-  include:
-    - php: 5.6
-      env: WP_VERSION=latest WP_MULTISITE=1
+# matrix:
+#   include:
+#     - php: 5.6
+#       env: WP_VERSION=latest WP_MULTISITE=1
