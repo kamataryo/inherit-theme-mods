@@ -1,7 +1,12 @@
 assets/*.coffee
 assets/*.sass
 tests
+
 .git
+node_modules
+npm-debug.log/
+npm-debug.log
+
 .bowerrc
 .editorconfig
 .gitignore
