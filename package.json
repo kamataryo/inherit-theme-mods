@@ -20,13 +20,14 @@
     "url": "https://github.com/KamataRyo/inherit-theme-mods"
   },
   "scripts": {
-    "build": "./node_modules/gulp/bin/gulp.js build",
-    "install": "./node_modules/bower/bin/bower install; npm run build",
+    "build": "./node_modules/.bin/bower install; ./node_modules/.bin/gulp build",
+    "install": "npm run build",
     "generatePot": "grunt i18n",
     "test": "ls ./assets/*.js; ls ./lib; ls ./languages/*.mo"
   },
   "devDependencies": {
     "bower": "^1.7.9",
+    "coffee-script": "^1.10.0",
     "grunt": "^0.4.5",
     "grunt-wp-i18n": "^0.5.0",
     "grunt-wp-readme-to-markdown": "~0.9.0",
