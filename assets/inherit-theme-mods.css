@@ -1,0 +1,124 @@
+.ITM-aside {
+    margin-left: .5em;
+}
+
+
+/*buttons and descriptions for each ajax action*/
+.ITM-action-header{
+    margin-bottom: .5em;
+}
+.ITM-action-table {
+    display: table;
+    margin: 1em 0;
+    background:#ECECEC;
+    border:1px solid #CCC;
+    padding:5px;
+    margin-top:5px;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+.ITM-action-block {
+    display: table-row;
+}
+.ITM-action-element {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.ITM-button-col {
+    text-align: left;
+}
+.ITM-picture-col {
+    width: 210px;
+    text-align: center;
+}
+
+.ITM-button {
+    width: 75px;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.ITM-button:hover {
+    cursor: pointer;
+}
+
+/*WP Admin Table customization*/
+
+th {
+    width: 30px;
+}
+th, td {
+    vertical-align: middle;
+}
+
+/*each pattern inseide table-cell*/
+.ITM-list-data .no-value {
+    opacity:.7;
+}
+.ITM-color-indication {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    margin-right: .5em;
+
+    border:1px solid #aaa;
+    border-radius:5px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+.ITM-image-indication {
+    max-width:100%;
+    max-height: 75px;
+}
+
+.ITM-serialized-text {
+    display: block;
+    text-decoration: underline;
+    word-wrap: normal; /* for IE */
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+}
+
+.ITM-button {
+    padding:0 !important;
+}
+
+@media screen and (max-width: 782px) {
+    .ITM-serialized-text {
+        word-wrap: break-word; /* for IE */
+        white-space: normal;
+        text-decoration: none;
+        overflow: auto;
+    }
+    .ITM-button {
+        padding: 6px 0 !important;
+    }
+
+}
+
+
+/*hover action on table-row*/
+@media screen and (min-width: 783px) {
+    table.wp-list-table tbody tr:hover {
+        background-color: #BCC8DB;
+        -webkit-transition-property: background, wordwrap, white-space, overflow;
+        transition-property: background, wordwrap, white-space, overflow;
+        -webkit-transition-duration: .1s;
+        transition-duration: .1s;
+        -webkit-transition-timing-function: ease-out;
+        transition-timing-function: ease-out;
+    }
+}
+
+table.wp-list-table tr:hover .ITM-serialized-text {
+    word-wrap: break-word;; /* for IE */
+    white-space: normal;
+    text-decoration: none;
+    overflow: auto;
+}
