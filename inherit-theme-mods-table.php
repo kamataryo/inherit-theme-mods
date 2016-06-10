@@ -43,14 +43,14 @@ class Inherit_Theme_Mods_Table extends WP_List_Table {
 		return $this->is_inheritable ?
 			array(
 				'key'          => __( 'Settings', 'inherit-theme-mods' ),
-				'parent-theme' => '<i class="fa fa-file-o fa-2x"></i><span class="ITM-aside">' . esc_html( $this->parent_theme_name ) . '<small class="ITM-aside">' . __( '(Parent theme)', 'inherit-theme-mods' ) . '</small></span>',
-				'child-theme'  => '<i class="fa fa-copy fa-2x"></i><span class="ITM-aside">' . esc_html( $this->child_theme_name ) . '<small class="ITM-aside">' . __( '(Child theme)', 'inherit-theme-mods' ) . '</small></span>',
-				'trashed'      => '<i class="fa fa-trash fa-2x"></i><span class="ITM-aside">' . __( 'Trashed', 'inherit-theme-mods' ) . '</span>',
+				'parent-theme' => '<span class="ITM-aside">' . esc_html( $this->parent_theme_name ) . '<small class="ITM-aside">' . __( '(Parent theme)', 'inherit-theme-mods' ) . '</small></span>',
+				'child-theme'  => '<span class="ITM-aside">' . esc_html( $this->child_theme_name ) . '<small class="ITM-aside">' . __( '(Child theme)', 'inherit-theme-mods' ) . '</small></span>',
+				'trashed'      => '<span class="ITM-aside">' . __( 'Trashed', 'inherit-theme-mods' ) . '</span>',
 			) :
 			array(
 				'key'          => __( 'Key', 'inherit-theme-mods' ),
-				'parent-theme' => '<i class="fa fa-file-o fa-2x"></i><span class="ITM-aside">' . esc_html( $this->parent_slug ) . '</span>',
-				'trashed'      => '<i class="fa fa-trash fa-2x"></i><span class="ITM-aside">' . __( 'Trashed', 'inherit-theme-mods' ) . '</span>',
+				'parent-theme' => '<span class="ITM-aside">' . esc_html( $this->parent_slug ) . '</span>',
+				'trashed'      => '<span class="ITM-aside">' . __( 'Trashed', 'inherit-theme-mods' ) . '</span>',
 			);
 	}
 

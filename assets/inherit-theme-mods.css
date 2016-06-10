@@ -7,24 +7,6 @@
 .ITM-action-header{
     margin-bottom: .5em;
 }
-.ITM-action-table {
-    display: table;
-    margin: 1em 0;
-    background:#ECECEC;
-    border:1px solid #CCC;
-    padding:5px;
-    margin-top:5px;
-    border-radius:5px;
-    -moz-border-radius:5px;
-    -webkit-border-radius:5px;
-}
-.ITM-action-block {
-    display: table-row;
-}
-.ITM-action-element {
-    display: table-cell;
-    vertical-align: middle;
-}
 
 .ITM-button-col {
     text-align: left;

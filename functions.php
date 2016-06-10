@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Inherit Theme Mods
- * Version: 1.1.1
+ * Version: 2.0.0
  * Description: Inherit Theme Mods enable to copy child theme property from that of parent.
  * Author: KamataRyo
  * Author URI: http://biwako.io/
