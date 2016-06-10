@@ -15,10 +15,10 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 ## screenshots
 
 - you can see 'Inherit Theme Mods' in 'settigns' menu
-![menu position](assets/screenshot-1.png)
+![menu position](screenshot-1.png)
 
 - inherit or overwrite parental property to that of child.
-![menu position](assets/screenshot-2.png)
+![menu position](screenshot-2.png)
 
 - You can use 'Inherit Theme Mods' as simple inspector for theme properties.
-![menu position](assets/screenshot-3.png)
+![menu position](screenshot-3.png)
