@@ -4,7 +4,7 @@ Donate link: http://biwako.io/
 Tags: child theme, customizer, inspector, inherit, copy, settings, property
 Requires at least: 3.9
 Tested up to: 4.5.2
-Stable tag: 2.0.0
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,9 @@ However, you can use 'Inherit Theme Mods' as a simple inspector for theme proper
 3. The properties can be inspected with list table.
 
 == Changelog ==
+
+= 2.1.0 =
+* Fix style loading bug
 
 = 2.0.0 =
 * Simplify UI

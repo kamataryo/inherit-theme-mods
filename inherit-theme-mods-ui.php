@@ -56,7 +56,7 @@ class Inherit_Theme_Mods_UI {
 		wp_enqueue_style(
 			'itm_style',
 			ITM_Util::url( 'assets', 'inherit-theme-mods.css' ),
-			array( '' )
+			array()
 		);
 		wp_localize_script( 'itm_script', 'ajax', array(
 			'endpoint' => admin_url( 'admin-ajax.php' ),
