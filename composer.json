@@ -1,0 +1,12 @@
+{
+    "name": "kamataryo/inherit-theme-mods",
+    "description": "This WordPress Plugin enables to copy customizer properties from parent theme to child.",
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "KamataRyo",
+            "email": "mugil.cephalus+composer.com@gmail.com"
+        }
+    ],
+    "require": {}
+}
