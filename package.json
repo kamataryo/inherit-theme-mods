@@ -1,6 +1,6 @@
 {
   "name": "inherit-theme-mods",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "'Inherit Theme Mods' enables to copy customizer properties from parent theme to child.",
   "keywords": [
     "WordPress",
@@ -20,7 +20,7 @@
     "url": "https://github.com/KamataRyo/inherit-theme-mods"
   },
   "scripts": {
-    "build": "./node_modules/.bin/bower install; ./node_modules/.bin/gulp build",
+    "build": "bower install && gulp build",
     "install": "npm run build",
     "generatePot": "grunt i18n",
     "test": "ls ./assets/*.js; ls ./lib; ls ./languages/*.mo"

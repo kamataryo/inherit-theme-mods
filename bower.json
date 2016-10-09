@@ -1,0 +1,22 @@
+{
+  "name": "inherit-theme-mods",
+  "description": "'Inherit Theme Mods' enables to copy customizer properties from parent theme to child.",
+  "moduleType": "globals",
+  "license": "GPL-2.0",
+  "ignore": [
+    "node_modules",
+    "lib",
+    "tests",
+    "phpunit.xml.dist",
+    "assets/*.coffee"
+  ],
+  "keywords": ["WordPress", "plugin", "theme", "child theme", "customizer", "inherit", "copy", "property"],
+  "authors": ["KamataRyo"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KamataRyo/inherit-theme-mods"
+  },
+  "dependencies": {
+    "font-awesome": "font-awsome#^4.6.2"
+  }
+}

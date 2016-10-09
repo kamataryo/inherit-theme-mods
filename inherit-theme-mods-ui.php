@@ -54,9 +54,13 @@ class Inherit_Theme_Mods_UI {
 			array( 'jquery' )
 		);
 		wp_enqueue_style(
+			'font-awesome',
+			ITM_Util::url( 'lib', 'font-awesome', 'css', 'font-awesome.min.css' )
+		);
+		wp_enqueue_style(
 			'itm_style',
 			ITM_Util::url( 'assets', 'inherit-theme-mods.css' ),
-			array()
+			array( 'font-awesome' )
 		);
 		wp_localize_script( 'itm_script', 'ajax', array(
 			'endpoint' => admin_url( 'admin-ajax.php' ),
@@ -128,25 +132,61 @@ class Inherit_Theme_Mods_UI {
 
 			<h2 class="ITM-action-header"><?php  _e( 'Inherit Properties', 'inherit-theme-mods' ); ?></h2>
 			<p><?php _e( "Copy and inherit parent theme's properties to child. Original child properties will be preserved. The last child properties are stored at trash box once for backup.", 'inherit-theme-mods' ); ?></p>
-			<a id="ITM-inherit" class="ITM-button button button-primary button-large" data-action="<?php echo esc_attr( self::$ajax_actions['inherit']); ?>">
-				<?php _e( 'inherit', 'inherit-theme-mods' ); ?>
-			</a>
+			<div class="ITM-action-table">
+				<div class="ITM-action-block">
+					<div class="ITM-action-element ITM-button-col">
+						<a id="ITM-inherit" class="ITM-button button button-primary button-large" data-action="<?php echo esc_attr( self::$ajax_actions['inherit']); ?>">
+							<?php _e( 'inherit', 'inherit-theme-mods' ); ?>
+						</a>
+					</div>
+					<div class="ITM-action-element ITM-picture-col">
+						<i class="fa fa-file-o fa-fw fa-3x"></i>
+						<i class="fa fa-arrow-right fa-2x"></i>
+						<i class="fa fa-copy fa-fw fa-3x"></i>
+						<i class="fa fa-arrow-right"></i>
+						<i class="fa fa-trash-o fa-fw fa-2x"></i>
+					</div>
+				</div>
+			</div>
 
 			<h2 class="ITM-action-header"><?php  _e( 'Overwrite Properties', 'inherit-theme-mods' ); ?></h2>
 			<p><?php _e( "Copy and overwrite parent theme's properties to child. Original child properties will be aborted. The last child properties are stored at trash box once for backup.", 'inherit-theme-mods' ); ?></p>
-			<a id="ITM-overwrite" class="ITM-button button button-primary button-large" data-action="<?php echo esc_attr( self::$ajax_actions['overwrite']); ?>">
-				<?php _e( 'overwrite', 'inherit-theme-mods' ); ?>
-			</a>
+			<div class="ITM-action-table">
+				<div class="ITM-action-block">
+					<div class="ITM-action-element ITM-button-col">
+						<a id="ITM-overwrite" class="ITM-button button button-primary button-large" data-action="<?php echo esc_attr( self::$ajax_actions['overwrite']); ?>">
+							<?php _e( 'overwrite', 'inherit-theme-mods' ); ?>
+						</a>
+					</div>
+					<div class="ITM-action-element ITM-picture-col">
+						<i class="fa fa-file fa-fw fa-3x"></i>
+						<i class="fa fa-arrow-right fa-2x"></i>
+						<i class="fa fa-copy fa-fw fa-3x"></i>
+						<i class="fa fa-arrow-right"></i>
+						<i class="fa fa-trash-o fa-fw fa-2x"></i>
+					</div>
+				</div>
+			</div>
 
-
-			<h2 class="ITM-action-header"><?php  _e( 'Restore Properties', 'inherit-theme-mods' ); ?></h2>
-			<p><?php _e( "Restore child properties from trash box.", 'inherit-theme-mods' ); ?></p>
+<h2 class="ITM-action-header"><?php  _e( 'Restore Properties', 'inherit-theme-mods' ); ?></h2>
+<p><?php _e( "Restore child properties from trash box.", 'inherit-theme-mods' ); ?></p>
+<div class="ITM-action-table">
+	<div class="ITM-action-block">
+		<div class="ITM-action-element ITM-button-col">
 			<a id="ITM-restore" class="ITM-button button button-primary button-large" data-action="<?php echo esc_attr( self::$ajax_actions['restore']); ?>">
 				<?php _e( 'restore', 'inherit-theme-mods' ); ?>
 			</a>
-		</form>
-		<?php
-	}
+		</div>
+		<div class="ITM-action-element ITM-picture-col">
+			<i class="fa fa-copy fa-fw fa-3x"></i>
+			<i class="fa fa-arrow-left fa-2x"></i>
+			<i class="fa fa-trash fa-fw fa-3x"></i>
+		</div>
+	</div>
+</div>
+</form>
+<?php
+}
 
 	// generate list table with Admin Table class
 	function describe_list_table_area() {
