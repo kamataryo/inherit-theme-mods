@@ -3,7 +3,7 @@ Contributors: KamataRyo
 Donate link: http://biwako.io/
 Tags: child theme, customizer, inspector, inherit, copy, settings, property
 Requires at least: 3.9
-Tested up to: 4.5.2
+Tested up to: 4.6.1
 Stable tag: 2.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
