@@ -77,7 +77,7 @@ class InheritThemeModsTest extends WP_UnitTestCase {
             array(
                 'Theme Name' => 'Parent Theme',
                 'Theme URI' => 'http://biwako.io/',
-                'Author' => 'KamataRyo',
+                'Author' => 'kamataryo',
                 'Author URI' => 'https://biwako.io/',
                 'Description' => 'Test theme',
                 'Version' => '1.0.0',
@@ -91,7 +91,7 @@ class InheritThemeModsTest extends WP_UnitTestCase {
                 'Template' => 'inherit-theme-mods-parent-theme',
                 'Theme Name' => 'Child Theme',
                 'Theme URI' => 'http://biwako.io/',
-                'Author' => 'KamataRyo',
+                'Author' => 'kamataryo',
                 'Author URI' => 'https://biwako.io/',
                 'Description' => 'Test theme',
                 'Version' => '1.0.0',

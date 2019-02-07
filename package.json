@@ -12,12 +12,12 @@
     "copy",
     "property"
   ],
-  "bugs": "https://github.com/KamataRyo/inherit-theme-mods/issues",
+  "bugs": "https://github.com/kamataryo/inherit-theme-mods/issues",
   "license": "GPL-2.0",
-  "author": "KamataRyo",
+  "author": "kamataryo",
   "repository": {
     "type": "git",
-    "url": "https://github.com/KamataRyo/inherit-theme-mods"
+    "url": "https://github.com/kamataryo/inherit-theme-mods"
   },
   "scripts": {
     "build": "bower install && gulp build",

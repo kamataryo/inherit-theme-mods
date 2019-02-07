@@ -11,10 +11,10 @@
     "assets/*.coffee"
   ],
   "keywords": ["WordPress", "plugin", "theme", "child theme", "customizer", "inherit", "copy", "property"],
-  "authors": ["KamataRyo"],
+  "authors": ["kamataryo"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/KamataRyo/inherit-theme-mods"
+    "url": "https://github.com/kamataryo/inherit-theme-mods"
   },
   "dependencies": {
     "font-awesome": "font-awsome#^4.6.2"

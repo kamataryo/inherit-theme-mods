@@ -17,7 +17,7 @@ php:
   - 5.6
 
 before_script:
-  - curl https://raw.githubusercontent.com/KamataRyo/travis-sctipts-collection/master/install-wp-tests.sh > ./install-wp-tests.sh
+  - curl https://raw.githubusercontent.com/kamataryo/travis-sctipts-collection/master/install-wp-tests.sh > ./install-wp-tests.sh
   - bash ./install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
   - npm cache clean
   - travis_retry npm install
@@ -28,7 +28,7 @@ script:
 
 after_success:
   - npm run generatePot
-  - curl https://raw.githubusercontent.com/KamataRyo/travis-sctipts-collection/master/deploy-wp-plugin.sh | bash
+  - curl https://raw.githubusercontent.com/kamataryo/travis-sctipts-collection/master/deploy-wp-plugin.sh | bash
 
 env:
   matrix:
@@ -39,10 +39,10 @@ env:
     - WP_VERSION_TO_DEPLOY: latest
     - PHP_VERSION_TO_DEPLOY: 5.6
     - WP_MULTISITE_TO_DEPLOY: 0
-    - GH_REF: github.com/KamataRyo/inherit-theme-mods.git
+    - GH_REF: github.com/kamataryo/inherit-theme-mods.git
     - SVN_REF: https://plugins.svn.wordpress.org/inherit-theme-mods/
     # GH_TOKEN, SVN_USER, SVN_REPO
-    - secure: "anX8iopxbjEpKVkBFWCEi+kVaOfGq1d4ceDvMe7flpdjxOhIbS69LRQHKa97byetxfZToU6pfFRVKked2ByvGDsfSbjktDscujfwWo5D83IOp0RsYdLn21Sm/6+Mh4ldZuKAE2NeQSDuVVL58XGmO1MN8Af2tbk0Z797pvXbFiOn77lt7EVFd44LRg4qdU/8zZ5H+NqH1JpPtuC4RSlzCSNk1Kib8/eLsUjg2D2zQO1aR7x8+XUe+a6o7Cvohi3am+T0EN5vZjJFOCq6RU0LIzsDLgawsGEgwMWsXmQfRIgkGuDhs4b3AZecpV9zITnQwuPR7U9WckIEjndWs4/TtGKMQS6TEsTS3OzCibTOhWba7/08nu91VMhLNAQzaSPmIqxPm01W2rpQKH7wDZPxN+0Lmr7AYYpTLGj6k8DBz2Xw5yt6rzKHTiAheTTnIKGsOokPXT0XEWYstQ7umBtlrvFZhWGhssU0hIrvHh6uOj8qSd7iMfn8oGOt1Arc5DmIuW0BTodv1E9CXSADKpvQfkrOVoRwaXPF8UZKtj/sFSqPenTxlU2pCiLPpM04fGQGOJxFUaeBAgAWc4tFRkttfGjsI+JKVQfCMtlWBKM3MDmQsqd/eqlt7/q76OdRmGgTUX3PjlhOyX90Azh03eFVDCYD3se+pExBdJrLHPNdmJ8="
+    - secure: 'anX8iopxbjEpKVkBFWCEi+kVaOfGq1d4ceDvMe7flpdjxOhIbS69LRQHKa97byetxfZToU6pfFRVKked2ByvGDsfSbjktDscujfwWo5D83IOp0RsYdLn21Sm/6+Mh4ldZuKAE2NeQSDuVVL58XGmO1MN8Af2tbk0Z797pvXbFiOn77lt7EVFd44LRg4qdU/8zZ5H+NqH1JpPtuC4RSlzCSNk1Kib8/eLsUjg2D2zQO1aR7x8+XUe+a6o7Cvohi3am+T0EN5vZjJFOCq6RU0LIzsDLgawsGEgwMWsXmQfRIgkGuDhs4b3AZecpV9zITnQwuPR7U9WckIEjndWs4/TtGKMQS6TEsTS3OzCibTOhWba7/08nu91VMhLNAQzaSPmIqxPm01W2rpQKH7wDZPxN+0Lmr7AYYpTLGj6k8DBz2Xw5yt6rzKHTiAheTTnIKGsOokPXT0XEWYstQ7umBtlrvFZhWGhssU0hIrvHh6uOj8qSd7iMfn8oGOt1Arc5DmIuW0BTodv1E9CXSADKpvQfkrOVoRwaXPF8UZKtj/sFSqPenTxlU2pCiLPpM04fGQGOJxFUaeBAgAWc4tFRkttfGjsI+JKVQfCMtlWBKM3MDmQsqd/eqlt7/q76OdRmGgTUX3PjlhOyX90Azh03eFVDCYD3se+pExBdJrLHPNdmJ8='
 
 matrix:
   include:

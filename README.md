@@ -1,6 +1,6 @@
 # Inherit Theme Mods
 
-[![Build Status](https://travis-ci.org/KamataRyo/inherit-theme-mods.svg?branch=master)](https://travis-ci.org/KamataRyo/inherit-theme-mods)
+[![Build Status](https://travis-ci.org/kamataryo/inherit-theme-mods.svg?branch=master)](https://travis-ci.org/kamataryo/inherit-theme-mods)
 [![WordPress](https://img.shields.io/wordpress/v/inherit-theme-mods.svg?maxAge=2592000?style=plastic)](https://wordpress.org/plugins/inherit-theme-mods/)
 
 [https://wordpress.org/plugins/inherit-theme-mods/](https://wordpress.org/plugins/inherit-theme-mods/)
